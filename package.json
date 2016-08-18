@@ -5,7 +5,7 @@
   "description": "A minimal Electron application",
   "main": "mainprocess/index.js",
   "scripts": {
-	  "start": "electron mainprocess/index.js",
+	  "start": "electron mainprocess/index.js"
   },
   "author": "donati.sergio@gmail.com",
   "dependencies": {

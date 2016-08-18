@@ -1,17 +1,8 @@
 'use strict';
 
-const starter = require('./starter');
-const ipcHandlers = require('./ipcHandlers');
-require('easyone-electron')({stylePath: __dirname+'\\..\\style'});
+const AppManager = require('./AppManager');
+const easyone = require('easyone-electron');
 
-
-let env = process.env.NODE_ENV || 'dev';
-
-if(env == 'dev'){
-	require('electron-reload')(__dirname+'\\renderprocess', {
-  		electron: require('electron-prebuilt')
-	});
-}
-
-ipcHandlers();
-starter.start();
+easyone({stylePath: __dirname+'\\..\\renderprocess\\style'});
+let appManager = new AppManager();
+appManager.start();

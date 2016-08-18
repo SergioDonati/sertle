@@ -1,0 +1,5 @@
+h1 Fatture
+	button(bind-event=true, bind-event-click='newInvoice', class='btn btn-primary') Nuova Fattura
+each val, index in invoices
+	p= val.progressiveNumber
+	p= val.tot

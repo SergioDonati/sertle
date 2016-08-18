@@ -2,68 +2,23 @@
 
 const {ipcMain} = require('electron');
 const fs = require('fs');
-const less = require('less');
-const pug = require('pug');
-
 const DB_PATH = './';
 
-module.exports = function(){
+module.exports = function(appManager){
 
-	ipcMain.on('readFile', function(event, args){
-		try{
-			fs.readFile(args.filePath, (err, data) => {
-	  			if (err) {
-					console.error(err.stack);
-					throw err;
-				}
-				if (data) data = data.toString();
-				event.sender.send('readFile-reply-'+args.id, data);
-			});
-		}catch(err){
-			console.error(err.stack);
-		}
+	ipcMain.on('login', function(event, user){
+		if(!user) return;
+		appManager.user = user;
+		let oldWindow = appManager.mainWindow;
+		appManager.createWindow();
+		oldWindow.close();
 	});
 
-	ipcMain.on('pug_renderAsync', function(event, args) {
-		try{
-		  	let fn = pug.compile(args.str, args.options);
-			let html = fn(args.locals);
-			event.sender.send('pug_renderAsync-reply-'+args.id, html);
-		}catch(e){
-			console.log(e.stack);
-		}
-	});
-
-	ipcMain.on('pug_renderFileAsync', function(event, arg) {
-		try{
-		  	let fn = pug.compileFile(arg.fileName, arg.options);
-			// TODO cache files compiled
-			let html = fn(arg.locals);
-			event.sender.send('pug_renderFileAsync-reply-'+arg.id, html);
-		}catch(e){
-			console.log(e.stack);
-		}
-	});
-
-	ipcMain.on('less_renderFileAsync', function(event, arg){
-		try{
-			fs.readFile(arg.fileName, (err, data) => {
-	  			if (err) throw err;
-				data = data.toString();
-				if(data && data.trim() != '' && arg.wrapWith){
-					data = arg.wrapWith + '{ ' + data + ' }';
-				}
-	  			less.render(data, arg.options, function(error, output) {
-					if (error) {
-						console.error(error);
-						throw error;
-					}
-					event.sender.send('less_renderFileAsync-reply-'+arg.id, output.css);
-				});
-			});
-		}catch(e){
-			console.log(e.stack);
-		}
+	ipcMain.on('logout', function(event, arg){
+		appManager.user = null;
+		let oldWindow = appManager.mainWindow;
+		appManager.createWindow();
+		oldWindow.close();
 	});
 
 	ipcMain.on('lokiLoadDatabase', function(event, arg){

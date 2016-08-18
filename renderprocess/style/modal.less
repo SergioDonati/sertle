@@ -1,0 +1,49 @@
+#modal-container{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 50;
+	display: none;
+	&.modal-open{
+		display: block;
+	}
+	.modal-shadow{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background: #474747;
+		z-index: 60;
+		opacity: 0.8;
+	}
+	.modal-box{
+		z-index: 65;
+		position: relative;
+		max-width: 70%;
+		min-width: 450px;
+		margin: 0 auto;
+		border-radius: 3px;
+		text-align: center;
+		background: #474747;
+		top: 30px;
+		padding: 30px 15px;
+		padding-top: 10px;
+		max-height: calc(100% - 60px);
+		overflow: hidden;
+		color: white;
+		p, h1, h2, h3, h4, h5, h6{
+			color: white;
+		}
+	}
+	.modal-close-btn{
+		position: absolute;
+		color: white;
+		top:8px;
+		right: 10px;
+		font-size: 10px;
+		z-index:70;
+		cursor: pointer;
+	}
+	.modal-close-btn:before{ content: '\274c'; }
+}
