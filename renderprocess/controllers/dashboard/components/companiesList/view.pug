@@ -1,0 +1,7 @@
+h1 Clienti
+each val, index in companies
+	p= val.name
+	p= val.piva
+	p= val.fiscalCode
+
+button(bind-event=true, bind-event-click='newCompany') Nuovo Cliente

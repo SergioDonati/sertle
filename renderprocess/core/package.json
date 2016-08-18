@@ -1,0 +1,6 @@
+{
+	"name": "edeskmanager-core",
+    "version": "0.0.3",
+    "description": "Core of Electron Desktop Manager",
+    "main": "index.js"
+}

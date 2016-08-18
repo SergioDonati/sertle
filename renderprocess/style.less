@@ -1,0 +1,90 @@
+@import "colors";
+@import "font";
+
+html, body{
+	height: 100%;
+	background-color: @backgroundColor;
+}
+body{
+	height: auto;
+	background-color: @backgroundColor;
+	font-size: @fontSize;
+	font-family: @fontFamily;
+	padding: 0px 20px;
+}
+
+#modal-container{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 50;
+	display: none;
+	&.modal-open{
+		display: block;
+	}
+	.modal-shadow{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background: #474747;
+		z-index: 60;
+		opacity: 0.8;
+	}
+	.modal-box{
+		z-index: 65;
+		position: relative;
+		width: 50%;
+		min-width: 450px;
+		margin: 0 auto;
+		border-radius: 3px;
+		text-align: center;
+		background: #474747;
+		top: 30px;
+		padding: 30px 10px;
+	}
+	.modal-close-btn{
+		position: absolute;
+		color: white;
+		top:8px;
+		right: 10px;
+		font-size: 10px;
+		z-index:70;
+		cursor: pointer;
+	}
+	.modal-close-btn:before{ content: '&times;'; }
+}
+
+form{
+	text-align: center;
+}
+label{
+	text-align: left;
+	font-weight: 600;
+}
+input, select{
+	margin-top: 5px;
+	width: 100%;
+	padding: 8px 8px;
+	border-radius: 3px;
+	border-width: 0px;
+}
+.form-group, .input-group{
+	margin-top: 20px;
+	text-align: left;
+}
+
+.btn{
+	margin-top: 20px;
+	float: right;
+	background-color: transparent;
+	border-width:1px;
+	border-color: transparent;
+	text-transform: uppercase;
+	padding: 6px 10px;
+	font-weight: 600;
+	&:hover{
+		border: 1px solid #323232;
+	}
+}
