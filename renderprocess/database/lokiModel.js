@@ -27,8 +27,11 @@ function _new_value(value, fieldSchema, key){
 		if(fieldSchema.lowercase == true){
 			value = value.toLowerCase();
 		}
-	}else if(fieldSchema.type == Number){
-		value = parseInt(value);
+	}else if(fieldSchema.type == Number && (value || value == 0)){
+		if(typeof(value) == 'string'){
+			if(!value.trim()) value = undefined;
+		}
+		value = Number(value);
 		if(value == NaN) throw new Error('Field '+key+' invalid cast to Number!');
 	}
 	if(!value){
@@ -93,8 +96,8 @@ module.exports = class LokiModel{
 		try{
 			_new_document(params, this._schema, {});
 		}catch(e){
-			return false;
+			return { valid: false, error: e };
 		}
-		return true;
+		return { valid: true };
 	}
 }

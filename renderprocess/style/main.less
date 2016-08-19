@@ -20,3 +20,12 @@ label{
 	text-align: left;
 	font-weight: 600;
 }
+.btn > .fa{
+	margin-right: 5px;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

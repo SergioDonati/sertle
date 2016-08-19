@@ -33,15 +33,15 @@ module.exports = class ItemsComponent extends Controller {
 	}
 
 	addItem(item){
-		let itemElement = _createDOMItem(item);
+		let itemElement = this._createDOMItem(item);
 		this._items.set(itemElement, item);
-		this.itemElement.appendChild(itemElement);
+		this.itemsTable.appendChild(itemElement);
 	}
 
 	newItem(){
 		let component = this;
-		app.modalManager.startNew('new/item').on('success', function(modal){
-			modal.once('close_modal', function(){
+		app.modalManager.startNew('new/invoiceItem').then(function(modal){
+			modal.once('modalClosed', function(){
 				let item = modal.result;
 				component.addItem(item);
 			});

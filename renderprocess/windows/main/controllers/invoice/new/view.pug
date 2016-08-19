@@ -1,9 +1,9 @@
-h1 Nuova Fattura
+h2 Nuova Fattura
 
-#compile
-	#info
+#compile.row
+	#info.col-xs-5
 		#general(dynamicload-component=true, component="generalInfo", component-id="general-info")
 		#nominee(dynamicload-component=true, component="nominee", component-id="nominee")
 		#issuer(dynamicload-component=true, component="issuer", component-id="issuer")
-	#items(dynamicload-component=true, component="items", component-id="items")
+	#items.col-xs-7(dynamicload-component=true, component="items", component-id="items")
 #check(style="display:none;")

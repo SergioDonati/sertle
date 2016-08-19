@@ -1,12 +1,22 @@
-h2 Tu
-#issuer-data
-	p Nome:
-		span#issuer-name
-	p P. IVA:
-		span#issuer-piva
-	p Codice Fiscale:
-		span#issuer-fiscalcode
-	p Indirizzo:
-		span#issuer-address
-	p Telefono:
-		span#issuer-phone
+.head
+	h4.head-title Tu
+#issuer-data.container-fluid
+	.row
+		.col-xs-12
+			label Nome:
+			span#issuer-name
+	.row
+		.col-xs-7
+			div
+				label P. IVA:
+				span#issuer-piva
+			div
+				label.control-label Codice Fiscale:
+				span#issuer-fiscalcode
+		.col-xs-5
+			label Indirizzo:
+			p#issuer-address
+	.row
+		.col-xs-12
+			label Telefono:
+			span#issuer-phone

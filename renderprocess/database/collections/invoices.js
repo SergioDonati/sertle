@@ -85,6 +85,8 @@ let invoiceItemSchema = {
 	discount: Number
 };
 
+let invoiceItemModel = new Model(invoiceItemSchema);
+
 let invoiceModel = new Model({
 	ownerRef: {
 		type: String,
@@ -161,6 +163,14 @@ class InvoicesCollection extends Collection{
 	getAll(user){
 		return this.find({ userRef: user.$loki });
 	}
+
+	validate(invoice){
+		return this.model.valid(invoice);
+	}
+
+	validateItem(item){
+		return invoiceItemModel.valid(item);
+	}
 }
 
-module.exports = new InvoicesCollection(DB);
+module.exports = new InvoicesCollection(DB, invoiceModel);

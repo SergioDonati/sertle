@@ -1,14 +1,29 @@
-h2 Cliente
-a(bind-event=true, bind-event-click="newCompany") Nuovo
-a(bind-event=true, bind-event-click="searchCompany") Cerca
-#nominee-data
-	p Nome:
-		span#nominee-name
-	p P. IVA:
-		span#nominee-piva
-	p Codice Fiscale:
-		span#nominee-fiscalcode
-	p Indirizzo:
-		span#nominee-address
-	p Telefono:
-		span#nominee-phone
+.head
+	h4.head-title Cliente
+		.btn-group.pull-right
+			a(bind-event=true, bind-event-click="newCompany", class="btn btn-xs btn-default")
+				span.fa.fa-plus
+				|Nuovo
+			a(bind-event=true, bind-event-click="searchCompany", class="btn btn-xs btn-default")
+				span.fa.fa-search
+				|Cerca
+#nominee-data.container-fluid
+	.row
+		.col-xs-12
+			label Nome:
+			span#nominee-name
+	.row
+		.col-xs-7
+			div
+				label P. IVA:
+				span#nominee-piva
+			div
+				label.control-label Codice Fiscale:
+				span#nominee-fiscalcode
+		.col-xs-5
+			label Indirizzo:
+			p#nominee-address
+	.row
+		.col-xs-12
+			label Telefono:
+			span#nominee-phone

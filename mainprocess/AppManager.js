@@ -17,7 +17,7 @@ module.exports = class AppManager{
 	get mainWindow(){ return this._mainWindow; }
 
 	get defaultWindowOptions(){
-		return {width: 800, height: 600, center:true, icon: __dirname+'\\..\\SWlogo.ico' };
+		return {width: 800, height: 600, center:true, icon: __dirname+'\\..\\SWlogo.ico', frame:false };
 	}
 
 	createWindow(){
