@@ -1,0 +1,16 @@
+h3.modal-title Cerca Cliente
+br
+form(bind-event, bind-event-submit='onSubmit')
+    .form-group
+        .input-group
+            input#searchInput.form-control(type="search", name="search")
+            span.input-group-addon: i.fa.fa-search
+table.table.table-striped.table-bordered.table-hover.table-condensed#companies-table
+    thead
+        tr
+            th Nome
+            th P. IVA
+            th CodiceFiscale
+    tbody
+br
+a.btn.btn-primary.pull-right(href="#", bind-event, bind-event-click='onSelect') Seleziona

@@ -9,6 +9,7 @@ module.exports = class Nominee extends Controller {
 
 	init(){
 		this.addDOMListener('newCompany', this.newCompany.bind(this));
+		this.addDOMListener('searchCompany', this.searchCompany.bind(this));
 	}
 
 	_setSpanContent(selector, value){
@@ -23,11 +24,21 @@ module.exports = class Nominee extends Controller {
 		if(!this.HTMLElement) return;
 		this.company = company;
 		this._setSpanContent('#nominee-name', company.name);
-		this._setSpanContent('#nominee-iva', company.iva);
+		this._setSpanContent('#nominee-piva', company.piva);
 		this._setSpanContent('#nominee-fiscalcode', company.fiscalCode);
 	}
 
 	newCompany(){
 		app.modalManager.startNew('new/company');
+	}
+
+	searchCompany(){
+		let component = this;
+		app.modalManager.startNew('search/company').then(function(modal){
+			modal.on('modalClosed', function(){
+				let company = modal.result;
+				if(company) component.setCompany(company);
+			});
+		});
 	}
 };

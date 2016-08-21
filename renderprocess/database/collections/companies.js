@@ -75,7 +75,33 @@ class CompaniesCollection extends Collection{
 	}
 
 	getAll(){
-		return this.find({});
+		let companies = this.find({});
+		this._count = companies.length;
+		return companies;
+	}
+
+	count(){
+		this.getAll();
+		return this._count;
+	}
+
+	searchByName(name, options){
+		options = options || {};
+		let limit = options.limit || 20;
+		let simpleSort = options.simpleSort || 'name';
+		let offset = options.offset || 0;
+		let countOption = options.count || false;
+		let baseQuery = this._collection.chain().find({ 'name': { '$regex': [name, 'i'] } });
+		let countQuery = baseQuery.branch();
+		let companies = baseQuery.simplesort(simpleSort)
+			.offset(offset)
+          	.limit(limit).data();
+		let count;
+		if(countOption) count = countQuery.data().length;
+		return {
+			companies: companies,
+			count: count
+		}
 	}
 }
 

@@ -3,6 +3,8 @@ const {app} = require('easyone-electron');
 const {DB, Collections, onReady} = require('../../database');
 const {ipcRenderer, remote} = require('electron');
 
+require('devtron').install();
+
 let user = remote.getCurrentWindow().user;
 
 app.on('ready', function(app){

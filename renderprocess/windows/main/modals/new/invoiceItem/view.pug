@@ -9,16 +9,16 @@ form#invoiceItemForm(bind-event, bind-event-submit='onSubmit', class="container-
 		.form-group(style="width:250px;display:inline-block;")
 			.input-group
 				span.input-group-addon Prezzo unitario
-				input.form-control(name='price', type='number', step="0.01", placeholder='49.53', required)
+				input.form-control(name='price', type='number', step="0.01", min="0", placeholder='49.53', required)
 				span.input-group-addon: i.fa.fa-eur
 		.form-group(style="width:180px;display:inline-block;")
 			.input-group
 				span.input-group-addon Quantità
-				input.form-control(name='quantity', type='number', placeholder='10', value="1", required)
+				input.form-control(name='quantity', type='number', placeholder='10', min="0", value="1", required)
 		.form-group(style="width:250px;display:inline-block;")
 			.input-group
 				span.input-group-addon Prezzo totale
-				input.form-control(name='total-price', type='number', step="0.01", placeholder='495.3')
+				input.form-control(name='total-price', type='number', step="0.01", min='0', placeholder='495.3')
 				span.input-group-addon: i.fa.fa-eur
 	div
 		.form-group(style="width:250px;display:inline-block;")

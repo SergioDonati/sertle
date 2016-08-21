@@ -45,6 +45,14 @@ module.exports = class AppManager{
 			// when you should delete the corresponding element.
 			if(manager._mainWindow == mainWindow) manager._mainWindow = null;
 		});
+		this.mainWindow.on('unresponsive', function () {
+		  	require('dialog').showMessageBox({
+		    	type: 'info',
+		    	message: 'Finestra non risponde, ricaricare la finestra?',
+		    	buttons: ['Cancel', 'Reload']
+		  	});
+		});
+		
 	}
 
 	start(){

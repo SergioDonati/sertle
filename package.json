@@ -5,16 +5,17 @@
   "description": "A minimal Electron application",
   "main": "mainprocess/index.js",
   "scripts": {
-	  "start": "electron mainprocess/index.js"
+    "start": "electron mainprocess/index.js"
   },
   "author": "donati.sergio@gmail.com",
   "dependencies": {
     "less": "^2.7.1",
     "lokijs": "^1.4.1",
     "pug": "^2.0.0-beta4",
-	"easyone-electron": "git+https://git@github.com/SergioDonati/easyone-electron.git"
+    "easyone-electron": "git+https://git@github.com/SergioDonati/easyone-electron.git"
   },
   "devDependencies": {
+    "devtron": "^1.3.0",
     "electron-prebuilt": "^1.3.1",
     "electron-reload": "^1.0.1",
     "sqlite3": "^3.1.4"

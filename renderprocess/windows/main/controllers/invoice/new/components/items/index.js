@@ -12,30 +12,33 @@ module.exports = class ItemsComponent extends Controller {
 		this.addDOMListener('newItem', this.newItem.bind(this));
 		this.on('rendered', function(){
 			this.itemsTable = this.HTMLElement.querySelector('#items-table');
+			this.itemsTableBody = this.itemsTable.querySelector('tbody');
 		});
 	}
 
-	_createDOMtd(value){
-		let td = document.createElement('td');
-		td.innerHTML = value;
-		return td;
+	_insertCell(row, value){
+		let newCell = row.insertCell();
+		try{
+  			newCell.appendChild(document.createTextNode(value));
+		}catch(e){
+			console.warn(e);
+		}
 	}
 
-	_createDOMItem(item){
-		let tr = document.createElement('tr');
-		tr.appendChild(this._createDOMtd(item.description));
-		tr.appendChild(this._createDOMtd(item.unit));
-		tr.appendChild(this._createDOMtd(item.quantity));
-		tr.appendChild(this._createDOMtd(item.price));
-		tr.appendChild(this._createDOMtd(item.iva));
-		tr.appendChild(this._createDOMtd(0));
-		return tr;
+	_insertRow(item){
+		let newRow = this.itemsTableBody.insertRow();
+
+		this._insertCell(newRow, item.description);
+		this._insertCell(newRow, item.unit);
+		this._insertCell(newRow, item.quantity);
+		this._insertCell(newRow, item.price);
+		this._insertCell(newRow, item.iva);
+		this._insertCell(newRow, 0);
 	}
 
 	addItem(item){
-		let itemElement = this._createDOMItem(item);
-		this._items.set(itemElement, item);
-		this.itemsTable.appendChild(itemElement);
+		let row = this._insertRow(item);
+		this._items.set(row, item);
 	}
 
 	newItem(){
@@ -43,7 +46,7 @@ module.exports = class ItemsComponent extends Controller {
 		app.modalManager.startNew('new/invoiceItem').then(function(modal){
 			modal.once('modalClosed', function(){
 				let item = modal.result;
-				component.addItem(item);
+				if(item) component.addItem(item);
 			});
 		});
 	}
