@@ -1,6 +1,6 @@
 'use strict';
 
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, dialog} = require('electron');
 const ipcHandlers = require('./ipcHandlers');
 
 module.exports = class AppManager{
@@ -16,43 +16,64 @@ module.exports = class AppManager{
 
 	get mainWindow(){ return this._mainWindow; }
 
-	get defaultWindowOptions(){
-		return {width: 800, height: 600, center:true, icon: __dirname+'\\..\\SWlogo.ico', frame:false };
+	get defaultMainWindowOptions(){
+		return {width: 1080, height: 600, center:true, icon: __dirname+'\\..\\SWlogo.ico', frame:false, show:false};
+	}
+	get defaultAccessWindowOptions(){
+		return {width: 700, height: 400, center:true, icon: __dirname+'\\..\\SWlogo.ico' };
 	}
 
-	createWindow(){
-		let loadUrl = this.accessIndexPath;
-		if(this.user) loadUrl = this.mainIndexPath;
-		let manager = this;
+	_createWindow(loadUrl, windowOptions, readyCallback){
+		let self = this;
 
 		// Create the browser window.
-		this._mainWindow = new BrowserWindow(this.defaultWindowOptions);
-		this.mainWindow.user = this.user;
-
+		let newWindow = new BrowserWindow(windowOptions);
+		if(self.user) newWindow.user = self.user;
 		// and load the index.html of the app.
-		this.mainWindow.loadURL(loadUrl);
-
-		this.mainWindow.setMenu(null);
+		newWindow.loadURL(loadUrl);
+		newWindow.setMenu(null);
 
 		// Open the DevTools.
-		this.mainWindow.webContents.openDevTools();
+		newWindow.webContents.openDevTools();
 
-		let mainWindow = manager.mainWindow;
 		// Emitted when the window is closed.
-		this.mainWindow.on('closed', function () {
+		newWindow.on('closed', function () {
 			// Dereference the window object, usually you would store windows
 			// in an array if your app supports multi windows, this is the time
 			// when you should delete the corresponding element.
-			if(manager._mainWindow == mainWindow) manager._mainWindow = null;
+			if(self._mainWindow == newWindow) self._mainWindow = null;
 		});
-		this.mainWindow.on('unresponsive', function () {
-		  	require('dialog').showMessageBox({
+		if(readyCallback){
+			newWindow.on('ready-to-show', function(){
+				readyCallback(newWindow);
+			});
+		}
+		newWindow.on('unresponsive', function () {
+		  	dialog.showMessageBox({
 		    	type: 'info',
-		    	message: 'Finestra non risponde, ricaricare la finestra?',
+		    	message: 'La finestra non risponde, ricaricare la finestra?',
 		    	buttons: ['Cancel', 'Reload']
 		  	});
 		});
-		
+
+		newWindow.webContents.on('crashed', function () {
+			dialog.showErrorBox('Errore', 'Si è verificato un errore riavviare l\'applicazione!');
+		});
+		self._mainWindow = newWindow;
+		return newWindow;
+	}
+
+	createAccessWindow(){
+		if(this.user) return this.createMainWindow();
+		return this._createWindow(this.accessIndexPath, this.defaultAccessWindowOptions);
+	}
+	createMainWindow(callback){
+		if(!this.user) return this.createAccessWindow();
+		let self = this;
+		return self._createWindow(self.mainIndexPath, self.defaultMainWindowOptions, function(newWindow){
+			newWindow.show();
+			if(callback) callback(newWindow);
+		});
 	}
 
 	start(){
@@ -62,7 +83,7 @@ module.exports = class AppManager{
 		// This method will be called when Electron has finished
 		// initialization and is ready to create browser windows.
 		// Some APIs can only be used after this event occurs.
-		app.on('ready', manager.createWindow.bind(this));
+		app.on('ready', manager.createAccessWindow.bind(this));
 
 		// Quit when all windows are closed.
 		app.on('window-all-closed', function () {
@@ -77,8 +98,13 @@ module.exports = class AppManager{
 		  	// On OS X it's common to re-create a window in the app when the
 		  	// dock icon is clicked and there are no other windows open.
 		  	if (mainWindow === null) {
-		    	manager.createWindow();
+		    	manager.createAccessWindow();
 		  	}
+		});
+		process.on('uncaughtException', function (err) {
+			console.error(err.stack);
+			dialog.showErrorBox('Error', 'Si è verificato un errore riavviare l\'applicazione!\nErrore:'+err.message);
+			//app.quit();
 		});
 		this.started = true;
 	}

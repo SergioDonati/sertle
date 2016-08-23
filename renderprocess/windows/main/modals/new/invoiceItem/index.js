@@ -28,13 +28,13 @@ module.exports = class NewInvoiceItem extends Modal{
 
 	calcTot(){
 		try{
-			let price = Number(this.priceInput.value.replace(',','.'));
-			let qty = Number(this.quantityInput.value);
-			let iva = Number(this.ivaInput.value);
+			let price = this.priceInput.valueAsNumber;
+			let qty = this.quantityInput.valueAsNumber;
+			let iva = this.ivaInput.valueAsNumber;
 			let imponibile = roundDecimals(price * qty);
 			let imposta = roundDecimals(imponibile * iva / 100);
 			let tot = roundDecimals(imponibile + imposta);
-			this.priceTotInput.value = tot;
+			this.priceTotInput.valueAsNumber = tot;
 			this.priceTotInput.setCustomValidity('');
 		}catch(e){
 			this.priceInput.value = '';
@@ -43,9 +43,9 @@ module.exports = class NewInvoiceItem extends Modal{
 
 	calcPrice(){
 		try{
-			let priceTot = roundDecimals(Number(this.priceTotInput.value.replace(',','.')));
-			let qty = Number(this.quantityInput.value);
-			let iva = Number(this.ivaInput.value);
+			let priceTot = roundDecimals(this.priceTotInput.valueAsNumber);
+			let qty = this.quantityInput.valueAsNumber;
+			let iva = this.ivaInput.valueAsNumber;
 			let imponibile = roundDecimals(priceTot / (1 + (iva/100)));
 			let imposta = roundDecimals(imponibile * iva / 100);
 			if (roundDecimals(imponibile + imposta) != priceTot){
@@ -56,7 +56,7 @@ module.exports = class NewInvoiceItem extends Modal{
 				this.priceTotInput.setCustomValidity('');
 			}
 			let price = roundDecimals(imponibile / qty);
-			this.priceInput.value = price;
+			this.priceInput.valueAsNumber = price;
 		}catch(e){
 			this.priceInput.value = '';
 		}
@@ -64,7 +64,7 @@ module.exports = class NewInvoiceItem extends Modal{
 
 	create(){
 		let form = this.HTMLElement.querySelector('#invoiceItemForm');
-		if(!form.checkValidate()){
+		if(!form.checkValidity()){
 			dialog.showErrorBox('Attenzione', 'Alcuni campi contengono un errore o non sono stati compilati.');
 			console.log('dialog');
 			return;
@@ -79,7 +79,7 @@ module.exports = class NewInvoiceItem extends Modal{
 		}
 		function getNumericValue(name){
 			try{
-				return Numeric(form.elements[name].value.replace(',','.'));
+				return form.elements[name].valueAsNumber;
 			}catch(e){
 				return undefined;
 			}

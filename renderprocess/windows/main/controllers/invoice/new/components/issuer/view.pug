@@ -1,22 +1,28 @@
 .head
 	h4.head-title Tu
-#issuer-data.container-fluid
+#issuer-data.container-fluid.text-left
 	.row
-		.col-xs-12
+		.col-xs-2
 			label Nome:
+		.col-xs-10
 			span#issuer-name
 	.row
 		.col-xs-7
-			div
-				label P. IVA:
-				span#issuer-piva
-			div
-				label.control-label Codice Fiscale:
-				span#issuer-fiscalcode
+			.row.vertical-align
+				.col-xs-4
+					label P. IVA:
+				.col-xs-8
+					span#issuer-piva
+			.row.vertical-align
+				.col-xs-4
+					label.control-label Codice Fiscale:
+				.col-xs-8
+					span#issuer-fiscalcode
 		.col-xs-5
 			label Indirizzo:
 			p#issuer-address
 	.row
-		.col-xs-12
+		.col-xs-3
 			label Telefono:
+		.col-xs-9
 			span#issuer-phone

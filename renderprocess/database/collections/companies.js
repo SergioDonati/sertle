@@ -25,7 +25,7 @@ let companyModel = new Model({
 		trim: true
 	},
 	creationTime: {
-		type: String,
+		type: Date,
 		default: 'now'
 	},
 	addresses: [{
@@ -67,7 +67,7 @@ let companyModel = new Model({
 
 class CompaniesCollection extends Collection{
 	get collectionName(){ return 'companies'; }
-	get collectionOptions(){ return { autoupdate: true }; }
+	get collectionOptions(){ return { /*autoupdate: true*/ }; }
 
 	insert(company, user){
 		company.ownerRef = user.$loki;
@@ -91,13 +91,12 @@ class CompaniesCollection extends Collection{
 		let simpleSort = options.simpleSort || 'name';
 		let offset = options.offset || 0;
 		let countOption = options.count || false;
-		let baseQuery = this._collection.chain().find({ 'name': { '$regex': [name, 'i'] } });
-		let countQuery = baseQuery.branch();
-		let companies = baseQuery.simplesort(simpleSort)
+		let query = { 'name': { '$regex': [name, 'i'] } };
+		let companies = this._collection.chain().find(query).simplesort(simpleSort)
 			.offset(offset)
           	.limit(limit).data();
 		let count;
-		if(countOption) count = countQuery.data().length;
+		if(countOption) count = this._collection.count(query);
 		return {
 			companies: companies,
 			count: count

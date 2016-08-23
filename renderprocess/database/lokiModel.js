@@ -33,12 +33,19 @@ function _new_value(value, fieldSchema, key){
 		}
 		value = Number(value);
 		if(value == NaN) throw new Error('Field '+key+' invalid cast to Number!');
+	}else if(fieldSchema.type == Date && value){
+		try{
+			if(typeof(value) != 'Date') value = Date.parse(value);
+			if(value){
+				value = value.getTime();
+			}
+		}catch(e){}
 	}
 	if(!value){
 		if(fieldSchema.require == true) throw new Error('Field '+key+' is required!');
 		if(fieldSchema.default) {
-			if(fieldSchema.default == 'now') return new Date();
-			return fieldSchema.default;
+			if(fieldSchema.default == 'now' && fieldSchema.type == Date) return (new Date()).getTime();
+			else return fieldSchema.default;
 		}
 		if(value === null) return null;
 		return undefined;

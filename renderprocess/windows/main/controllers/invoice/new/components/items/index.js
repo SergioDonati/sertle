@@ -51,4 +51,12 @@ module.exports = class ItemsComponent extends Controller {
 		});
 	}
 
+	getItems(){
+		let items = [];
+		this._items.forEach(function(item){
+			items.push(item);
+		});
+		return items;
+	}
+
 };

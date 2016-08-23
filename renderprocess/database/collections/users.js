@@ -67,16 +67,20 @@ let userModel = new Model({
 		require: true
 	},
 	creationTime:{
-		type: String,
+		type: Date,
 		default: 'now'
 	},
-	company: companySchema
+	company: companySchema,
+	invoiceSetting:{
+		headerText: String,
+		footerText: String
+	}
 });
 
 class UsersCollection extends Collection{
 
 	get collectionName(){ return 'users'; }
-	get collectionOptions(){ return { unique:['username'], autoupdate: true }; }
+	get collectionOptions(){ return { unique:['username'], /*autoupdate: true*/ }; }
 
 	initialize(){
 		this.insert({

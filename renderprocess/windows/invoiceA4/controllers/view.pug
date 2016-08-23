@@ -1,0 +1,83 @@
+table#main-table.strech
+    tr
+        td.half-width
+            h1#issuer-name #{invoice.issuer.name}
+            br
+            p#issuer-address.address
+                | #{invoice.issuer.addresses[0].street} #{invoice.issuer.addresses[0].number}
+                br
+                | #{invoice.issuer.addresses[0].postalCode} #{invoice.issuer.addresses[0].city}
+            table#issuer-data-table
+                tr
+                    th Tel\Fax
+                    td #{invoice.issuer.phones[0].number}
+                tr
+                    th Partita IVA
+                    td #{invoice.issuer.piva}
+                tr
+                    th Codice Fiscale
+                    td #{invoice.issuer.fiscalCode}
+        td.text-center.half-width
+            h1#invoice-title Fattura
+            table.strech
+                tr
+                    td
+                        p Numero Fattura
+                        p: strong #{invoice.progressiveNumber}
+                    td
+                        p Data Fattura
+                        p: strong #{new Date(invoice.date).toLocaleDateString()}
+                tr.text-left
+                    td(colspan="2")
+                        span Intestazione
+                        h1#nominee-name #{invoice.nominee.name}
+                        p#nominee-address.address
+                            | #{invoice.nominee.addresses[0].street} #{invoice.nominee.addresses[0].number}
+                            br
+                            | #{invoice.nominee.addresses[0].postalCode} #{invoice.nominee.addresses[0].city} #{invoice.nominee.addresses[0].nation}
+                        p Tel: #{invoice.nominee.phones[0].number}
+    tr
+        td(colspan="2")
+            table.strech.table-3
+                tr
+                    th Codice Fiscale
+                    th Partita IVA
+                    th Esente IVA
+                tr
+                    td #{invoice.nominee.fiscalCode}
+                    td #{invoice.nominee.piva}
+                    td Non Esente
+    tr
+        td(colspan="2")
+            table.strech.table-3
+                tr
+                    th Tipo di Pagamento
+                    th IBAN
+                    th Valuta
+                tr
+                    td #{invoice.payMethod}
+                    td #{invoice.iban}
+                    td EURO
+    tr: td(colspan="2")
+        if invoice.headerText
+            #{invoice.headerText}
+    tr: td(colspan="2"): table.strech
+        tr
+            th Descrizione
+            th Unità
+            th Quantità
+            th Prezzo
+            th IVA%
+            th Sc%
+            th Importo
+        each item in invoice.items
+            tr
+                td #{item.description}
+                td #{item.unit}
+                td #{item.quantity}
+                td #{item.price.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                td #{item.iva}
+                td #{item.discount}
+                td
+                    if item.imponibile
+                        #{item.imponibile.toLocaleString(undefined, {minimumFractionDigits: 2})}

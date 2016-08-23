@@ -53,7 +53,6 @@ module.exports = class NewCompany extends Modal{
 	}
 
     select(){
-        console.log('select');
         if(this._selectedCompany){
             this._modal_result = this._selectedCompany;
             this.close();

@@ -82,7 +82,19 @@ let invoiceItemSchema = {
 		type: Number,
 		require: true
 	},
-	discount: Number
+	discount: Number,
+	imponibile: {
+		type: Number,
+		require: true
+	},
+	imposta: {
+		type: Number,
+		require: true
+	},
+	totPrice: {
+		type: Number,
+		require: true
+	}
 };
 
 let invoiceItemModel = new Model(invoiceItemSchema);
@@ -96,20 +108,24 @@ let invoiceModel = new Model({
 		type: String,
 		require: true
 	},
+	creationTime:{
+		type: Date,
+		default: 'now'
+	},
 	date: {
-		type: String,
+		type: Date,
 		require: true
 	},
 	tot: {
-		type: String,
+		type: Number,
 		require: true
 	},
 	totImponibile: {
-		type: String,
+		type: Number,
 		require: true
 	},
 	totImposta: {
-		type: String,
+		type: Number,
 		require: true
 	},
 	payMethod: {
@@ -138,30 +154,82 @@ let invoiceModel = new Model({
 		type: String,
 		trim: true
 	},
-	progressivenumber:{
+	progressiveNumber:{
 		type: Number,
 		require: true
 	},
 	issuer: companySchema,
 	nominee: companySchema,
-	items: invoiceItemSchema
+	items: [invoiceItemSchema]
 });
+
+function roundDecimals(num){
+	return Math.round(num * 100) / 100;
+}
 
 class InvoicesCollection extends Collection{
 
 	get collectionName(){ return 'invoices'; }
-	get collectionOptions(){ return { autoupdate: true }; }
+	get collectionOptions(){ return { /*autoupdate: true*/ }; }
 
-	insert(invoice, user, company){
+	newInvoice(invoice, user, company){
 		invoice.nominee = company;
 		invoice.issuer = user.company;
 		invoice.ownerRef = user.$loki;
 		invoice.nomineeRef = company.$loki;
+		try{
+			invoice.headerText = user.invoiceSetting.headerText;
+			invoice.footerText = user.invoiceSetting.footerText;
+		}catch(e){}
+		invoice = InvoicesCollection.calc(invoice);
+		let result = this.validate(invoice);
+		if(result.valid != true){
+			throw result.error;
+		}
+		return this._model.newDocument(invoice);
+	}
+
+	static calcItem(item){
+		item.imponibile = roundDecimals(item.price * item.quantity);
+		item.imposta = roundDecimals(imponibile * item.iva / 100);
+		item.totPrice = roundDecimals(imponibile + imposta);
+		return item;
+	}
+
+	static calc(invoice){
+		let impMap = new Map();
+		let totImponibile = 0;
+		let totImposta = 0;
+		if(invoice.items && invoice.items.length > 0){
+			invoice.items = invoice.items.map(function(item){
+				item = InvoicesCollection.calcItem(item);
+				totImposta += item.imposta;
+				totImponibile += item.imponibile;
+			});
+		}
+
+		invoice.tot = totImponibile + totImposta;
+		invoice.totImponibile = totImponibile;
+		invoice.totImposta = totImposta;
+		return invoice;
+	}
+
+	insert(invoice){
 		return super.insert(invoice);
 	}
 
 	getAll(user){
 		return this.find({ userRef: user.$loki });
+	}
+
+	getNextProgressiveNumber(user){
+		let currentYear = new Date().getFullYear();
+		let currentYearTime = new Date(currentYear).getTime();
+		let invoices = this._collection.chain().find({ userRef: user.$loki, date: { '$gt': currentYearTime } }).simplesort('date').data();
+		let nextProgressiveNumber = 1;
+		if(invoices.length == 0) return 1;
+		let lastInvoice = invoices[invoices.length-1];
+		return lastInvoice.progressiveNumber + 1;
 	}
 
 	validate(invoice){

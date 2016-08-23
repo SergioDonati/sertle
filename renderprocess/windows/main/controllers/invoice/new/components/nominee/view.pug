@@ -9,21 +9,27 @@
 				|Cerca
 #nominee-data.container-fluid
 	.row
-		.col-xs-12
+		.col-xs-2
 			label Nome:
+		.col-xs-10
 			span#nominee-name
 	.row
 		.col-xs-7
-			div
-				label P. IVA:
-				span#nominee-piva
-			div
-				label.control-label Codice Fiscale:
-				span#nominee-fiscalcode
+			.row.vertical-align
+				.col-xs-4
+					label P. IVA:
+				.col-xs-8
+					span#nominee-piva
+			.row.vertical-align
+				.col-xs-4
+					label.control-label Codice Fiscale:
+				.col-xs-8
+					span#nominee-fiscalcode
 		.col-xs-5
 			label Indirizzo:
 			p#nominee-address
 	.row
-		.col-xs-12
+		.col-xs-3
 			label Telefono:
+		.col-xs-9
 			span#nominee-phone

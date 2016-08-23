@@ -22,14 +22,29 @@ module.exports = class Nominee extends Controller {
 
 	setCompany(company){
 		if(!this.HTMLElement) return;
+		if(!company) return;
 		this.company = company;
 		this._setSpanContent('#nominee-name', company.name);
 		this._setSpanContent('#nominee-piva', company.piva);
 		this._setSpanContent('#nominee-fiscalcode', company.fiscalCode);
+
+		if(company.addresses && company.addresses.length>0){
+			let address = company.addresses[0];
+			this._setSpanContent('#nominee-address', address.street + ', ' + address.number + ' <br\>'+ address.postalCode + ', ' + address.city );
+		}
+
+		if(company.phones && company.phones.length>0){
+			this._setSpanContent('#nominee-phone', company.phones[0].number);
+		}
 	}
 
 	newCompany(){
-		app.modalManager.startNew('new/company');
+		app.modalManager.startNew('new/company').then(function(modal){
+			modal.on('modalClosed', function(){
+				let company = modal.result;
+				if(company) component.setCompany(company);
+			});
+		});
 	}
 
 	searchCompany(){
