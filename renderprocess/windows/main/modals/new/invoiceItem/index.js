@@ -63,7 +63,7 @@ module.exports = class NewInvoiceItem extends Modal{
 	}
 
 	create(){
-		let form = this.HTMLElement.querySelector('#invoiceItemForm');
+		let form = this.querySelector('#invoiceItemForm');
 		if(!form.checkValidity()){
 			dialog.showErrorBox('Attenzione', 'Alcuni campi contengono un errore o non sono stati compilati.');
 			console.log('dialog');
@@ -95,6 +95,8 @@ module.exports = class NewInvoiceItem extends Modal{
 			iva: getNumericValue('iva'),
 			discount: getNumericValue('discount')
 		};
+
+		newInvoiceItem = app.getCollections('Invoices').constructor.calcItem(newInvoiceItem);
 
 		let result = app.getCollections('Invoices').validateItem(newInvoiceItem);
 		if(result.valid == true){

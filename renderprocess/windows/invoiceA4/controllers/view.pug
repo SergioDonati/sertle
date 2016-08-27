@@ -1,67 +1,67 @@
-table#main-table.strech
-    tr
-        td.half-width
+mixin printPayMethod(payMethod)
+    if payMethod == 0
+        | Rimessa Diretta
+    else
+        | Bonifico
+#main.strech
+    .flex-layout
+        div
             h1#issuer-name #{invoice.issuer.name}
             br
-            p#issuer-address.address
+            p#issuer-address.address.no-bottom-margin
                 | #{invoice.issuer.addresses[0].street} #{invoice.issuer.addresses[0].number}
                 br
                 | #{invoice.issuer.addresses[0].postalCode} #{invoice.issuer.addresses[0].city}
             table#issuer-data-table
                 tr
-                    th Tel\Fax
+                    td Tel\Fax
                     td #{invoice.issuer.phones[0].number}
                 tr
-                    th Partita IVA
+                    td Partita IVA
                     td #{invoice.issuer.piva}
                 tr
-                    th Codice Fiscale
+                    td Codice Fiscale
                     td #{invoice.issuer.fiscalCode}
-        td.text-center.half-width
+        .text-center
             h1#invoice-title Fattura
-            table.strech
-                tr
-                    td
-                        p Numero Fattura
-                        p: strong #{invoice.progressiveNumber}
-                    td
-                        p Data Fattura
-                        p: strong #{new Date(invoice.date).toLocaleDateString()}
-                tr.text-left
-                    td(colspan="2")
-                        span Intestazione
-                        h1#nominee-name #{invoice.nominee.name}
-                        p#nominee-address.address
-                            | #{invoice.nominee.addresses[0].street} #{invoice.nominee.addresses[0].number}
-                            br
-                            | #{invoice.nominee.addresses[0].postalCode} #{invoice.nominee.addresses[0].city} #{invoice.nominee.addresses[0].nation}
-                        p Tel: #{invoice.nominee.phones[0].number}
-    tr
-        td(colspan="2")
-            table.strech.table-3
-                tr
-                    th Codice Fiscale
-                    th Partita IVA
-                    th Esente IVA
-                tr
-                    td #{invoice.nominee.fiscalCode}
-                    td #{invoice.nominee.piva}
-                    td Non Esente
-    tr
-        td(colspan="2")
-            table.strech.table-3
-                tr
-                    th Tipo di Pagamento
-                    th IBAN
-                    th Valuta
-                tr
-                    td #{invoice.payMethod}
-                    td #{invoice.iban}
-                    td EURO
-    tr: td(colspan="2")
+            .flex-layout
+                .box-border(style="margin-right:5px;text-align:center;")
+                    p Numero Fattura
+                    span: strong #{invoice.progressiveNumber}
+                .box-border(style="margin-left:5px;text-align:center;")
+                    p Data Fattura
+                    span: strong #{new Date(invoice.date).toLocaleDateString()}
+            .text-left.box-border.margin-top
+                span Intestazione
+                h1#nominee-name #{invoice.nominee.name}
+                span#nominee-address.address
+                    | #{invoice.nominee.addresses[0].street}, #{invoice.nominee.addresses[0].number}
+                    br
+                    | #{invoice.nominee.addresses[0].postalCode} #{invoice.nominee.addresses[0].city} #{invoice.nominee.addresses[0].nation}
+                    br
+                    | Tel: #{invoice.nominee.phones[0].number}
+    .box-border.box-margin-top: table.strech.table-3
+        tr
+            th Codice Fiscale
+            th Partita IVA
+            th Esente IVA
+        tr
+            td #{invoice.nominee.fiscalCode}
+            td #{invoice.nominee.piva}
+            td Non Esente
+    .box-border.box-margin-top: table.strech.table-3
+        tr
+            th Tipo di Pagamento
+            th IBAN
+            th Valuta
+        tr
+            td: +printPayMethod(invoice.payMethod)
+            td #{invoice.iban}
+            td EURO
+    div
         if invoice.headerText
             #{invoice.headerText}
-    tr: td(colspan="2"): table.strech
+    #items-box.box-border.box-margin-top: table#items-table.strech
         tr
             th Descrizione
             th Unità
@@ -80,4 +80,31 @@ table#main-table.strech
                 td #{item.discount}
                 td
                     if item.imponibile
-                        #{item.imponibile.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                        | #{item.imponibile.toLocaleString(undefined, {minimumFractionDigits: 2})}
+    .flex-layout.margin-top
+        .box-border: table
+            tr
+                th Imponibile scontato
+                th IVA %
+                th Imposta
+            if invoice.impArray
+                each imp in invoice.impArray
+                    tr
+                        td imp.imponibile
+                        td imp.iva
+                        td imp.imposta
+        div
+        .box-border: table#tot-table
+            tr
+                td Totale Imponibile
+                td #{invoice.totImponibile.toLocaleString(undefined, {style:"currency", currency:"EUR"})}
+            tr
+                td Imposta Totale
+                td #{invoice.totImposta.toLocaleString(undefined, {style:"currency", currency:"EUR"})}
+            tr
+                th Importo Totale
+                td: strong #{invoice.tot.toLocaleString(undefined, {style:"currency", currency:"EUR"})}
+    div
+        if invoice.footerText
+            #{invoice.footerText}
+    #page Pagina 1 di 1

@@ -11,7 +11,7 @@ module.exports = class NewCompany extends Modal{
 	}
 
 	create(){
-		let form = this.HTMLElement.querySelector('#companyForm');
+		let form = this.querySelector('#companyForm');
 		let elements = form.elements;
 		function getValue(name){
 			try{
@@ -42,7 +42,7 @@ module.exports = class NewCompany extends Modal{
 			number: getValue('phone')
 		});
 		try{
-			newCompany = this.currentApp.getCollections('Companies').insert(newCompany, this.currentApp.getProperty('user'));
+			newCompany = app.getCollections('Companies').insert(newCompany);
 		}catch(e){
 			alert(e);
 			return;

@@ -38,19 +38,18 @@ module.exports = class NewInvoice extends Controller {
 		newInvoice.iban = generalData.iban;
 
 		newInvoice.items = itemsComponent.getItems();
-		newInvoice = app.getCollections('Invoices').newInvoice(newInvoice, app.getProperty('user'), nomineeComponent.company);
-		//console.log(require('util').inspect(newInvoice, { depth: null }));
+		newInvoice = app.getCollections('Invoices').newInvoice(newInvoice, nomineeComponent.company);
+		newInvoice.impArray = app.getCollections('Invoices').calcImpArray(newInvoice);
 		return newInvoice;
 	}
 
 	showCheck(event, element){
 		try{
-			//this.generateInvoice();
 			this.showPDF();
 			this.clearActiveNavLink();
 			element.parentNode.classList.add('active');
-			let checkInvoiceElement = this.HTMLElement.querySelector('#checkInvoice');
-			let compileInvoiceElement = this.HTMLElement.querySelector('#compileInvoice');
+			let checkInvoiceElement = this.querySelector('#checkInvoice');
+			let compileInvoiceElement = this.querySelector('#compileInvoice');
 			checkInvoiceElement.style.display = 'inherit';
 			compileInvoiceElement.style.display = 'none';
 		}catch(e){
@@ -62,17 +61,15 @@ module.exports = class NewInvoice extends Controller {
 	showCompile(event, element){
 		this.clearActiveNavLink();
 		element.parentNode.classList.add('active');
-		let checkInvoiceElement = this.HTMLElement.querySelector('#checkInvoice');
-		let compileInvoiceElement = this.HTMLElement.querySelector('#compileInvoice');
+		let checkInvoiceElement = this.querySelector('#checkInvoice');
+		let compileInvoiceElement = this.querySelector('#compileInvoice');
 		checkInvoiceElement.style.display = 'none';
 		compileInvoiceElement.style.display = 'inherit';
 	}
 
 	showPDF(){
 		let self = this;
-		ipcRenderer.send('printInvoice', {invoice: this.generateInvoice() });
-		ipcRenderer.on('printInvoice-reply', function(event, result){
-			console.log(require('util').inspect(result, { depth: null }));
+		ipcRenderer.once('printInvoice-reply', function(event, result){
 			if(!result.success){
 				alert(result.error.message);
 				return;
@@ -80,6 +77,6 @@ module.exports = class NewInvoice extends Controller {
 			let viewerPath = "../../libs/pdfjs/web/viewer.html";
 			self.querySelector('#checkInvoice iframe').src = viewerPath+'?file='+result.outputPath;
 		});
-
+		ipcRenderer.send('printInvoice', { invoice: self.generateInvoice() });
 	}
 };

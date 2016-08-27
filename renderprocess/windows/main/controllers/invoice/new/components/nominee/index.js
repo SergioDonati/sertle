@@ -25,8 +25,8 @@ module.exports = class Nominee extends Controller {
 		if(!company) return;
 		this.company = company;
 		this._setSpanContent('#nominee-name', company.name);
-		this._setSpanContent('#nominee-piva', company.piva);
-		this._setSpanContent('#nominee-fiscalcode', company.fiscalCode);
+		if(company.piva) this._setSpanContent('#nominee-piva', company.piva);
+		if(company.fiscalCode) this._setSpanContent('#nominee-fiscalcode', company.fiscalCode);
 
 		if(company.addresses && company.addresses.length>0){
 			let address = company.addresses[0];
@@ -39,6 +39,7 @@ module.exports = class Nominee extends Controller {
 	}
 
 	newCompany(){
+		let component = this;
 		app.modalManager.startNew('new/company').then(function(modal){
 			modal.on('modalClosed', function(){
 				let company = modal.result;

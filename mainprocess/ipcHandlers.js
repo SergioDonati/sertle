@@ -36,14 +36,12 @@ module.exports = function(appManager){
 		let invoice = args.invoice;
 		if(!invoice) return reply(new Error('Invoice not found'));
 
-		let win = new BrowserWindow({width: 1200, height: 600, /*show:false*/});
+		let win = new BrowserWindow({ show:false });
 		win.invoice = invoice;
 		win.loadURL(__dirname+'/../renderprocess/windows/invoiceA4/index.html');
-		win.webContents.openDevTools();
-		/*win.webContents.on('did-finish-load', () => {
-  			// Use default printing options
-  			win.webContents.printToPDF({
-				marginsType: 0,
+		win.printInvoice = function(){
+			win.webContents.printToPDF({
+				marginsType: 1,
 			  	printBackground: true,
 			  	printSelectionOnly: false,
 			  	landscape: false,
@@ -57,7 +55,7 @@ module.exports = function(appManager){
 					win.close();
     			});
   			});
-		});*/
+		}
 	});
 
 	ipcMain.on('lokiLoadDatabase', function(event, arg){

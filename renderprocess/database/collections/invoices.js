@@ -172,14 +172,14 @@ class InvoicesCollection extends Collection{
 	get collectionName(){ return 'invoices'; }
 	get collectionOptions(){ return { /*autoupdate: true*/ }; }
 
-	newInvoice(invoice, user, company){
+	newInvoice(invoice, company){
 		invoice.nominee = company;
-		invoice.issuer = user.company;
-		invoice.ownerRef = user.$loki;
+		invoice.issuer = this.user.company;
+		invoice.ownerRef = this.user.$loki;
 		invoice.nomineeRef = company.$loki;
 		try{
-			invoice.headerText = user.invoiceSetting.headerText;
-			invoice.footerText = user.invoiceSetting.footerText;
+			invoice.headerText = this.user.invoiceSetting.headerText;
+			invoice.footerText = this.user.invoiceSetting.footerText;
 		}catch(e){}
 		invoice = InvoicesCollection.calc(invoice);
 		let result = this.validate(invoice);
@@ -191,8 +191,8 @@ class InvoicesCollection extends Collection{
 
 	static calcItem(item){
 		item.imponibile = roundDecimals(item.price * item.quantity);
-		item.imposta = roundDecimals(imponibile * item.iva / 100);
-		item.totPrice = roundDecimals(imponibile + imposta);
+		item.imposta = roundDecimals(item.imponibile * item.iva / 100);
+		item.totPrice = roundDecimals(item.imponibile + item.imposta);
 		return item;
 	}
 
@@ -205,6 +205,19 @@ class InvoicesCollection extends Collection{
 				item = InvoicesCollection.calcItem(item);
 				totImposta += item.imposta;
 				totImponibile += item.imponibile;
+
+				let imp = impMap.get(item.iva);
+				if(!imp){
+					impMap.set(item.iva, {
+						imposta: item.imposta,
+						imponibile: item.imponibile
+					});
+				}else{
+					imp.imponibile += item.imponibile;
+					imp.imposta += item.imposta;
+					impMap.set(item.iva, imp);
+				}
+				return item;
 			});
 		}
 
@@ -214,18 +227,51 @@ class InvoicesCollection extends Collection{
 		return invoice;
 	}
 
+	calcImpArray(invoice, minLength){
+		let impMap = new Map();
+		minLength = minLength || 3;
+		let impArray = [];
+		if(invoice.items && invoice.items.length > 0){
+			invoice.items.forEach(function(item){
+				let imp = impMap.get(item.iva);
+				if(!imp){
+					impMap.set(item.iva, {
+						imposta: item.imposta,
+						imponibile: item.imponibile,
+						iva: item.iva
+					});
+				}else{
+					imp.imponibile += item.imponibile;
+					imp.imposta += item.imposta;
+					impMap.set(item.iva, imp);
+				}
+			});
+		}
+		impMap.forEach(function(val){
+			impArray.push(val);
+		});
+		if(impArray.size < minLength){
+			impArray.push({
+				imposta: 0,
+				imponibile: 0,
+				iva: 0
+			});
+		}
+		return impArray;
+	}
+
 	insert(invoice){
 		return super.insert(invoice);
 	}
 
-	getAll(user){
-		return this.find({ userRef: user.$loki });
+	getAll(){
+		return this.find({ userRef: this.user.$loki });
 	}
 
-	getNextProgressiveNumber(user){
+	getNextProgressiveNumber(){
 		let currentYear = new Date().getFullYear();
 		let currentYearTime = new Date(currentYear).getTime();
-		let invoices = this._collection.chain().find({ userRef: user.$loki, date: { '$gt': currentYearTime } }).simplesort('date').data();
+		let invoices = this._collection.chain().find({ userRef: this.user.$loki, date: { '$gt': currentYearTime } }).simplesort('date').data();
 		let nextProgressiveNumber = 1;
 		if(invoices.length == 0) return 1;
 		let lastInvoice = invoices[invoices.length-1];
@@ -239,6 +285,11 @@ class InvoicesCollection extends Collection{
 	validateItem(item){
 		return invoiceItemModel.valid(item);
 	}
+
+    setUser(user){
+        this._user = user;
+    }
+    get user(){ return this._user; }
 }
 
 module.exports = new InvoicesCollection(DB, invoiceModel);

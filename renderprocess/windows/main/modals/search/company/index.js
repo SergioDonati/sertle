@@ -15,10 +15,19 @@ module.exports = class NewCompany extends Modal{
 		this.addDOMListener('onSubmit', this.search.bind(this));
         this.addDOMListener('onSelect', this.select.bind(this));
         this.on('rendered', function(){
-			this.itemsTable = this.HTMLElement.querySelector('#companies-table');
-			this.itemsTableBody = this.itemsTable.querySelector('tbody');
+			this.itemsTable = this.querySelector('#companies-table');
+            this.itemsTableBody = this.querySelector('tbody');
+            this.search();
 		});
 	}
+
+    unselectAll(){
+        let rows = this.itemsTableBody.rows;
+        for(let i=0;i<rows.length;i++){
+            let row = rows[i];
+            row.classList.remove('row-selected');
+        };
+    }
 
     _insertCell(row, value){
 		let newCell = row.insertCell();
@@ -37,18 +46,16 @@ module.exports = class NewCompany extends Modal{
 		this._insertCell(newRow, item.fiscalCode);
 
         this.companiesMap.set(newRow, item);
-        let component = this;
+        let self = this;
         newRow.addEventListener('click', function(){
-            if(component._selectedCompany){
-                newRow.classList.remove('row-selected');
+            self.unselectAll();
+            if(self._selectedCompany == self.companiesMap.get(newRow)){
+                self._selectedCompany = null;
+                //newRow.classList.remove('row-selected');
+            }else{
+                self._selectedCompany = self.companiesMap.get(newRow);
+                newRow.classList.add('row-selected');
             }
-            if(component._selectedCompany == component.companiesMap.get(newRow)){
-                component._selectedCompany = null;
-                newRow.classList.remove('row-selected');
-                return;
-            }
-            component._selectedCompany = component.companiesMap.get(newRow);
-            newRow.classList.add('row-selected');
         });
 	}
 
@@ -96,7 +103,7 @@ module.exports = class NewCompany extends Modal{
     }
 
 	search(){
-		let searchInput = this.HTMLElement.querySelector('#searchInput');
+		let searchInput = this.querySelector('#searchInput');
 		let searchKey = searchInput.value.trim();
 
         this.clearResult();

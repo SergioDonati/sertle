@@ -1,11 +1,12 @@
 'use strict';
 const {app} = require('easyone-electron');
-const {DB, Collections, onReady} = require('../../database');
+const {DB, Collections, onReady, setUser} = require('../../database');
 const {ipcRenderer, remote} = require('electron');
 
 require('devtron').install();
 
 let user = remote.getCurrentWindow().user;
+setUser(user);
 
 app.on('ready', function(app){
     app.setOptions({

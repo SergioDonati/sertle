@@ -11,7 +11,7 @@ module.exports = class ItemsComponent extends Controller {
 		this._items = new Map();
 		this.addDOMListener('newItem', this.newItem.bind(this));
 		this.on('rendered', function(){
-			this.itemsTable = this.HTMLElement.querySelector('#items-table');
+			this.itemsTable = this.querySelector('#items-table');
 			this.itemsTableBody = this.itemsTable.querySelector('tbody');
 		});
 	}

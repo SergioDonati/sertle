@@ -1,6 +1,6 @@
 'use strict';
 const {app} = require('easyone-electron');
-const {DB, Collections} = require('../../database');
+const {DB, Collections, onReady} = require('../../database');
 const {ipcRenderer} = require('electron');
 
 app.on('ready', function(app){
@@ -19,5 +19,7 @@ app.on('ready', function(app){
     app.login = function(user){
         ipcRenderer.send('login', user);
     };
-    app.start();
+    onReady(function(){
+        app.start();
+    });
 });

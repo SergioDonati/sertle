@@ -24,8 +24,8 @@ module.exports = class Issuer extends Controller {
 		this.user = user;
 		let company = user.company;
 		this._setSpanContent('#issuer-name', company.name);
-		this._setSpanContent('#issuer-piva', company.piva);
-		this._setSpanContent('#issuer-fiscalcode', company.fiscalCode);
+		if(company.piva) this._setSpanContent('#issuer-piva', company.piva);
+		if(company.fiscalCode) this._setSpanContent('#issuer-fiscalcode', company.fiscalCode);
 
 		if(company.addresses && company.addresses.length>0){
 			let address = company.addresses[0];

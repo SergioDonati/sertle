@@ -13,9 +13,19 @@ let ready = false;
 let listeners = new Set();
 
 module.exports.onReady = function(listener){
-	if(ready) listener(DB);
+	if (ready) listener(DB);
 	else listeners.add(listener);
 };
+
+// Register user after login
+module.exports.setUser = function(user){
+    let set = function (){
+        module.exports.Collections.Companies.setUser(user);
+        module.exports.Collections.Invoices.setUser(user);
+    }
+    if (ready) set();
+    else listeners.add(set);
+}
 
 DB.loadDatabase({}, function(result){
 	module.exports.Collections.Users.init();

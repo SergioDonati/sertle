@@ -69,20 +69,17 @@ class CompaniesCollection extends Collection{
 	get collectionName(){ return 'companies'; }
 	get collectionOptions(){ return { /*autoupdate: true*/ }; }
 
-	insert(company, user){
-		company.ownerRef = user.$loki;
+	insert(company){
+		company.ownerRef = this.user.$loki;
 		return super.insert(company);
 	}
 
 	getAll(){
-		let companies = this.find({});
-		this._count = companies.length;
-		return companies;
+		return this.find({});
 	}
 
 	count(){
-		this.getAll();
-		return this._count;
+		return this._collection.count({});
 	}
 
 	searchByName(name, options){
@@ -92,6 +89,8 @@ class CompaniesCollection extends Collection{
 		let offset = options.offset || 0;
 		let countOption = options.count || false;
 		let query = { 'name': { '$regex': [name, 'i'] } };
+        if (!name) query = { 'name': { '$regex': ['', 'i'] } };
+        query.ownerRef = this.user.$loki;
 		let companies = this._collection.chain().find(query).simplesort(simpleSort)
 			.offset(offset)
           	.limit(limit).data();
@@ -102,6 +101,11 @@ class CompaniesCollection extends Collection{
 			count: count
 		}
 	}
+
+    setUser(user){
+        this._user = user;
+    }
+    get user(){ return this._user; }
 }
 
 module.exports = new CompaniesCollection(DB, companyModel);
