@@ -1,0 +1,19 @@
+if invoices && invoices.length>0
+	each val, index in invoices
+		.card.invoice-card
+			.container-flex
+				.invoice-image(style="text-align:center;width:50px;margin-right:5px;")
+					a(href='#', title="Apri dettaglio", bind-event, bind-event-click="openInvoice", data-invoice-id=val.$loki)
+						h3= val.progressiveNumber
+				.item-flex(style="border-left: 1px solid black;padding-left: 10px;")
+					.card-title #{val.nominee.name}
+					.container-flex
+						.item-flex
+							strong Data:
+							span #{new Date(val.date).toLocaleDateString()}
+						.item-flex
+							strong Importo Totale:
+							span #{val.tot.toLocaleString(undefined, {style:"currency", currency:"EUR"})}
+else
+	div
+		| Nessuna Fattura

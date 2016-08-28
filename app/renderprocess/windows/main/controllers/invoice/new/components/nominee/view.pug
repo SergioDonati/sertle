@@ -1,0 +1,35 @@
+.head
+	h4.head-title Cliente
+		.btn-group.pull-right
+			button.btn.btn-xs.btn-default(bind-event=true, bind-event-click="newCompany")
+				span.fa.fa-plus
+				| Nuovo
+			button.btn.btn-xs.btn-default(bind-event=true, bind-event-click="searchCompany")
+				span.fa.fa-search
+				| Cerca
+#nominee-data.container-fluid
+	.row
+		.col-xs-2
+			label Nome:
+		.col-xs-10
+			span#nominee-name
+	.row
+		.col-xs-7
+			.row.vertical-align
+				.col-xs-4
+					label P. IVA:
+				.col-xs-8
+					span#nominee-piva
+			.row.vertical-align
+				.col-xs-4
+					label.control-label Codice Fiscale:
+				.col-xs-8
+					span#nominee-fiscalcode
+			.row
+				.col-xs-4
+					label Telefono:
+				.col-xs-8
+					span#nominee-phone
+		.col-xs-5
+			label Indirizzo:
+			p#nominee-address

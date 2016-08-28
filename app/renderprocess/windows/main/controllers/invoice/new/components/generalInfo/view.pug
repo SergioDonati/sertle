@@ -1,0 +1,20 @@
+.container-fluid
+	.form-group(style="width:140px;display:inline-block;")
+		.input-group
+			span.input-group-addon Numero
+			input#progressiveNumber(type="number", min="1", value='1', class="form-control", style="width:60px;")
+	.form-group(style="width:160px;display:inline-block;")
+		.input-group
+			span.input-group-addon Data
+			input#invoiceDate(type="date", class="form-control")
+
+	.form-group: .input-group
+		span.input-group-addon Metodo di pagamento
+		select#paymethod(class="form-control", bind-event, bind-event-change="onPayMethodChange")
+			option(value='0') Rimessa Diretta
+			option(value='1') Bonifico
+	section#bankSection(style="display:none;margin-top:5px;")
+		.form-group(style="width:250px;display:inline-block;")
+			.input-group
+				span.input-group-addon IBAN
+				input#invoiceIBAN(type="text", class="form-control")

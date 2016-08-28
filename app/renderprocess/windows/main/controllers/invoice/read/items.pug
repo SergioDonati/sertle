@@ -1,0 +1,20 @@
+h4(style="margin-top:0;") Prodotti / Servizi
+table#items-table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;")
+	thead
+		tr
+			th.col-xs-5 Descrizione
+			th Unità
+			th Quantità
+			th Prezzo U. €
+			th IVA %
+			th Prezzo €
+	tbody
+
+		each val, index in invoice.items
+			tr
+				td #{val.description}
+				td #{val.unit}
+				td #{val.quantity}
+				td #{val.price.toLocaleString(undefined, {style:"currency", currency:"EUR"})}
+				td #{val.iva}
+				td #{val.totPrice.toLocaleString(undefined, {style:"currency", currency:"EUR"})}

@@ -1,0 +1,35 @@
+@import "colors";
+
+display: flex;
+flex-wrap: wrap;
+justify-content: flex-start;
+align-items: flex-start;
+height: 100%;
+overflow: hidden;
+
+.info-block{
+	background-color: @backgroundColorActive;
+	color: @textColorActive;
+	padding: 10px 20px;
+	margin-top:10px;
+}
+
+.left-block{
+	margin-right: 20px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.right-block{
+	margin-left: 20px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+#company-invoices{
+	height: 100%;
+}

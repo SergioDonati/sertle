@@ -1,0 +1,42 @@
+
+.left-block
+	h3 #{company.name}
+	.info-block
+		p Partita IVA: #{company.piva}
+		p Codice Fiscale: #{company.fiscalCode}
+	.info-block
+		h4 Indirizzi
+		table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;color:black;")
+			thead: tr
+				th Strada
+				th Numero
+				th CAP
+				th Città
+				th Nazione
+			tbody
+				if company.addresses && company.addresses.length>0
+					each address in company.addresses
+						tr
+							td #{address.street}
+							td #{address.number}
+							td #{address.postalCode}
+							td #{address.city}
+							td #{address.nation}
+				else
+					tr: td(colspan="5") Nessun indirizzo
+	.info-block
+		h4 Numeri di telefono
+		table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;color:black;")
+			thead: tr
+				th Numero
+				th Descrizione
+			tbody
+				if company.phones && company.phones.length>0
+					each phone in company.phones
+						tr
+							td #{phone.number}
+							td #{phone.description}
+				else
+					tr: td(colspan="2") Nessun Numero
+.right-block
+	#company-invoices(dynamicload-component=true, component="invoicesList", component-data=company.$loki)

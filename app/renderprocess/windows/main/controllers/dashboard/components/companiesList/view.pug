@@ -1,0 +1,14 @@
+.title
+	h1 Clienti
+		button(bind-event=true, bind-event-click='newCompany', class="btn btn-primary")
+			span.fa.fa-plus
+			|Nuovo Cliente
+
+#companies-list.cards-container(dynamicload-component, component="list")
+.paging.container-flex
+	button#prev-btn.btn.btn-default.pull-right(bind-event=true, bind-event-click='prevPage'): span.fa.fa-long-arrow-left
+	.item-flex(style="text-align:center;"): h4
+		#range.label.label-default -
+		.label.label-default Totali:
+			span#total 0
+	button#next-btn.btn.btn-default.pull-left(bind-event=true, bind-event-click='nextPage'): span.fa.fa-long-arrow-right

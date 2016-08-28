@@ -1,0 +1,110 @@
+font-family: serif;
+height:100%;
+.strech{
+    width: 100%;
+}
+#main{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    #items-box{
+        flex: 1;
+    }
+}
+.flex-layout{
+    display: flex;
+    justify-content: space-between;
+    > div{
+        flex: 1;
+    }
+}
+#issuer-data-table{
+    tr > td:nth-child(1){
+        width: 12vw;
+    }
+    tr > td:nth-child(2){
+        text-transform: uppercase;
+    }
+}
+.address{
+    text-transform: uppercase;
+}
+table{
+    th{
+        text-align: left;
+    }
+    td{ vertical-align: top;}
+    td.half-width{
+        width: 50%;
+    }
+    &.table-3{
+        td, th{
+            width:33.33333%;
+        }
+    }
+}
+#issuer-name{
+    font-weight: 900;
+    //font-size: 80px;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+}
+#invoice-title{
+    font-size: 1.5rem;
+    margin-bottom: 2.5vw;
+    margin-top: 4vw;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: normal;
+}
+#nominee-name{
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+#items-table{
+    margin-top: 1vw;
+    tr:nth-child(1) th{
+        border-bottom: 1px solid black;
+    }
+    tr:nth-child(2) td{
+        padding-top: 1vw;
+    }
+    tr > td, tr > th{
+        text-align: right;
+        &:nth-child(1){ text-align: left;}
+        &:nth-child(2){ width: 5vw; text-transform: capitalize; }
+        &:nth-child(3){ width: 8vw; }
+        &:nth-child(4){ width: 10vw; }
+        &:nth-child(5){ width: 5vw; }
+        &:nth-child(6){ width: 5vw; }
+        &:nth-child(7){ width: 10vw; }
+    }
+}
+.box-border{
+    border: 1px solid #acacac;
+    padding: 1vw;
+    &.box-margin-top{
+        margin-top:1vw;
+    }
+}
+.margin-top{
+    margin-top: 1vw;
+}
+.no-bottom-margin{
+    margin-bottom: 0;
+}
+#tot-table{
+	width: 100%;
+    tr > th:nth-child(1), tr > td:nth-child(1){
+        width: 15vw;
+    }
+	tr > td:nth-child(2){
+		text-align: right;
+	}
+}
+#page{
+	text-align: right;
+	margin-top: 8px;
+}

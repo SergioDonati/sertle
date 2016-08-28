@@ -1,0 +1,19 @@
+if companies && companies.length>0
+	each val, index in companies
+		.card.company-card
+			.container-flex
+				.company-image(style="text-align:center;width:50px;margin-right:5px;")
+					a(href="#", title="Apri dettaglio", bind-event, bind-event-click="openCompany", data-company-id=val.$loki)
+						span.fa.fa-user.fa-2x
+				.item-flex(style="border-left: 1px solid black;padding-left: 10px;")
+					.card-title #{val.name}
+					.container-flex
+						.item-flex
+							strong P. IVA:
+							span #{val.piva}
+						.item-flex
+							strong C. Fiscale:
+							span #{val.fiscalCode}
+else
+	div
+		| Nessun Cliente

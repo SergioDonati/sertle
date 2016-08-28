@@ -1,0 +1,34 @@
+.head
+	h4.head-title Tu
+#issuer-data.container-fluid.text-left
+	.row
+		.col-xs-2
+			label Nome:
+		.col-xs-10
+			span#issuer-name #{invoice.issuer.name}
+	.row
+		.col-xs-7
+			.row.vertical-align
+				.col-xs-4
+					label P. IVA:
+				.col-xs-8
+					span#issuer-piva #{invoice.issuer.piva}
+			.row.vertical-align
+				.col-xs-4
+					label.control-label Codice Fiscale:
+				.col-xs-8
+					span#issuer-fiscalcode #{invoice.issuer.fiscalCode}
+			.row
+				.col-xs-4
+					label Telefono:
+				.col-xs-8
+					span#issuer-phone
+						if invoice.issuer.phones && invoice.issuer.phones.length>0
+							| #{invoice.issuer.phones[0].number}
+		.col-xs-5
+			label Indirizzo:
+			p#issuer-address
+				if invoice.issuer.addresses
+					| #{invoice.issuer.addresses[0].street}, #{invoice.issuer.addresses[0].number}
+					br
+					| #{invoice.issuer.addresses[0].postalCode} #{invoice.issuer.addresses[0].city} #{invoice.issuer.addresses[0].nation}

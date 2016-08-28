@@ -1,0 +1,17 @@
+table.table.table-striped.table-bordered.table-hover.table-condensed#companies-table
+	thead
+		tr
+			th Nome
+			th P. IVA
+			th CodiceFiscale
+			th -
+	tbody
+		if companies && companies.length>0
+			each company, index in companies
+				tr(bind-event, bind-event-click='rowClick', data-company-id=company.$loki)
+					td #{company.name}
+					td #{company.piva}
+					td #{company.fiscalCode}
+					td: button.btn.btn-primary.btn-xs(bind-event, bind-event-click='onSelect', data-company-id=company.$loki) Seleziona
+		else
+			tr: td(colspan="4") Nessun risultato trovato

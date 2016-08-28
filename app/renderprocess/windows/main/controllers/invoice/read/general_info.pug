@@ -1,0 +1,25 @@
+mixin printPayMethod(payMethod)
+	if payMethod == 0
+		| Rimessa Diretta
+	else
+		| Bonifico
+
+.container-fluid
+	.form-group(style="width:140px;display:inline-block;")
+		.input-group
+			span.input-group-addon Numero
+			strong.input-group-addon #{invoice.progressiveNumber}
+	.form-group(style="width:160px;display:inline-block;")
+		.input-group
+			span.input-group-addon Data
+			strong.input-group-addon #{new Date(invoice.date).toLocaleDateString()}
+
+	.form-group: .input-group
+		span.input-group-addon Metodo di pagamento
+		span.input-group-addon: +printPayMethod(invoice.payMethod)
+
+	if invoice.iban
+		.form-group(style="width:250px;display:inline-block;")
+			.input-group
+				span.input-group-addon IBAN
+				strong.input-group-addon #{invoice.iban}

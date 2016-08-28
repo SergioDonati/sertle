@@ -1,0 +1,15 @@
+h4(style="margin-top:0;") Prodotti / Servizi
+	.pull-right
+		a.btn-sm.btn.btn-primary(bind-event=true, bind-event-click="newItem")
+			span.fa.fa-plus
+			|Aggiungi
+table#items-table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;")
+	thead
+		tr
+			th.col-xs-5 Descrizione
+			th Unità
+			th Quantità
+			th Prezzo U. €
+			th IVA %
+			th Prezzo €
+	tbody

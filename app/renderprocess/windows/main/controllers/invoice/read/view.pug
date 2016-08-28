@@ -1,0 +1,25 @@
+#newinvoice-header.container-flex
+	.flex-col
+		h2 Fattura
+	.flex-col
+		ul#invoiceNav.nav.nav-pills
+			li.active(role="presentation"): a(href="#", bind-event, bind-event-click="compileNavClick") Panoramica
+			li(role="presentation"): a(href="#", bind-event, bind-event-click="checkNavClick") PDF
+			//li(role="presentation"): a(href="#", bind-event, bind-event-click="printNavClick") Stampa
+	div(style="margin-left: auto;")
+		button#emit-btn.btn.btn-danger(bind-event, bind-event-click="deleteInvoice")
+			span.fa.fa-close
+			| Elimina Fattura
+
+#compileInvoice.row
+	#info.col-xs-5
+		.info-block
+			include general_info.pug
+		.info-block
+			include nominee.pug
+		.info-block
+			include issuer.pug
+	#items.col-xs-7
+		include items.pug
+#checkInvoice(style="display:none;")
+	iframe(src="" style="width: 100%;height: 476px;")

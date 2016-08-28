@@ -1,0 +1,13 @@
+.container-flex
+	span(style="margin-right:20px;")
+		h3.modal-title Cerca Cliente
+	.item-flex
+		form(bind-event, bind-event-submit='onSubmit', style="width:230px;")
+			.form-group(style="margin-bottom:0;")
+				.input-group
+					input#searchInput.form-control(type="search", name="search", autofocus)
+					span.input-group-btn: button.btn.btn-default(type="submit"): i.fa.fa-search
+#companies-list(dynamicload-component, component="list")
+div.clearfix
+	button#prev-btn.btn.btn-default.pull-left(bind-event, bind-event-click='prevPage'): span.fa.fa-long-arrow-left
+	button#next-btn.btn.btn-default.pull-right(bind-event, bind-event-click='nextPage'): span.fa.fa-long-arrow-right
