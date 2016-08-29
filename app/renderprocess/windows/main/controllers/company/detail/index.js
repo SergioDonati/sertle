@@ -2,6 +2,18 @@
 
 const {Controller, app} = require('easyone-electron');
 
+const editOptions = {
+	piva: {
+		title: "Modifica Partita IVA"
+	},
+	fiscalCode: {
+		title: "Modifica Codice Fiscale"
+	},
+	name: {
+		title: "Modifica Nome"
+	}
+}
+
 module.exports = class CompanyDetail extends Controller {
 
 	get viewPath(){ return __dirname+'\\view.pug'; }
@@ -9,35 +21,34 @@ module.exports = class CompanyDetail extends Controller {
 	get componentsPath(){ return __dirname+'\\components'; }
 
 	init(companyId){
-		this.addDOMListener('deleteCompany', this.deleteInvoice.bind(this));
+		this.addDOMListener('deleteCompany', this.deleteCompany.bind(this));
+		this.addDOMListener('editField', this.editField.bind(this));
 		this.company = app.getCollections('Companies').get(companyId);
-		this.renderArgs.locals.company = this.company;
+		this.addRenderLocals('company', this.company);
 	}
 
-	clearActiveNavLink(){
-		let nav = this.querySelector('#tab-nav');
-		let items = nav.querySelectorAll('li');
-		for(let i=0;i<items.length;i++){
-			let item = items[i];
-			item.classList.remove('active');
-		}
+	deleteCompany(){
+		app.modalManager.startNew('delete/company', this.company).then(function(modal){
+			modal.once('result', function(result){
+				if(result) app.controllerManager.startNew('dashboard');
+			});
+		});
 	}
 
-	showTab(name, linkElement){
-		this.clearActiveNavLink();
-		if(linkElement) linkElement.parentNode.classList.add('active');
-		let checkInvoiceElement = this.querySelector('#check-tab');
-		let compileInvoiceElement = this.querySelector('#compile-tab');
-		if(name=='check'){
-			checkInvoiceElement.style.display = 'inherit';
-			compileInvoiceElement.style.display = 'none';
-		}else{
-			checkInvoiceElement.style.display = 'none';
-			compileInvoiceElement.style.display = 'inherit';
-		}
-	}
-
-	deleteInvoice(){
-		app.modalManager.startNew('delete/invoice', this.invoice);
+	editField(event, element){
+		let fieldName = element.getAttribute('data-field-name');
+		let editOption = editOptions[fieldName];
+		editOption.oldValue = this.company[fieldName];
+		let self = this;
+		app.modalManager.startNew('edit/field', editOption).then(function(modal){
+			modal.once('result', function(result){
+				if(!result) return;
+				self.company[fieldName] = result;
+				app.getCollections('Companies').update(self.company);
+				self.company = app.getCollections('Companies').get(self.company.$loki);
+				self.addRenderLocals('company', self.company);
+				self.refresh(null, true);
+			});
+		});
 	}
 };

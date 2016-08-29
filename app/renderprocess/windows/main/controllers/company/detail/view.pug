@@ -1,9 +1,18 @@
 
 .left-block
-	h3 #{company.name}
+	.editable-field.container-flex
+		.item-flex
+			h3(style="display:inline-block;") #{company.name}
+			span.edit(bind-event, bind-event-click="editField", data-field-name="name") Modifica
+		button.btn.btn-danger.btn-xs.pull-right(bind-event, bind-event-click="deleteCompany")
+			span.fa.fa-close
+			| Elimina
 	.info-block
-		p Partita IVA: #{company.piva}
-		p Codice Fiscale: #{company.fiscalCode}
+		p.editable-field Partita IVA: #{company.piva}
+			span.edit(bind-event, bind-event-click="editField", data-field-name="piva") Modifica
+		p.editable-field Codice Fiscale:
+			span(style="text-transform:uppercase;") #{company.fiscalCode}
+			span.edit(bind-event, bind-event-click="editField", data-field-name="fiscalCode") Modifica
 	.info-block
 		h4 Indirizzi
 		table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;color:black;")

@@ -1,6 +1,6 @@
 'use strict';
 
-const {ipcMain, BrowserWindow} = require('electron');
+const {ipcMain, BrowserWindow, app} = require('electron');
 const fs = require('fs');
 const path = require('path');
 
@@ -22,7 +22,7 @@ module.exports = function(appManager){
 
 		let win = new BrowserWindow({ show:false });
 		win.invoice = invoice;
-		win.loadURL(path.resolve('renderprocess/windows/invoiceA4/index.html'));
+		win.loadURL(path.resolve(app.getAppPath(), 'renderprocess/windows/invoiceA4/index.html'));
 		win.printInvoice = function(){
 			win.webContents.printToPDF({
 				marginsType: 1,

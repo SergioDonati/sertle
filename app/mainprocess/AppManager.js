@@ -11,8 +11,8 @@ const fs = require('fs');
 module.exports = class AppManager{
 	constructor(){
 		this._mainWindow = null;
-		this.accessIndexPath = `file://${path.resolve('app/renderprocess/windows/access/index.html')}`;
-		this.mainIndexPath = `file://${path.resolve('app/renderprocess/windows/main/index.html')}`;
+		this.accessIndexPath = `file://${path.resolve(app.getAppPath(), 'renderprocess/windows/access/index.html')}`;
+		this.mainIndexPath = `file://${path.resolve(app.getAppPath(), 'renderprocess/windows/main/index.html')}`;
 		this.started = false;
 
 		function createFolder(){
@@ -36,10 +36,10 @@ module.exports = class AppManager{
 	get mainWindow(){ return this._mainWindow; }
 
 	get defaultMainWindowOptions(){
-		return {width: 1080, height: 600, center:true, icon: path.resolve('app','resources','icon.ico'), frame:false, show:false};
+		return {width: 1080, height: 600, center:true, icon: path.resolve(app.getAppPath(), 'resources','icon.ico'), frame:false, show:false};
 	}
 	get defaultAccessWindowOptions(){
-		return {width: 700, height: 400, center:true, icon: path.resolve('app','resources','icon.ico') };
+		return {width: 700, height: 400, center:true, icon: path.resolve(app.getAppPath(), 'resources','icon.ico') };
 	}
 
 	getDataFolder(){
@@ -63,10 +63,10 @@ module.exports = class AppManager{
 		newWindow.loadURL(loadUrl);
 		newWindow.setMenu(null);
 
-		if(this.isDev()){
+		//if(this.isDev()){
 			// Open the DevTools.
 			newWindow.webContents.openDevTools();
-		}
+		//}
 
 		// Emitted when the window is closed.
 		newWindow.on('closed', function () {

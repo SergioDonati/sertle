@@ -2,7 +2,7 @@
 
 const {Modal, app} = require('easyone-electron');
 
-module.exports = class NewCompany extends Modal{
+module.exports = class DeleteInvoice extends Modal{
 
 	get viewPath(){ return __dirname+'\\view.pug'; }
 
@@ -17,17 +17,17 @@ module.exports = class NewCompany extends Modal{
 	logicalDelete(){
 		app.getCollections('Invoices').logicalDelete(this.invoice);
 		app.controllerManager.startNew('dashboard');
-		this.close();
+		this.close(true);
 	}
 
 	hardDelete(){
 		app.getCollections('Invoices').hardDelete(this.invoice);
 		app.controllerManager.startNew('dashboard');
-		this.close();
+		this.close(true);
 	}
 
 	cancel(){
-		this.close();
+		this.close(false);
 		this.remove();
 	}
 }

@@ -6,13 +6,15 @@ if invoices && invoices.length>0
 					a(href='#', title="Apri dettaglio", bind-event, bind-event-click="openInvoice", data-invoice-id=val.$loki)
 						h3= val.progressiveNumber
 				.item-flex(style="border-left: 1px solid black;padding-left: 10px;")
-					.card-title #{val.nominee.name}
+					.card-title
+						strong(style="font-size:initial;") A:&nbsp;&nbsp;
+						| #{val.nominee.name}
 					.container-flex
 						.item-flex
-							strong Data:
+							div: strong Data:
 							span #{new Date(val.date).toLocaleDateString()}
 						.item-flex
-							strong Importo Totale:
+							div: strong Importo Totale:
 							span #{val.tot.toLocaleString(undefined, {style:"currency", currency:"EUR"})}
 else
 	div

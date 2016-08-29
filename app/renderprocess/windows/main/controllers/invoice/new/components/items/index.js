@@ -42,11 +42,10 @@ module.exports = class ItemsComponent extends Controller {
 	}
 
 	newItem(){
-		let component = this;
+		let self = this;
 		app.modalManager.startNew('new/invoiceItem').then(function(modal){
-			modal.once('modalClosed', function(){
-				let item = modal.result;
-				if(item) component.addItem(item);
+			modal.on('result', function(item){
+				if(item) self.addItem(item);
 			});
 		});
 	}

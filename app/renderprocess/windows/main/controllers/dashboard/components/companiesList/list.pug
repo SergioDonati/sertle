@@ -9,11 +9,11 @@ if companies && companies.length>0
 					.card-title #{val.name}
 					.container-flex
 						.item-flex
-							strong P. IVA:
+							div: strong Partita IVA:
 							span #{val.piva}
 						.item-flex
-							strong C. Fiscale:
-							span #{val.fiscalCode}
+							div: strong Codice Fiscale:
+							span(style="text-transform:uppercase;") #{val.fiscalCode}
 else
 	div
 		| Nessun Cliente

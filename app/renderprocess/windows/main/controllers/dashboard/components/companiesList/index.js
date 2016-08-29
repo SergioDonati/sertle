@@ -23,7 +23,7 @@ module.exports = class CompaniesList extends Component {
 		this.getChildComponent('companies-list').setCompanies(searchResult.companies);
 		let rangeText = (searchResult.offset+1) + ' - ' + (searchResult.offset+searchResult.companies.length);
 		if(searchResult.count == 0) rangeText = '';
-		
+
 		let rangeSpan = this.querySelector('#range')
 		if(rangeSpan) rangeSpan.innerHTML = rangeText;
 		let totalSpan = this.querySelector('#total')
@@ -41,7 +41,7 @@ module.exports = class CompaniesList extends Component {
 	}
 
 	loadCompanies(){
-		var result = app.getCollections('Companies').searchByName(null, { limit: 5, count: true });
+		var result = app.getCollections('Companies').searchByName(null, { limit: 4, count: true });
 		this.setSearchResult(result);
 	}
 

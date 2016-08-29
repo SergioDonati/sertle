@@ -1,0 +1,13 @@
+.modal-heading
+	h2.modal-title Elimina
+.modal-body.text-left
+	h4 Sei sicuro di voler eliminare questo cliente?
+	p Nome Cliente: #{company.name}
+	.alert.alert-warning.text-left(role="alert")
+		strong Attenzone!
+		| Le fatture emesse a questa società non verranno rimosse. Puoi rimuoverle manualmente.
+.modal-footer
+	button.btn.btn-default.pull-left(bind-event, bind-event-click="cancel") Annulla
+	button.btn.btn-danger.pull-right(bind-event, bind-event-click="delete")
+		span.fa.fa-close
+		| Elimina

@@ -53,7 +53,7 @@ module.exports = class NewInvoiceItem extends Modal{
 			let imponibile = roundDecimals(priceTot / (1 + (iva/100)));
 			let imposta = roundDecimals(imponibile * iva / 100);
 			if (roundDecimals(imponibile + imposta) != priceTot){
-				this.priceTotInput.setCustomValidity('L\'importo inserito non può generare un corretto, prova ad aumentare o diminuice di un decimale.');
+				this.priceTotInput.setCustomValidity('L\'importo inserito non può generare un prezzo corretto, prova ad aumentare o diminuice di un decimale.');
 				this.priceInput.value = '';
 				return;
 			}else{
@@ -70,7 +70,6 @@ module.exports = class NewInvoiceItem extends Modal{
 		let form = this.querySelector('#invoiceItemForm');
 		if(!form.checkValidity()){
 			dialog.showErrorBox('Attenzione', 'Alcuni campi contengono un errore o non sono stati compilati.');
-			console.log('dialog');
 			return;
 		}
 		let elements = form.elements;
@@ -104,8 +103,8 @@ module.exports = class NewInvoiceItem extends Modal{
 
 		let result = app.getCollections('Invoices').validateItem(newInvoiceItem);
 		if(result.valid == true){
-			this._modal_result = newInvoiceItem;
-			this.close();
+			this.close(newInvoiceItem);
+			this.remove();
 		}else{
 			alert(result.error.message);
 		}

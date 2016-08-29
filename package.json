@@ -1,6 +1,6 @@
 {
   "name": "sertle",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "postinstall": "install-app-deps",
@@ -17,7 +17,10 @@
     "appId": "com.sertle.desktop.app",
     "category": "public.app-category.business",
     "productName": "Sertle",
-    "license": "GPL-3.0"
+    "license": "GPL-3.0",
+	"win":{
+		"msi":true
+	}
   },
   "devDependencies": {
     "devtron": "^1.3.0",

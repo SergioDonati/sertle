@@ -33,3 +33,20 @@ overflow: hidden;
 #company-invoices{
 	height: 100%;
 }
+
+.editable-field{
+	.edit{
+		display: none;
+		color:#8a8a8a;
+		cursor: pointer;
+		margin-left: 10px;
+		&:hover{
+			color: #A5A5A5;
+		}
+	}
+	&:hover{
+		.edit{
+			display: inline-block;;
+		}
+	}
+}

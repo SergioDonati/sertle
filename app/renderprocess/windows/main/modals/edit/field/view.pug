@@ -1,0 +1,19 @@
+- var inputType = 'text'
+if options.type
+	- inputType = options.type
+- var oldValue = ''
+if options.oldValue
+	- oldValue = options.oldValue
+- var title = 'Modifica'
+if options.title
+	- title = options.title
+.modal-heading
+	h3.modal-title #{title}
+.modal-body
+	if options.message
+		p #{options.message}
+
+	form#fieldForm.container-fluid.form-inline.text-center(bind-event, bind-event-submit='onSubmit')
+		.input-group
+			input.form-control(name='new-value', type=inputType, value=oldValue, style="width:320px;", autofocus)
+			.input-group-btn: button.btn.btn-default(type="submit") Modifica
