@@ -23,8 +23,81 @@ module.exports = class CompanyDetail extends Controller {
 	init(companyId){
 		this.addDOMListener('deleteCompany', this.deleteCompany.bind(this));
 		this.addDOMListener('editField', this.editField.bind(this));
+
+		this.addDOMListener('addAddress', this.addAddress.bind(this));
+		this.addDOMListener('removeAddress', this.removeAddress.bind(this));
+		this.addDOMListener('editAddress', this.editAddress.bind(this));
+
+		this.addDOMListener('addPhone', this.addPhone.bind(this));
+		this.addDOMListener('removePhone', this.removePhone.bind(this));
+		this.addDOMListener('editPhone', this.editPhone.bind(this));
+
 		this.company = app.getCollections('Companies').get(companyId);
 		this.addRenderLocals('company', this.company);
+	}
+
+	update(){
+		this.company = app.getCollections('Companies').get(this.company.$loki);
+		this.addRenderLocals('company', this.company);
+		this.refresh(null, true);
+	}
+
+	addAddress(){
+		let self = this;
+		app.modalManager.startNew('edit/address', this.company).then(function(modal){
+			modal.once('result', function(result){
+				if(result) self.update();
+			});
+		});
+	}
+
+	editAddress(event, element){
+		let self = this;
+		let index = element.getAttribute('data-address-idx');
+		app.modalManager.startNew('edit/address', this.company, index).then(function(modal){
+			modal.once('result', function(result){
+				if(result) self.update();
+			});
+		});
+	}
+
+	removeAddress(event, element){
+		let self = this;
+		let index = element.getAttribute('data-address-idx');
+		app.modalManager.startNew('delete/address', this.company, index).then(function(modal){
+			modal.once('result', function(result){
+				if(result) self.update();
+			});
+		});
+	}
+
+	addPhone(){
+		let self = this;
+		app.modalManager.startNew('edit/phone', this.company).then(function(modal){
+			modal.once('result', function(result){
+				if(result) self.update();
+			});
+		});
+	}
+
+	editPhone(event, element){
+		let self = this;
+		let index = element.getAttribute('data-phone-idx');
+		app.modalManager.startNew('edit/phone', this.company, index).then(function(modal){
+			modal.once('result', function(result){
+				if(result) self.update();
+			});
+		});
+	}
+
+	removePhone(event, element){
+		let self = this;
+		let index = element.getAttribute('data-phone-idx');
+		app.modalManager.startNew('delete/phone', this.company, index).then(function(modal){
+			modal.once('result', function(result){
+				if(result) self.update();
+			});
+		});
 	}
 
 	deleteCompany(){
@@ -45,9 +118,7 @@ module.exports = class CompanyDetail extends Controller {
 				if(!result) return;
 				self.company[fieldName] = result;
 				app.getCollections('Companies').update(self.company);
-				self.company = app.getCollections('Companies').get(self.company.$loki);
-				self.addRenderLocals('company', self.company);
-				self.refresh(null, true);
+				self.update();
 			});
 		});
 	}

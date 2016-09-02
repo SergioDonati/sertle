@@ -15,6 +15,9 @@
 			span.edit(bind-event, bind-event-click="editField", data-field-name="fiscalCode") Modifica
 	.info-block
 		h4 Indirizzi
+			button.pull-right.btn.btn-primary.btn-xs(bind-event, bind-event-click="addAddress")
+				span.fa.fa-plus
+				| Aggiungi
 		table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;color:black;")
 			thead: tr
 				th Strada
@@ -22,29 +25,41 @@
 				th CAP
 				th Città
 				th Nazione
+				th -
 			tbody
 				if company.addresses && company.addresses.length>0
-					each address in company.addresses
+					each address, idx in company.addresses
 						tr
 							td #{address.street}
 							td #{address.number}
 							td #{address.postalCode}
 							td #{address.city}
 							td #{address.nation}
+							td
+								.btn-group
+									button.btn.btn-primary.btn-xs(bind-event, bind-event-click="editAddress", data-address-idx=idx, title="Modifica"): span.fa.fa-edit
+									button.btn.btn-danger.btn-xs(bind-event, bind-event-click="removeAddress", data-address-idx=idx, title="Elimina"): span.fa.fa-close
 				else
 					tr: td(colspan="5") Nessun indirizzo
 	.info-block
 		h4 Numeri di telefono
+			button.pull-right.btn.btn-primary.btn-xs(bind-event, bind-event-click="addPhone")
+				span.fa.fa-plus
+				| Aggiungi
 		table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;color:black;")
 			thead: tr
 				th Numero
 				th Descrizione
 			tbody
 				if company.phones && company.phones.length>0
-					each phone in company.phones
+					each phone, idx in company.phones
 						tr
 							td #{phone.number}
 							td #{phone.description}
+							td
+								.btn-group
+									button.btn.btn-primary.btn-xs(bind-event, bind-event-click="editPhone", data-phone-idx=idx, title="Modifica"): span.fa.fa-edit
+									button.btn.btn-danger.btn-xs(bind-event, bind-event-click="removePhone", data-phone-idx=idx, title="Elimina"): span.fa.fa-close
 				else
 					tr: td(colspan="2") Nessun Numero
 .right-block

@@ -7,21 +7,21 @@ include /variables
 	form#companyForm.text-left(bind-event, bind-event-submit='onSubmit')
 
 		h5 Generali
-		+form-group('Ragione Sociale', 'text', 'name', 'Nome', '320px', true)
+		+form-group({label:'Ragione Sociale', name:'name', placeholder:'Nome', width: '320px', autofocus:true})
 		.container-flex-margin
 			.item-flex
-				+form-group('Partita IVA', 'text', 'piva', 'Partita IVA')
+				+form-group({label:'Partita IVA', name:'piva', placeholder:'Partita IVA'})
 			.item-flex
-				+form-group('Codice Fiscale', 'text', 'fiscalcode', 'Codice Fiscale')
+				+form-group({label:'Codice Fiscale', name:'fiscalcode', placeholder:'Codice Fiscale'})
 		h5 Indirizzo
 		.container-flex
-			.flex-col: +form-group('Strada', 'text', 'street', 'via Aretina', '300px')
-			.flex-col: +form-group('N. Civico', 'text', 'number', '32', '70px')
+			.flex-col: +form-group({label:'Strada', name:'street', placeholder:'via Aretina', width:'300px'})
+			.flex-col: +form-group({label:'N. Civico', name:'number', placeholder:'32', width:'70px'})
 		.container-flex
-			.flex-col: +form-group('Città', 'text', 'city', 'Siena', '250px')
-			.flex-col: +form-group('CAP', 'text', 'postalcode', '53100')
-			.flex-col: +select-form('Nazione', 'nation', globalVars.nations)
+			.flex-col: +form-group({label:'Città', name:'city', placeholder:'Siena', width:'250px'})
+			.flex-col: +form-group({label:'CAP', name:'postalcode', placeholder:'53100'})
+			.flex-col: +select-form({label:'Nazione', name:'nation', options:globalVars.nations})
 		h5 Telefono
-		+form-group('Telefono', 'text', 'phone', '0577364631', '250px')
+		+form-group({label:'Telefono', name:'phone', placeholder:'0577364631', width:'250px'})
 		.clearfix
 			button.btn.btn-success.pull-right(type="submit") Crea

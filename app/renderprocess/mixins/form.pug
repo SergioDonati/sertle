@@ -1,23 +1,29 @@
-mixin form-group(label, type, name, placeholder, width, autofocus)
+mixin form-group(args)
 	- var style = false
-	if width
-		- style="width:"+width+";"
+	if args.width
+		- style="width:"+args.width+";"
+	- var type = 'text'
+	if args.type
+		- type = args.type
 	- var defaultAutofocus = false
-	unless autofocus
-		- autofocus = defaultAutofocus
+	unless args.autofocus
+		- args.autofocus = defaultAutofocus
 	.form-group(class!=attributes.class): .input-group
-		span.input-group-addon #{label}
-		input.form-control(name=name, type=type, placeholder=placeholder, style=style, autofocus=autofocus )
+		span.input-group-addon #{args.label}
+		input.form-control(id=args.id, name=args.name, type=type, placeholder=args.placeholder, style=style, autofocus=args.autofocus, value=args.value )
 
-mixin select-form(label, name, options, width)
+mixin select-form(args)
 	- var style = false
-	if width
-		- style="width:"+width+";"
+	if args.width
+		- style="width:"+args.width+";"
 	.form-group(class!=attributes.class): .input-group
-		span.input-group-addon #{label}
-		select.form-control(name=name, style=style)
-			each val, index in options
+		span.input-group-addon #{args.label}
+		select.form-control(name=args.name, style=style)
+			each val, index in args.options
 				- var label = val.label
 				unless label
 					- label = val.value
-				option(value=val.value, selected=val.selected)= label
+				- var selected = val.selected
+				if args.value
+					- selected = args.value == val.value
+				option(value=val.value, selected=selected)= label

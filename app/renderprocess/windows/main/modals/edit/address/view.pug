@@ -1,0 +1,23 @@
+include /form
+include /variables
+
+- var title = "Nuovo Indirizzo"
+- var submitText = "Aggiungi"
+if address
+	- title = "Modifica indirizzo"
+	- submitText = "Modifica"
+else
+	- address = {}
+.modal-header
+	h3.modal-title #{title}
+.modal-body
+	form#addressForm.text-left(bind-event, bind-event-submit='onSubmit')
+		.container-flex
+			.flex-col: +form-group({label:'Strada', name:'street', placeholder:'via Aretina', width:'300px', value:address.street})
+			.flex-col: +form-group({label:'N. Civico', name:'number', placeholder:'32', width:'70px', value:address.number})
+		.container-flex
+			.flex-col: +form-group({label:'Città', name:'city', placeholder:'Siena', width:'250px', value:address.city})
+			.flex-col: +form-group({label:'CAP', name:'postalCode', placeholder:'53100', value:address.postalCode})
+			.flex-col: +select-form({label:'Nazione', name:'nation', options:globalVars.nations, value:address.nation})
+		.clearfix
+			button.btn.btn-success.pull-right(type="submit") #{submitText}
