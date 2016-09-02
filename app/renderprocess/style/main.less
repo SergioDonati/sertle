@@ -14,13 +14,6 @@ body{
 	padding: 0px 20px;
 }
 
-form{
-	text-align: center;
-}
-label{
-	text-align: left;
-	font-weight: 600;
-}
 .btn > .fa{
 	margin-right: 5px;
 }
@@ -42,17 +35,39 @@ input[type="number"]::-webkit-inner-spin-button {
   align-items: center;
 }
 
-.container-flex{
+.container-flex, .container-flex-margin{
 	display:flex;
 	align-items:center;
 	> .flex-col{
 		display: inline-block;
-		margin-left: 10px;
-		:last-child{
-			margin-left: 0px;
+		margin-right: 10px;
+		&:last-child{
+			margin-right: 0px;
 		}
 	}
 	> .item-flex{
 		flex:1;
 	}
+
+}
+.container-flex-margin{
+	> .item-flex{
+		margin-right: 5px;
+		margin-left:5px;
+		&:first-child{
+			margin-left: 0;
+		}
+		&:last-child{
+			margin-right: 0;
+		}
+	}
+}
+
+input:invalid {
+    border-color: rgba(255,0,0,.6);
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,0,0,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(255,0,0,.6);
+}
+input:valid {
+    /*border: 1px solid green;*/
 }

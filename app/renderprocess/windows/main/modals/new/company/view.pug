@@ -1,46 +1,27 @@
-h3.modal-title Nuovo Cliente
-form#companyForm(bind-event, bind-event-submit='onSubmit', class="container-fluid form-inline text-left")
+include /form
+include /variables
 
-	h5 Generali
-	.form-group: .input-group
-		span.input-group-addon Ragione sociale
-		input(name='name', type='text', placeholder='Nome', class="form-control", style="width:320px;", autofocus)
-	br
-	br
-	.form-group
-		.input-group
-			span.input-group-addon Partita IVA
-			input(name='piva', type='text', placeholder='Partita iva', class="form-control", style="width:250px;")
-		.input-group
-			span.input-group-addon Codice Fiscale
-			input(name='fiscalcode', type='text', placeholder='Codice Fiscale', class="form-control", style="width:250px;")
-	br
-	br
-	h5 Indirizzo
-	.form-group
-		.input-group
-			span.input-group-addon Strada
-			input(name='street', type='text', placeholder='via Aretina', class="form-control", style="width:300px;")
-		.input-group
-			span.input-group-addon N. Civico
-			input(name='number', type='text', placeholder='32', class="form-control", style="width:70px;")
-	br
-	br
-	.form-group
-		.input-group
-			span.input-group-addon Città
-			input(name='city', type='text', placeholder='Siena', class="form-control")
-		.input-group
-			span.input-group-addon CAP
-			input(name='postalcode', type='text', placeholder='53100', class="form-control", style="width:70px;")
-		.input-group
-			span.input-group-addon Nazione
-			input(name='nation', type='text', placeholder='Italia', value='Italia', class="form-control")
-	br
-	br
-	h5 Telefono
-	.form-group: .input-group
-		span.input-group-addon Telefono
-		input(name='phone', type='text', placeholder='0577364631', class="form-control")
+.modal-header
+	h3.modal-title Nuovo Cliente
+.modal-body
+	form#companyForm.text-left(bind-event, bind-event-submit='onSubmit')
 
-	button(type="submit", class="btn btn-success pull-right") Crea
+		h5 Generali
+		+form-group('Ragione Sociale', 'text', 'name', 'Nome', '320px', true)
+		.container-flex-margin
+			.item-flex
+				+form-group('Partita IVA', 'text', 'piva', 'Partita IVA')
+			.item-flex
+				+form-group('Codice Fiscale', 'text', 'fiscalcode', 'Codice Fiscale')
+		h5 Indirizzo
+		.container-flex
+			.flex-col: +form-group('Strada', 'text', 'street', 'via Aretina', '300px')
+			.flex-col: +form-group('N. Civico', 'text', 'number', '32', '70px')
+		.container-flex
+			.flex-col: +form-group('Città', 'text', 'city', 'Siena', '250px')
+			.flex-col: +form-group('CAP', 'text', 'postalcode', '53100')
+			.flex-col: +select-form('Nazione', 'nation', globalVars.nations)
+		h5 Telefono
+		+form-group('Telefono', 'text', 'phone', '0577364631', '250px')
+		.clearfix
+			button.btn.btn-success.pull-right(type="submit") Crea

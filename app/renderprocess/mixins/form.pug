@@ -1,0 +1,23 @@
+mixin form-group(label, type, name, placeholder, width, autofocus)
+	- var style = false
+	if width
+		- style="width:"+width+";"
+	- var defaultAutofocus = false
+	unless autofocus
+		- autofocus = defaultAutofocus
+	.form-group(class!=attributes.class): .input-group
+		span.input-group-addon #{label}
+		input.form-control(name=name, type=type, placeholder=placeholder, style=style, autofocus=autofocus )
+
+mixin select-form(label, name, options, width)
+	- var style = false
+	if width
+		- style="width:"+width+";"
+	.form-group(class!=attributes.class): .input-group
+		span.input-group-addon #{label}
+		select.form-control(name=name, style=style)
+			each val, index in options
+				- var label = val.label
+				unless label
+					- label = val.value
+				option(value=val.value, selected=val.selected)= label

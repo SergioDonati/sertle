@@ -7,6 +7,13 @@ const easyone = require('easyone-electron');
 const path = require('path');
 const {app} = require('electron');
 
-easyone({stylePath: path.resolve(app.getAppPath(), 'renderprocess/style')});
+easyone({
+	less:{
+		basedir: path.resolve(app.getAppPath(), 'renderprocess/style')
+	},
+	pug:{
+		basedir: path.resolve(app.getAppPath(), 'renderprocess/mixins')
+	}
+});
 let appManager = new AppManager();
 appManager.start();
