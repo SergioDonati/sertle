@@ -50,13 +50,13 @@ function activateNavLink(link){
 	link.classList.add('active');
 }
 
-function addNavListener(name, listener){
+function addNavListener(name, listener, activable = true){
 	try{
 		let navLink = document.querySelector('#main-header nav a[href="#'+name+'"]');
 		navLink.addEventListener('click', function(e){
 			e.preventDefault();
 			if(navLink.classList.contains('active')) return; // just active
-			activateNavLink(navLink);
+			if (activable) activateNavLink(navLink);
 			listener();
 		}, true);
 	}catch(e){
@@ -67,6 +67,10 @@ function addNavListener(name, listener){
 addNavListener('dashboard', function(){
 	app.controllerManager.startNew('dashboard');
 });
+
+addNavListener('info', function(){
+	ipcRenderer.send('info-window');
+}, false);
 
 app.controllerManager.on('changed', function(controllerManager, controller){
 	clearActiveLink();

@@ -7,8 +7,7 @@ const path = require('path');
 module.exports = function(appManager){
 
 	ipcMain.on('printInvoice', function(event, args){
-		let outputPath = path.resolve(appManager.getTempFolder(), 'print_invoice.pdf');
-
+		const outputPath = path.resolve(appManager.getTempFolder(), 'print_invoice.pdf');
 		function reply(err){
 			event.sender.send('printInvoice-reply', {
 				success: !err,
@@ -17,10 +16,10 @@ module.exports = function(appManager){
 			});
 		}
 
-		let invoice = args.invoice;
+		const invoice = args.invoice;
 		if(!invoice) return reply(new Error('Invoice not found'));
 
-		let win = new BrowserWindow({ show:false });
+		const win = new BrowserWindow({ show:false });
 		win.invoice = invoice;
 		win.loadURL(path.resolve(app.getAppPath(), 'renderprocess/windows/invoiceA4/index.html'));
 		win.printInvoice = function(){
@@ -39,6 +38,34 @@ module.exports = function(appManager){
 					win.close();
     			});
   			});
+		}
+	});
+
+	ipcMain.on('printInvoiceF', function(event, args){
+		function reply(err){
+			event.sender.send('printInvoiceF-reply', {
+				success: !err,
+				error: err.message
+			});
+		}
+
+		const invoice = args.invoice;
+		if (!invoice) return reply(new Error('Invoice not found'));
+		const win = new BrowserWindow({ show:false });
+		win.invoice = invoice;
+		win.loadURL(path.resolve(app.getAppPath(), 'renderprocess/windows/invoiceA4/index.html'));
+		win.printInvoice = function(){
+			console.log('printInvoice called');
+			try{
+				win.webContents.print({
+					silent: args.silent || false,
+					printBackground: true
+				});
+				console.log('Printed');
+				reply();
+			}catch(e){
+				reply(e);
+			}
 		}
 	});
 }

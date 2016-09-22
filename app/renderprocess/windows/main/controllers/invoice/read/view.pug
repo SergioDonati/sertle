@@ -5,7 +5,7 @@
 		ul#invoiceNav.nav.nav-pills
 			li.active(role="presentation"): a(href="#", bind-event, bind-event-click="compileNavClick") Panoramica
 			li(role="presentation"): a(href="#", bind-event, bind-event-click="checkNavClick") PDF
-			//li(role="presentation"): a(href="#", bind-event, bind-event-click="printNavClick") Stampa
+			li(role="presentation"): a(href="#", bind-event, bind-event-click="printNavClick") Stampa
 	div(style="margin-left: auto;")
 		button#emit-btn.btn.btn-danger(bind-event, bind-event-click="deleteInvoice")
 			span.fa.fa-close

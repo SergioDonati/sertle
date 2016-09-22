@@ -20,4 +20,9 @@ module.exports = function(appManager){
 		oldWindow.close();
 	});
 
+	ipcMain.on('info-window', function(event, arg){
+		appManager.user = null;
+		appManager.openInfoWindow();
+	});
+
 }

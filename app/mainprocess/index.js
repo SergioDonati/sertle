@@ -1,6 +1,6 @@
 'use strict';
 
-if(require('./squirrelStartup')) return;
+if (require('./squirrelStartup')) return;
 
 const AppManager = require('./AppManager');
 const easyone = require('easyone-electron');
@@ -15,5 +15,6 @@ easyone({
 		basedir: path.resolve(app.getAppPath(), 'renderprocess/mixins')
 	}
 });
-let appManager = new AppManager();
+
+const appManager = new AppManager();
 appManager.start();

@@ -13,9 +13,10 @@ module.exports = class ReadInvoice extends Controller {
 	init(invoiceId){
 		this.addDOMListener('compileNavClick', this.showCompile.bind(this));
 		this.addDOMListener('checkNavClick', this.showCheck.bind(this));
+		this.addDOMListener('printNavClick', this.print.bind(this));
 		this.addDOMListener('deleteInvoice', this.deleteInvoice.bind(this));
 		this.invoice = app.getCollections('Invoices').getById(invoiceId);
-		this.renderArgs.locals.invoice = this.invoice;
+		this.addRenderLocals('invoice', this.invoice);
 	}
 
 	clearActiveNavLink(){
@@ -64,6 +65,19 @@ module.exports = class ReadInvoice extends Controller {
 			self.querySelector('#checkInvoice iframe').src = viewerPath+'?file='+result.outputPath;
 		});
 		ipcRenderer.send('printInvoice', { invoice: self.invoice });
+	}
+
+	print(){
+		this.invoice.impArray = app.getCollections('Invoices').calcImpArray(this.invoice);
+		ipcRenderer.once('printInvoiceF-reply', function(event, result){
+			if(!result.success){
+				console.log('error: '+require('util').inspect(result, { depth: null }));
+				alert(result.error.message);
+				return;
+			}
+			console.log('Realy printed.');
+		});
+		ipcRenderer.send('printInvoiceF', { invoice: this.invoice });
 	}
 
 	deleteInvoice(){

@@ -11,6 +11,7 @@ const fs = require('fs');
 module.exports = class AppManager{
 	constructor(){
 		this._mainWindow = null;
+		this.infoIndexPath = `file://${path.resolve(app.getAppPath(), 'renderprocess/windows/info/index.html')}`;
 		this.accessIndexPath = `file://${path.resolve(app.getAppPath(), 'renderprocess/windows/access/index.html')}`;
 		this.mainIndexPath = `file://${path.resolve(app.getAppPath(), 'renderprocess/windows/main/index.html')}`;
 		this.started = false;
@@ -106,6 +107,9 @@ module.exports = class AppManager{
 			newWindow.show();
 			if(callback) callback(newWindow);
 		});
+	}
+	openInfoWindow(){
+		this._createWindow(this.infoIndexPath, this.defaultAccessWindowOptions);
 	}
 
 	start(){
