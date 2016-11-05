@@ -1,0 +1,18 @@
+include /form
+include /variables
+
+- var title = "Nuovo Numero Telefonico"
+- var submitText = "Aggiungi"
+if phone
+	- title = "Modifica Numero"
+	- submitText = "Modifica"
+else
+	- phone = {}
+.modal-header
+	h3.modal-title #{title}
+.modal-body
+	form#addressForm.text-left(bind-event, bind-event-submit='onSubmit')
+		+form-group({label:'Numero', name:'number', placeholder:'0577364631', width:'300px', value:phone.number})
+		+form-group({label:'Descrizione', name:'description', placeholder:'fax, numero di cellulare', width:'300px', value:phone.descriptions})
+		.clearfix
+			button.btn.btn-success.pull-right(type="submit") #{submitText}

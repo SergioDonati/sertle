@@ -1,41 +1,43 @@
-h3.modal-title Nuovo Prodotto/Servizio
-form#invoiceItemForm(bind-event, bind-event-submit='onSubmit', class="container-fluid text-left")
-	br
-	br
-	.form-group: .input-group
-		span.input-group-addon Descrizione
-		input.form-control(name='description', type='text', required, autofocus)
-	div
-		.form-group(style="width:250px;display:inline-block;")
-			.input-group
-				span.input-group-addon Prezzo unitario
-				input.form-control(name='price', type='number', step="0.01", min="0", placeholder='49.53', required)
-				span.input-group-addon: i.fa.fa-eur
-		.form-group(style="width:180px;display:inline-block;")
-			.input-group
-				span.input-group-addon Quantità
-				input.form-control(name='quantity', type='number', placeholder='10', min="0", value="1", required)
-		.form-group(style="width:250px;display:inline-block;")
-			.input-group
-				span.input-group-addon Prezzo totale
-				input.form-control(name='total-price', type='number', step="0.01", min='0', placeholder='495.3')
-				span.input-group-addon: i.fa.fa-eur
-	div
-		.form-group(style="width:250px;display:inline-block;")
-			.input-group
-				span.input-group-addon Unità
-				select.form-control(name='unit', required)
-					option(value="nr") Numero
-					option(value="m") Metri
-					option(value="cm") Centimetri
-					option(value="lt") Litri
-					option(value="gr") Grammi
-					option(value="kg") Kilogrammi
-					option(value="hours") Ore
-		.form-group(style="width:150px;display:inline-block;")
-			.input-group
-				span.input-group-addon IVA
-				input.form-control(name='iva', type='number', value="22" placeholder='22', required)
-				span.input-group-addon %
+.modal-heading
+	h3.modal-title Nuovo Prodotto/Servizio
+.modal-body
+	form#invoiceItemForm(bind-event, bind-event-submit='onSubmit', class="container-fluid text-left")
+		br
+		br
+		.form-group: .input-group
+			span.input-group-addon Descrizione
+			input.form-control(name='description', type='text', required, autofocus)
+		div
+			.form-group(style="width:250px;display:inline-block;")
+				.input-group
+					span.input-group-addon Prezzo unitario
+					input.form-control(name='price', type='number', step="0.01", min="0", placeholder='49.53', required)
+					span.input-group-addon: i.fa.fa-eur
+			.form-group(style="width:180px;display:inline-block;")
+				.input-group
+					span.input-group-addon Quantità
+					input.form-control(name='quantity', type='number', placeholder='10', min="0", value="1", required)
+			.form-group(style="width:250px;display:inline-block;")
+				.input-group
+					span.input-group-addon Prezzo totale
+					input.form-control(name='total-price', type='number', step="0.01", min='0', placeholder='495.3')
+					span.input-group-addon: i.fa.fa-eur
+		div
+			.form-group(style="width:250px;display:inline-block;")
+				.input-group
+					span.input-group-addon Unità
+					select.form-control(name='unit', required)
+						option(value="nr") Numero
+						option(value="m") Metri
+						option(value="cm") Centimetri
+						option(value="lt") Litri
+						option(value="gr") Grammi
+						option(value="kg") Kilogrammi
+						option(value="hours") Ore
+			.form-group(style="width:150px;display:inline-block;")
+				.input-group
+					span.input-group-addon IVA
+					input.form-control(name='iva', type='number', value="22" placeholder='22', required)
+					span.input-group-addon %
 
-	button.btn.btn-success.pull-right(type="submit") Aggiungi
+		button.btn.btn-success.pull-right(type="submit") Aggiungi

@@ -1,0 +1,12 @@
+h2 #{user.username} 
+	small Nome Utente
+
+br
+
+.info-block
+	p(style="margin-top:10px;")
+		strong Creato il: 
+		| #{new Date(user.creationTime).toLocaleDateString()}
+	p
+		strong Nome Società: 
+		| #{user.company.name}

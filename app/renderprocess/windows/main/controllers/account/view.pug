@@ -1,0 +1,13 @@
+#sidebar-menu
+	h2 Menu
+	hr
+	nav
+		a.active(href="#account", bind-event, bind-event-click="navClick", data-tab="account-user-tab") Account
+		a(href="#company", bind-event, bind-event-click="navClick", data-tab="account-company-tab") Società
+		a(href="#invoice-settings", bind-event, bind-event-click="navClick", data-tab="invoice-settings-tab") Impostazioni Fattura
+		a(href="#password", bind-event, bind-event-click="navClick", data-tab="password-tab") Cambia Password
+
+#account-user-tab.tab.active(dynamicload-component, component="accountUser")
+#account-company-tab.tab(dynamicload-component, component="accountCompany")
+#invoice-settings-tab.tab(dynamicload-component, component="invoiceSettings")
+//#password-tab.tab(dynamicload-component, component="list")

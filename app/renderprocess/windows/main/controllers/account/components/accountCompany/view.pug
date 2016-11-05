@@ -1,0 +1,66 @@
+.editable-field
+	h2(style="display:inline-block;") #{user.company.name} 
+		small Nome Società
+	span.edit(bind-event, bind-event-click="editField", data-field-name="name") Modifica
+
+br
+
+.info-block
+	p.editable-field(style="margin-top:10px;")
+		strong Partita IVA: 
+		| #{user.company.piva}
+		span.edit(bind-event, bind-event-click="editField", data-field-name="piva") Modifica
+	p.editable-field 
+		strong Codice Fiscale: 
+		span(style="text-transform:uppercase;") #{user.company.fiscalCode}
+		span.edit(bind-event, bind-event-click="editField", data-field-name="fiscalCode") Modifica
+.container-flex-margin(style="align-items:flex-start;")
+	.info-block.item-flex
+		h4 Indirizzi
+			button.pull-right.btn.btn-primary.btn-xs(bind-event, bind-event-click="addAddress")
+				span.fa.fa-plus
+				| Aggiungi
+		table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;color:black;")
+			thead: tr
+				th Strada
+				th Numero
+				th CAP
+				th Città
+				th Nazione
+				th -
+			tbody
+				if user.company.addresses && user.company.addresses.length>0
+					each address, idx in user.company.addresses
+						tr
+							td #{address.street}
+							td #{address.number}
+							td #{address.postalCode}
+							td #{address.city}
+							td #{address.nation}
+							td
+								.btn-group
+									button.btn.btn-primary.btn-xs(bind-event, bind-event-click="editAddress", data-address-idx=idx, title="Modifica"): span.fa.fa-edit
+									button.btn.btn-danger.btn-xs(bind-event, bind-event-click="removeAddress", data-address-idx=idx, title="Elimina"): span.fa.fa-close
+				else
+					tr: td(colspan="5") Nessun indirizzo
+	.info-block.item-flex
+		h4 Numeri di telefono
+			button.pull-right.btn.btn-primary.btn-xs(bind-event, bind-event-click="addPhone")
+				span.fa.fa-plus
+				| Aggiungi
+		table.table.table-striped.table-bordered.table-hover.table-condensed(style="background-color:white;color:black;")
+			thead: tr
+				th Numero
+				th Descrizione
+			tbody
+				if user.company.phones && user.company.phones.length>0
+					each phone, idx in user.company.phones
+						tr
+							td #{phone.number}
+							td #{phone.description}
+							td
+								.btn-group
+									button.btn.btn-primary.btn-xs(bind-event, bind-event-click="editPhone", data-phone-idx=idx, title="Modifica"): span.fa.fa-edit
+									button.btn.btn-danger.btn-xs(bind-event, bind-event-click="removePhone", data-phone-idx=idx, title="Elimina"): span.fa.fa-close
+				else
+					tr: td(colspan="2") Nessun Numero

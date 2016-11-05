@@ -149,6 +149,10 @@ let invoiceModel = new Model({
 		type: String,
 		trim: true
 	},
+	issuerHeading:{
+		type: String,
+		trim: true
+	},
 	headerText:{
 		type: String,
 		trim: true

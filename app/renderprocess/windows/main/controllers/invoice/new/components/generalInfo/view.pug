@@ -14,7 +14,11 @@
 			option(value='0') Rimessa Diretta
 			option(value='1') Bonifico
 	section#bankSection(style="display:none;margin-top:5px;")
-		.form-group(style="width:250px;display:inline-block;")
+		.form-group
 			.input-group
 				span.input-group-addon IBAN
-				input#invoiceIBAN(type="text", class="form-control")
+				input#invoiceIBAN(type="text", class="form-control", value=user.invoiceSetting.defaultIBAN)
+		.form-group
+			.input-group
+				span.input-group-addon Nome Banca
+				input#invoiceBankName(type="text", class="form-control", value=user.invoiceSetting.defaultBankName)

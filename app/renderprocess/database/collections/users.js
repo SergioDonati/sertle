@@ -74,7 +74,9 @@ let userModel = new Model({
 	invoiceSetting:{
 		heading: String,
 		headerText: String,
-		footerText: String
+		footerText: String,
+		defaultIBAN: String,
+		defaultBankName: String
 	}
 });
 

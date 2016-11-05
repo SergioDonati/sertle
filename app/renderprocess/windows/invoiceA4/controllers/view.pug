@@ -27,7 +27,7 @@ mixin printPayMethod(payMethod)
 			.flex-layout
 				.box-border(style="margin-right:5px;text-align:center;")
 					p Numero Fattura
-					span: strong #{invoice.progressiveNumber}
+					span: strong #{invoice.progressiveNumber}/16
 				.box-border(style="margin-left:5px;text-align:center;")
 					p Data Fattura
 					span: strong #{new Date(invoice.date).toLocaleDateString()}
@@ -39,9 +39,8 @@ mixin printPayMethod(payMethod)
 					br
 					| #{invoice.nominee.addresses[0].postalCode} #{invoice.nominee.addresses[0].city} #{invoice.nominee.addresses[0].nation}
 					br
-					| Tel:
 					if invoice.nominee.phones && invoice.nominee.phones.length>0
-						| #{invoice.nominee.phones[0].number}
+						| Tel: #{invoice.nominee.phones[0].number}
 	.box-border.box-margin-top: table.strech.table-3
 		tr
 			th Codice Fiscale
@@ -51,15 +50,17 @@ mixin printPayMethod(payMethod)
 			td #{invoice.nominee.fiscalCode}
 			td #{invoice.nominee.piva}
 			td Non Esente
-	.box-border.box-margin-top: table.strech.table-3
+	.box-border.box-margin-top: table.strech.table-4
 		tr
 			th Tipo di Pagamento
-			th IBAN
 			th Valuta
+			th Banca
+			th IBAN
 		tr
 			td: +printPayMethod(invoice.payMethod)
-			td #{invoice.iban}
 			td EURO
+			td #{invoice.bankName}
+			td #{invoice.iban}
 	div
 		if invoice.headerText
 			#{invoice.headerText}
@@ -79,7 +80,7 @@ mixin printPayMethod(payMethod)
 				td #{item.quantity}
 				td #{item.price.toLocaleString(undefined, {minimumFractionDigits: 2})}
 				td #{item.iva}
-				td #{item.discount}
+				td #{item.discount || 0}
 				td
 					if item.imponibile
 						| #{item.imponibile.toLocaleString(undefined, {minimumFractionDigits: 2})}
@@ -108,5 +109,5 @@ mixin printPayMethod(payMethod)
 				td: strong #{invoice.tot.toLocaleString(undefined, {style:"currency", currency:"EUR"})}
 	div
 		if invoice.footerText
-			#{invoice.footerText}
+			p #{invoice.footerText}
 	#page Pagina 1 di 1

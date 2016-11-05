@@ -15,5 +15,8 @@ if options.title
 
 	form#fieldForm.container-fluid.form-inline.text-center(bind-event, bind-event-submit='onSubmit')
 		.input-group
-			input.form-control(name='new-value', type=inputType, value=oldValue, style="width:320px;", autofocus)
+			if inputType == 'textarea'
+				textarea.form-control(name='new-value', value=oldValue, style="width:320px;", autofocus)
+			else
+				input.form-control(name='new-value', type=inputType, value=oldValue, style="width:320px;", autofocus)
 			.input-group-btn: button.btn.btn-default(type="submit") Modifica

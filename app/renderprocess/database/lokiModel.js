@@ -44,7 +44,7 @@ function _new_value(value, fieldSchema, key){
 			throw e;
 		}
 	}
-	if(!value){
+	if(!value && value !== 0){
 		if(fieldSchema.require == true) throw new Error('Field '+key+' is required!');
 		if(fieldSchema.default) {
 			if(fieldSchema.default == 'now' && fieldSchema.type == Date) return (new Date()).getTime();

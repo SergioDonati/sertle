@@ -1,18 +1,18 @@
 {
-	"name": "sertle",
-	"version": "0.0.4",
-	"private": true,
-	"description": "A minimal Electron application",
-	"main": "mainprocess/index.js",
-	"scripts": {
-		"start": "electron mainprocess/index.js"
-	},
-	"author": "donati.sergio@gmail.com",
-	"license": "GPL-3.0",
-	"dependencies": {
-		"less": "^2.7.1",
-		"lokijs": "^1.4.1",
-		"pug": "^2.0.0-beta4",
-		"easyone-electron": "git+https://git@github.com/SergioDonati/easyone-electron.git"
-	}
+  "name": "sertle",
+  "version": "0.0.5",
+  "private": true,
+  "description": "A minimal Electron application",
+  "main": "mainprocess/index.js",
+  "scripts": {
+    "start": "electron mainprocess/index.js"
+  },
+  "author": "donati.sergio@gmail.com",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "easyone-electron": "git+https://git@github.com/SergioDonati/easyone-electron.git",
+    "less": "^2.7.1",
+    "lokijs": "^1.4.1",
+    "pug": "^2.0.0-beta4"
+  }
 }

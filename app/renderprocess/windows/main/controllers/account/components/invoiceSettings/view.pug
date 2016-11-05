@@ -1,0 +1,27 @@
+h2 Impostazioni Fattura
+
+br
+
+.info-block
+	p.editable-field(style="margin-top:10px;")
+		strong Intestazione : 
+		| #{user.invoiceSetting.heading}
+		span.edit(bind-event, bind-event-click="editField", data-field-name="heading") Modifica
+	p.editable-field 
+		strong Testo in cima: 
+		span.edit(bind-event, bind-event-click="editField", data-field-name="headerText") Modifica
+		br
+		span #{user.invoiceSetting.headerText}
+	p.editable-field 
+		strong Testo in fondo: 
+		span.edit(bind-event, bind-event-click="editField", data-field-name="footerText") Modifica
+		br
+		span #{user.invoiceSetting.footerText}
+	p.editable-field 
+		strong IBAN di default: 
+		span(style="text-transform:uppercase;") #{user.invoiceSetting.defaultIBAN}
+		span.edit(bind-event, bind-event-click="editField", data-field-name="defaultIBAN") Modifica
+	p.editable-field 
+		strong Nome Banka di default: 
+		span(style="text-transform:uppercase;") #{user.invoiceSetting.defaultBankName}
+		span.edit(bind-event, bind-event-click="editField", data-field-name="defaultBankName") Modifica

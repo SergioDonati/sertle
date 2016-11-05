@@ -9,6 +9,7 @@ module.exports = class GeneralInfo extends Controller {
 
 	init(){
 		this.addDOMListener('onPayMethodChange', this.toogleBankSection.bind(this));
+		this.addRenderLocals('user', app.getProperty('user'));
 		this.on('rendered', function(){
 			this.dateInput = this.HTMLElement.querySelector('#invoiceDate');
 			this.numberInput = this.HTMLElement.querySelector('#progressiveNumber');
@@ -36,6 +37,7 @@ module.exports = class GeneralInfo extends Controller {
 		data.paymethod = this.paymethodSelect.value;
 		if(data.paymethod == 1){
 			data.iban = this.HTMLElement.querySelector('#invoiceIBAN').value;
+			data.bankName = this.HTMLElement.querySelector('#invoiceBankName').value;
 		}
 		return data;
 	}

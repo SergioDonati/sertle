@@ -45,7 +45,7 @@ module.exports = function(appManager){
 		function reply(err){
 			event.sender.send('printInvoiceF-reply', {
 				success: !err,
-				error: err.message
+				error: err ? err.message : ""
 			});
 		}
 

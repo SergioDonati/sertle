@@ -31,12 +31,17 @@ module.exports = class NewInvoice extends Controller {
 		let nomineeComponent = this.getChildComponent('nominee');
 		let issuerComponent = this.getChildComponent('issuer');
 		let itemsComponent = this.getChildComponent('items');
+		const user = app.getProperty('user');
 
 		let generalData = generalInfoComponent.getData();
 		this._newInvoice.date = generalData.date;
 		this._newInvoice.progressiveNumber = generalData.progressiveNumber;
 		this._newInvoice.payMethod = generalData.paymethod;
 		this._newInvoice.iban = generalData.iban;
+		this._newInvoice.bankName = generalData.bankName;
+		this._newInvoice.issuerHeading = user.invoiceSetting.heading;
+		this._newInvoice.headerText = user.invoiceSetting.headerText;
+		this._newInvoice.footerText = user.invoiceSetting.footerText;
 
 		this._newInvoice.items = itemsComponent.getItems();
 		this._newInvoice = app.getCollections('Invoices').newInvoice(this._newInvoice, nomineeComponent.company);

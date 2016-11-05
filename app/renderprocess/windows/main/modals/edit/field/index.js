@@ -27,6 +27,7 @@ module.exports = class EditField extends Modal{
 			}
 			this.close(newval);
 		}catch(e){
+			console.error(e.stack);
 			alert(e.message);
 		}
 	}

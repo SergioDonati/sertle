@@ -8,7 +8,8 @@
 	z-index: 50;
 	display: none;
 	&.modal-open{
-		display: block;
+		display: flex;
+		align-items: center;
 	}
 	.modal-shadow{
 		width: 100%;
@@ -49,14 +50,19 @@
 		cursor: pointer;
 		width: 30px;
     	height: 30px;
+		&:hover{
+			background: @backgroundColorUp;
+		}
 		&:before{
-			content: '\274c';
-			top: 9px;
+			content: '\f00d';
+			top: 5px;
+			font-size: 14px;
 			position: relative;
+			font-family: FontAwesome;
 		}
 	}
 	.modal-holder{
-		.modal-header{
+		.modal-heading{
 			padding: 0;
 			padding-top: 10px;
 			padding-bottom: 5px;

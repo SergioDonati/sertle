@@ -7,6 +7,7 @@ module.exports = class Issuer extends Controller {
 	get viewPath(){ return __dirname+'\\view.pug'; }
 
 	init(){
+		//this.addRenderLocals('company', app.getProperty(user).company);
 		this.on('rendered', this.loadUserCompany.bind(this));
 	}
 

@@ -1,0 +1,10 @@
+.modal-heading
+	h2.modal-title Elimina
+.modal-body.text-left
+	h4 Sei sicuro di voler eliminare questo numero telefonico?
+	p(style="text-transform:uppercase;"): strong #{phone.number}
+.modal-footer
+	button.btn.btn-default.pull-left(bind-event, bind-event-click="cancel") Annulla
+	button.btn.btn-danger.pull-right(bind-event, bind-event-click="delete")
+		span.fa.fa-close
+		| Elimina

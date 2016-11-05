@@ -1,0 +1,81 @@
+@import "colors";
+
+display: flex;
+flex-wrap:wrap;
+justify-content: flex-start;
+align-items: flex-start;
+
+height: 100%;
+
+overflow: hidden;
+margin-left:-20px;
+margin-right:-20px;
+
+> .tab{
+	margin-left: 200px;
+	width:100%;
+	padding: 20px;
+	display: none;
+	&.active{
+		display: block;
+	}
+}
+
+#sidebar-menu{
+	height: 100%;
+	width: 200px;
+	background: #143450;
+	color: #eee;
+	padding: 20px;
+
+	position: fixed;
+	top:0;
+	left:0;
+	margin-top: 42px;
+
+	nav{
+		display: flex;
+		flex-direction: column;
+		flex-flow: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+	nav a{
+		color: #8c8c8c;
+		font-size: 1.2em;
+		text-shadow: 1px 1px 0px black;
+		text-decoration: none;;
+		margin-bottom: 15px;
+		display: block;
+	    width: 100%;
+	    padding: 10px;
+		&.active, &:hover{
+			color: #FFFFFF;
+			background: #20517b;
+		}
+	}
+}
+
+.info-block{
+	background-color: @backgroundColorActive;
+	color: @textColorActive;
+	padding: 10px 20px;
+	margin-top:10px;
+}
+
+.editable-field{
+	.edit{
+		display: none;
+		color:#8a8a8a;
+		cursor: pointer;
+		margin-left: 10px;
+		&:hover{
+			color: #A5A5A5;
+		}
+	}
+	&:hover{
+		.edit{
+			display: inline-block;;
+		}
+	}
+}

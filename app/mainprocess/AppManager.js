@@ -115,6 +115,7 @@ module.exports = class AppManager{
 	start(){
 		if(this.started) return;
 
+		// Initialize the ipcHandlers with this manager
 		ipcAccess(this);
 		ipcLoki(this);
 		ipcPrint(this);

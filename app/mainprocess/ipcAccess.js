@@ -21,7 +21,7 @@ module.exports = function(appManager){
 	});
 
 	ipcMain.on('info-window', function(event, arg){
-		appManager.user = null;
+		//appManager.user = null;
 		appManager.openInfoWindow();
 	});
 

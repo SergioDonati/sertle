@@ -38,12 +38,16 @@ module.exports = class NewCompany extends Modal{
 			nation: getValue('nation')
 		});
 
-		newCompany.phones.push({
-			number: getValue('phone')
-		});
+		const phoneNumber = getValue('phone');
+		if(phoneNumber){
+			newCompany.phones.push({
+				number: phoneNumber
+			});
+		}
 		try{
 			newCompany = app.getCollections('Companies').insert(newCompany);
 		}catch(e){
+			console.error(e.stack);
 			alert(e);
 			return;
 		}
