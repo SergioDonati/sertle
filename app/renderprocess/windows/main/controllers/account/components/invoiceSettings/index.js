@@ -1,7 +1,5 @@
 'use script';
 
-const {Component, app} = require('easyone-electron');
-
 const editOptions = {
 	heading: {
 		title: "Modifica Intestazione"
@@ -22,38 +20,30 @@ const editOptions = {
 	}
 }
 
-module.exports = class InvoiceSettings extends Component {
+module.exports = function InvoiceSettings(app, component) {
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	get componentsPath(){ return __dirname; }
-
-	init(){
-		let user = app.getProperty('user');
-		if(!user) return;
-		this.user = user;
-		this.addRenderLocals('user', this.user);
-
-		this.addDOMListener('editField', this.editField.bind(this));
+	let user = app.getProperty('user');
+	if(user){
+		component.addRenderLocals('user', user);
 	}
 
-	update(){
-		this.addRenderLocals('user', this.user);
-		this.refresh(null, true);
+	function update(){
+		component.addRenderLocals('user', user);
+		component.refresh(null, true);
 	}
 
-	editField(event, element){
-		let fieldName = element.getAttribute('data-field-name');
-		let editOption = editOptions[fieldName];
-		editOption.oldValue = this.user.invoiceSetting[fieldName];
-		let self = this;
+	component.addDOMListener('editField', (event, element) => {
+		const fieldName = element.getAttribute('data-field-name');
+		const editOption = editOptions[fieldName];
+		editOption.oldValue = user.invoiceSetting[fieldName];
 		app.modalManager.startNew('edit/field', editOption).then(function(modal){
 			modal.once('result', function(result){
 				if(!result) return;
-				self.user.invoiceSetting[fieldName] = result;
-				self.user = app.updateUser(self.user);
-				self.update();
+				user.invoiceSetting[fieldName] = result;
+				user = app.updateUser(user);
+				update();
 			});
 		});
-	}
+	});
 
 };

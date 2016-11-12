@@ -1,18 +1,9 @@
 'use strict';
 
-const {Modal, app} = require('easyone-electron');
+module.exports = function NewCompany(app, modal){
 
-module.exports = class NewCompany extends Modal{
-
-	get viewPath(){ return __dirname+'\\view.pug'; }
-
-	init(){
-		this.addDOMListener('onSubmit', this.create.bind(this));
-	}
-
-	create(){
-		let form = this.querySelector('#companyForm');
-		let elements = form.elements;
+	modal.addDOMListener('onSubmit', () => {
+		const form = modal.querySelector('#companyForm');
 		function getValue(name){
 			try{
 				return form.elements[name].value;
@@ -51,7 +42,6 @@ module.exports = class NewCompany extends Modal{
 			alert(e);
 			return;
 		}
-		this._modal_result = newCompany;
-		this.close();
-	}
+		modal.close(newCompany);
+	});
 }

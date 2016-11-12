@@ -1,7 +1,5 @@
 'use script';
 
-const {Component, app} = require('easyone-electron');
-
 const editOptions = {
 	piva: {
 		title: "Modifica Partita IVA"
@@ -12,125 +10,111 @@ const editOptions = {
 	name: {
 		title: "Modifica Nome"
 	}
-}
+};
 
-module.exports = class AccountCompany extends Component {
+let user = null;
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	get componentsPath(){ return __dirname; }
+module.exports = function AccountCompany(app, component) {
 
-	init(){
-		let user = app.getProperty('user');
-		if(!user) return;
-		this.user = user;
-		this.addRenderLocals('user', this.user);
-
-		this.addDOMListener('editField', this.editField.bind(this));
-
-		this.addDOMListener('addAddress', this.addAddress.bind(this));
-		this.addDOMListener('removeAddress', this.removeAddress.bind(this));
-		this.addDOMListener('editAddress', this.editAddress.bind(this));
-
-		this.addDOMListener('addPhone', this.addPhone.bind(this));
-		this.addDOMListener('removePhone', this.removePhone.bind(this));
-		this.addDOMListener('editPhone', this.editPhone.bind(this));
-
+	user = app.getProperty('user');
+	if(user){
+		component.addRenderLocals('user', user);
 	}
 
-	update(){
-		this.addRenderLocals('user', this.user);
-		this.refresh(null, true);
+	function update(){
+		component.addRenderLocals('user', user);
+		component.refresh(null, true);
 	}
 
-	addAddress(){
-		let self = this;
-		app.modalManager.startNew('edit/user/address', this.user).then(function(modal){
+	component.addDOMListener('addAddress', () => {
+		app.modalManager.startNew('edit/user/address', user)
+		.then(function(modal){
 			modal.once('result', function(result){
 				if(result) {
-					self.user = modal.user;
-					self.update();
+					user = modal.user;
+					update();
 				}
 			});
 		});
-	}
+	});
 
-	editAddress(event, element){
-		let self = this;
-		let index = element.getAttribute('data-address-idx');
-		app.modalManager.startNew('edit/user/address', this.user, index).then(function(modal){
+	component.addDOMListener('editAddress', (event, element) => {
+		const index = element.getAttribute('data-address-idx');
+		app.modalManager.startNew('edit/user/address', user, index)
+		.then(function(modal){
 			modal.once('result', function(result){
 				if(result) {
-					self.user = modal.user;
-					self.update();
+					user = modal.user;
+					update();
 				}
 			});
 		});
-	}
+	});
 
-	removeAddress(event, element){
-		let self = this;
-		let index = element.getAttribute('data-address-idx');
-		app.modalManager.startNew('delete/user/address', this.user, index).then(function(modal){
+	component.addDOMListener('removeAddress', (event, element) => {
+		const index = element.getAttribute('data-address-idx');
+		app.modalManager.startNew('delete/user/address', user, index)
+		.then(function(modal){
 			modal.once('result', function(result){
 				if(result) {
-					self.user = modal.user;
-					self.update();
+					user = modal.user;
+					update();
 				}
 			});
 		});
-	}
+	});
 
-	addPhone(){
-		let self = this;
-		app.modalManager.startNew('edit/user/phone', this.user).then(function(modal){
+	component.addDOMListener('addPhone', () => {
+		app.modalManager.startNew('edit/user/phone', user)
+		.then(function(modal){
 			modal.once('result', function(result){
 				if(result) {
-					self.user = modal.user;
-					self.update();
+					user = modal.user;
+					update();
 				}
 			});
 		});
-	}
+	});
 
-	editPhone(event, element){
-		let self = this;
-		let index = element.getAttribute('data-phone-idx');
-		app.modalManager.startNew('edit/user/phone', this.user, index).then(function(modal){
+	component.addDOMListener('editPhone', (event, element) => {
+		const index = element.getAttribute('data-phone-idx');
+		app.modalManager.startNew('edit/user/phone', user, index)
+		.then(function(modal){
 			modal.once('result', function(result){
 				if(result) {
-					self.user = modal.user;
-					self.update();
+					user = modal.user;
+					update();
 				}
 			});
 		});
-	}
+	});
 
-	removePhone(event, element){
-		let self = this;
-		let index = element.getAttribute('data-phone-idx');
-		app.modalManager.startNew('delete/user/phone', this.user, index).then(function(modal){
+	component.addDOMListener('removePhone', (event, element) => {
+		const index = element.getAttribute('data-phone-idx');
+		app.modalManager.startNew('delete/user/phone', user, index)
+		.then(function(modal){
 			modal.once('result', function(result){
 				if(result) {
-					self.user = modal.user;
-					self.update();
+					user = modal.user;
+					update();
 				}
 			});
 		});
-	}
+	});
 
-	editField(event, element){
-		let fieldName = element.getAttribute('data-field-name');
-		let editOption = editOptions[fieldName];
-		editOption.oldValue = this.user.company[fieldName];
-		let self = this;
-		app.modalManager.startNew('edit/field', editOption).then(function(modal){
+	component.addDOMListener('editField', (event, element) => {
+		const fieldName = element.getAttribute('data-field-name');
+		const editOption = editOptions[fieldName];
+		editOption.oldValue = user.company[fieldName];
+		app.modalManager.startNew('edit/field', editOption)
+		.then(function(modal){
 			modal.once('result', function(result){
 				if(!result) return;
-				self.user.company[fieldName] = result;
-				self.user = app.updateUser(self.user);
-				self.update();
+				user.company[fieldName] = result;
+				user = app.updateUser(user);
+				update();
 			});
 		});
-	}
+	});
 
 };

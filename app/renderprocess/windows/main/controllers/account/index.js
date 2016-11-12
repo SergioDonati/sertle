@@ -1,24 +1,14 @@
 'use strict';
 
-const {Controller} = require('easyone-electron');
+module.exports = function Account(app, controller){
 
-module.exports = class Account extends Controller{
-
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	get stylePath(){ return __dirname+'\\style.less'; }
-	get componentsPath(){ return __dirname+'\\components'; }
-
-	init(){
-		this.addDOMListener('navClick', this.navClick.bind(this));
-	}
-
-	navClick(event, element){
+	controller.addDOMListener('navClick', (event, element) => {
 
 		event.preventDefault();
 		if(element.classList.contains('active')) return; // just active
 
-		const links = this.querySelectorAll('#sidebar-menu nav a');
-		const tabs = this.querySelectorAll('.tab');
+		const links = controller.querySelectorAll('#sidebar-menu nav a');
+		const tabs = controller.querySelectorAll('.tab');
 
 		for (let l of links) {
 			l.classList.remove('active');
@@ -29,5 +19,5 @@ module.exports = class Account extends Controller{
 		}
 
 		element.classList.add('active');
-	}
-}
+	});
+};

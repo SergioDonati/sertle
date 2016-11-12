@@ -1,23 +1,16 @@
 'use strict';
 
-const {Controller, app} = require('easyone-electron');
+module.exports = function ItemsComponent(app, component) {
+	const elements = {};
+	const items = new Map();
 
-module.exports = class ItemsComponent extends Controller {
+	component.on('rendered', function(){
+		elements.itemsTable = component.querySelector('#items-table');
+		elements.itemsTableBody = elements.itemsTable.querySelector('tbody');
+	});
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	//get stylePath(){ return __dirname+'\\style.less'; }
-
-	init(){
-		this._items = new Map();
-		this.addDOMListener('newItem', this.newItem.bind(this));
-		this.on('rendered', function(){
-			this.itemsTable = this.querySelector('#items-table');
-			this.itemsTableBody = this.itemsTable.querySelector('tbody');
-		});
-	}
-
-	_insertCell(row, value){
-		let newCell = row.insertCell();
+	function insertCell(row, value){
+		const newCell = row.insertCell();
 		try{
   			newCell.appendChild(document.createTextNode(value));
 		}catch(e){
@@ -25,37 +18,35 @@ module.exports = class ItemsComponent extends Controller {
 		}
 	}
 
-	_insertRow(item){
-		let newRow = this.itemsTableBody.insertRow();
+	function insertRow(item){
+		const newRow = elements.itemsTableBody.insertRow();
 
-		this._insertCell(newRow, item.description);
-		this._insertCell(newRow, item.unit);
-		this._insertCell(newRow, item.quantity);
-		this._insertCell(newRow, item.price);
-		this._insertCell(newRow, item.iva);
-		this._insertCell(newRow, 0);
+		insertCell(newRow, item.description);
+		insertCell(newRow, item.unit);
+		insertCell(newRow, item.quantity);
+		insertCell(newRow, item.price);
+		insertCell(newRow, item.iva);
+		insertCell(newRow, 0);
+		return newRow;
 	}
 
-	addItem(item){
-		let row = this._insertRow(item);
-		this._items.set(row, item);
-	}
-
-	newItem(){
-		let self = this;
+	component.addDOMListener('newItem', () => {
 		app.modalManager.startNew('new/invoiceItem').then(function(modal){
 			modal.on('result', function(item){
-				if(item) self.addItem(item);
+				if(item) component.addItem(item);
 			});
 		});
+	});
+
+	component.addItem = item => {
+		const row = insertRow(item);
+		items.set(row, item);
 	}
 
-	getItems(){
-		let items = [];
-		this._items.forEach(function(item){
-			items.push(item);
-		});
-		return items;
+	component.getItems = () => {
+		const resultItems = [];
+		items.forEach( item => { resultItems.push(item); });
+		return resultItems;
 	}
 
 };

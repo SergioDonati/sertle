@@ -1,32 +1,26 @@
 'use strict';
 
-const {Controller, app} = require('easyone-electron');
+let usernameInput = null;
+let passwordInput = null;
 
-module.exports = class Login extends Controller {
+module.exports = function Login(app, controller) {
+	controller.useDefaultPaths(__dirname);
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	get stylePath(){ return __dirname+'\\style.less'; }
+	controller.on('rendered', parent => {
+		usernameInput = parent.querySelector('#login-form [name="username"]');
+		passwordInput = parent.querySelector('#login-form [name="password"]');
+	});
 
-	init(){
-		this.on('rendered', this.registerElements);
-		this.addDOMListener('onSubmit', this.login.bind(this));
-	}
-
-	registerElements(parent){
-		this.usernameInput = parent.querySelector('#login-form [name="username"]');
-		this.passwordInput = parent.querySelector('#login-form [name="password"]');
-	}
-
-	login(){
-		let username = this.usernameInput.value.trim();
-		let password = this.passwordInput.value;
-		let user = app.getCollections('Users').login(username, password);
+	controller.addDOMListener('onSubmit', () => {
+		const username = usernameInput.value.trim();
+		const password = passwordInput.value;
+		const user = app.getCollections('Users').login(username, password);
 		if (!user){
 			alert('Username o password sono sbagliate!');
 		}else{
 			app.setProperty('user', user);
 			app.login(user);
 		}
-	}
+	});
 
 };

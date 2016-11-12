@@ -1,33 +1,24 @@
 'use strict';
 
-const {Modal, app} = require('easyone-electron');
+module.exports = function DeleteInvoice(app, modal, invoice){
 
-module.exports = class DeleteInvoice extends Modal{
+	modal.invoice = invoice;
+	modal.addRenderLocals('invoice', invoice);
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-
-	init(invoice){
-		this.addDOMListener('logicalDelete', this.logicalDelete.bind(this));
-		this.addDOMListener('hardDelete', this.hardDelete.bind(this));
-		this.addDOMListener('cancel', this.cancel.bind(this));
-		this.invoice = invoice;
-		this.addRenderLocals('invoice', invoice);
-	}
-
-	logicalDelete(){
-		app.getCollections('Invoices').logicalDelete(this.invoice);
+	modal.addDOMListener('logicalDelete', () => {
+		app.getCollections('Invoices').logicalDelete(modal.invoice);
 		app.controllerManager.startNew('dashboard');
-		this.close(true);
-	}
+		modal.close(true);
+	});
 
-	hardDelete(){
-		app.getCollections('Invoices').hardDelete(this.invoice);
+	modal.addDOMListener('hardDelete', () => {
+		app.getCollections('Invoices').hardDelete(modal.invoice);
 		app.controllerManager.startNew('dashboard');
-		this.close(true);
-	}
+		modal.close(true);
+	});
 
-	cancel(){
-		this.close(false);
-		this.remove();
-	}
+	modal.addDOMListener('cancel', () => {
+		modal.close(false);
+		modal.remove();
+	});
 }

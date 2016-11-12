@@ -1,34 +1,27 @@
 'use strict';
 
-const {Modal, app} = require('easyone-electron');
+module.exports = function EditField(app, modal, options){
 
-module.exports = class EditField extends Modal{
+	modal.addRenderLocals('options', options);
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-
-	init(options){
-		this.options = options || {};
-		this.addRenderLocals('options', this.options);
-		this.addDOMListener('onSubmit', this.editCheck.bind(this));
-		this.on('rendered', function(){
-			try{
-				this.querySelector('#fieldForm input').focus();
-				this.querySelector('#fieldForm input').select();
-			}catch(e){}
-		});
-	}
-
-	editCheck(){
+	modal.on('rendered', function(){
 		try{
-			let form = this.querySelector('#fieldForm');
-			let newval = form.elements['new-value'].value;
-			if(this.options.checkValue){
-				this.options.checkValue(newval);
+			modal.querySelector('#fieldForm input').focus();
+			modal.querySelector('#fieldForm input').select();
+		}catch(e){}
+	});
+
+	modal.addDOMListener('onSubmit', () => {
+		try{
+			const form = modal.querySelector('#fieldForm');
+			const newval = form.elements['new-value'].value;
+			if(options.checkValue){
+				options.checkValue(newval);
 			}
-			this.close(newval);
+			modal.close(newval);
 		}catch(e){
 			console.error(e.stack);
 			alert(e.message);
 		}
-	}
+	});
 }

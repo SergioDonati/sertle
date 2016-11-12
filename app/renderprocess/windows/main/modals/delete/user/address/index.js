@@ -1,28 +1,20 @@
 'use strict';
 
-const {Modal, app} = require('easyone-electron');
+module.exports = function DeleteAddress(app, modal, user, addressIndex){
+	
+	modal.user = user;
+	modal.addressIndex = addressIndex;
+	modal.addRenderLocals('address', user.company.addresses[addressIndex]);
 
-module.exports = class DeleteAddress extends Modal{
+	modal.addDOMListener('delete', () => {
+		modal.user.company.addresses.splice(modal.addressIndex, 1);
+		modal.user = app.updateUser(modal.user);
+		modal.close(true);
+		modal.remove();
+	});
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-
-	init(user, addressIndex){
-		this.addDOMListener('delete', this.delete.bind(this));
-		this.addDOMListener('cancel', this.cancel.bind(this));
-		this.user = user;
-		this.addressIndex = addressIndex;
-		this.addRenderLocals('address', user.company.addresses[addressIndex]);
-	}
-
-	delete(){
-		this.user.company.addresses.splice(this.addressIndex, 1);
-		this.user = app.updateUser(this.user);
-		this.close(true);
-		this.remove();
-	}
-
-	cancel(){
-		this.close(false);
-		this.remove();
-	}
+	modal.addDOMListener('cancel', () => {
+		modal.close(false);
+		modal.remove();
+	});
 }

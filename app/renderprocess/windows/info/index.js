@@ -1,14 +1,10 @@
 'use strict';
-const {app} = require('easyone-electron');
+const {App} = require('easyone-electron');
 const {DB, Collections, onReady} = require('../../database');
-const {ipcRenderer} = require('electron');
+
+const app = new App({ controllersPath: __dirname+'/controllers' });
 
 app.on('ready', function(app){
-    app.setOptions({
-        controllersPath: __dirname+'/controllers'
-    });
     app.loadStyle('mainStyle', __dirname+'/../../style/main.less');
-    onReady(function(){
-        app.start();
-    });
+    onReady(() => { app.start(); });
 });

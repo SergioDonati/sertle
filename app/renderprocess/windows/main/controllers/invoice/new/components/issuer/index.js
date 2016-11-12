@@ -1,40 +1,32 @@
 'use strict';
 
-const {Controller, app} = require('easyone-electron');
+module.exports = function Issuer(app, component) {
 
-module.exports = class Issuer extends Controller {
+	component.on('rendered', loadUserCompany);
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-
-	init(){
-		//this.addRenderLocals('company', app.getProperty(user).company);
-		this.on('rendered', this.loadUserCompany.bind(this));
-	}
-
-	_setSpanContent(selector, value){
+	function setSpanContent(selector, value){
 		try{
-			this.HTMLElement.querySelector(selector).innerHTML = value;
+			component.querySelector(selector).innerHTML = value;
 		}catch(e){
 			console.log(e.stack);
 		}
 	}
 
-	loadUserCompany(){
-		let user = app.getProperty('user');
+	function loadUserCompany(){
+		const user = app.getProperty('user');
 		if(!user) return;
-		this.user = user;
-		let company = user.company;
-		this._setSpanContent('#issuer-name', company.name);
-		if(company.piva) this._setSpanContent('#issuer-piva', company.piva);
-		if(company.fiscalCode) this._setSpanContent('#issuer-fiscalcode', company.fiscalCode);
+		const company = user.company;
+		setSpanContent('#issuer-name', company.name);
+		if(company.piva) setSpanContent('#issuer-piva', company.piva);
+		if(company.fiscalCode) setSpanContent('#issuer-fiscalcode', company.fiscalCode);
 
 		if(company.addresses && company.addresses.length>0){
-			let address = company.addresses[0];
-			this._setSpanContent('#issuer-address', address.street + ', ' + address.number + ' <br\>'+ address.postalCode + ', ' + address.city );
+			const address = company.addresses[0];
+			setSpanContent('#issuer-address', address.street + ', ' + address.number + ' <br\>'+ address.postalCode + ', ' + address.city );
 		}
 
 		if(company.phones && company.phones.length>0){
-			this._setSpanContent('#issuer-phone', company.phones[0].number);
+			setSpanContent('#issuer-phone', company.phones[0].number);
 		}
 	}
 

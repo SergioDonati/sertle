@@ -1,43 +1,37 @@
 'use strict';
 
-const {Controller, app} = require('easyone-electron');
+const elements = {};
 
-module.exports = class GeneralInfo extends Controller {
+module.exports = function GeneralInfo(app, component) {
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	//get stylePath(){ return __dirname+'\\style.less'; }
+	component.addRenderLocals('user', app.getProperty('user'));
+	component.on('rendered', function(){
+		elements.dateInput = component.querySelector('#invoiceDate');
+		elements.numberInput = component.querySelector('#progressiveNumber');
+		elements.paymethodSelect = component.querySelector('#paymethod');
 
-	init(){
-		this.addDOMListener('onPayMethodChange', this.toogleBankSection.bind(this));
-		this.addRenderLocals('user', app.getProperty('user'));
-		this.on('rendered', function(){
-			this.dateInput = this.HTMLElement.querySelector('#invoiceDate');
-			this.numberInput = this.HTMLElement.querySelector('#progressiveNumber');
-			this.paymethodSelect = this.HTMLElement.querySelector('#paymethod');
+		elements.dateInput.valueAsDate = new Date();
+		elements.numberInput.value = app.getCollections('Invoices').getNextProgressiveNumber(app.getProperty('user'));
+	});
 
-			this.dateInput.valueAsDate = new Date();
-			this.numberInput.value = app.getCollections('Invoices').getNextProgressiveNumber(app.getProperty('user'));
-		});
-	}
+	component.addDOMListener('onPayMethodChange', () => {
+		const bankSection = component.querySelector('#bankSection');
 
-	toogleBankSection(){
-		let bankSection = this.HTMLElement.querySelector('#bankSection');
-
-		if(this.paymethodSelect.value == 1){
+		if(elements.paymethodSelect.value == 1){
 			bankSection.style.display = 'inherit';
 		}else{
 			bankSection.style.display = 'none';
 		}
-	}
+	});
 
-	getData(){
-		let data = {};
-		data.date = this.dateInput.valueAsDate;
-		data.progressiveNumber = this.numberInput.valueAsNumber;
-		data.paymethod = this.paymethodSelect.value;
+	component.getData = () => {
+		const data = {};
+		data.date = elements.dateInput.valueAsDate;
+		data.progressiveNumber = elements.numberInput.valueAsNumber;
+		data.paymethod = elements.paymethodSelect.value;
 		if(data.paymethod == 1){
-			data.iban = this.HTMLElement.querySelector('#invoiceIBAN').value;
-			data.bankName = this.HTMLElement.querySelector('#invoiceBankName').value;
+			data.iban = component.querySelector('#invoiceIBAN').value;
+			data.bankName = component.querySelector('#invoiceBankName').value;
 		}
 		return data;
 	}

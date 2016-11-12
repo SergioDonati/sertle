@@ -1,78 +1,72 @@
 'use strict';
 
-const {Modal, app} = require('easyone-electron');
 const {dialog} = require('electron').remote;
 
 function roundDecimals(num){
 	return Math.round(num * 100) / 100;
 }
 
-module.exports = class NewInvoiceItem extends Modal{
+module.exports = function NewInvoiceItem(app, modal){
+	const elements = {};
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
+	modal.on('rendered', () => {
+		elements.priceInput = modal.querySelector('[name="price"]');
+		elements.priceTotInput = modal.querySelector('[name="total-price"]');
+		elements.quantityInput = modal.querySelector('[name="quantity"]');
+		elements.ivaInput = modal.querySelector('[name="iva"]');
 
-	init(){
-		this.addDOMListener('onSubmit', this.create.bind(this));
-		this.on('rendered', this.addOnChanges.bind(this));
-	}
-
-	addOnChanges(){
-		this.priceInput = this.querySelector('[name="price"]');
-		this.priceTotInput = this.querySelector('[name="total-price"]');
-		this.quantityInput = this.querySelector('[name="quantity"]');
-		this.ivaInput = this.querySelector('[name="iva"]');
-		this.priceInput.addEventListener('input', this.calcTot.bind(this), true);
-		this.quantityInput.addEventListener('input', this.calcTot.bind(this), true);
-		this.priceTotInput.addEventListener('input', this.calcPrice.bind(this), true);
+		elements.priceInput.addEventListener('input', calcTot, true);
+		elements.ivaInput.addEventListener('input', calcTot, true);
+		elements.quantityInput.addEventListener('input', calcTot, true);
+		elements.priceTotInput.addEventListener('input', calcPrice, true);
 
 		try{
-			this.querySelector('[name="description"]').focus();
+			modal.querySelector('[name="description"]').focus();
 		}catch(e){}
-	}
+	});
 
-	calcTot(){
+	function calcTot(){
 		try{
-			let price = this.priceInput.valueAsNumber;
-			let qty = this.quantityInput.valueAsNumber;
-			let iva = this.ivaInput.valueAsNumber;
-			let imponibile = roundDecimals(price * qty);
-			let imposta = roundDecimals(imponibile * iva / 100);
-			let tot = roundDecimals(imponibile + imposta);
-			this.priceTotInput.valueAsNumber = tot;
-			this.priceTotInput.setCustomValidity('');
+			const price = elements.priceInput.valueAsNumber;
+			const qty = elements.quantityInput.valueAsNumber;
+			const iva = elements.ivaInput.valueAsNumber;
+			const imponibile = roundDecimals(price * qty);
+			const imposta = roundDecimals(imponibile * iva / 100);
+			const tot = roundDecimals(imponibile + imposta);
+			elements.priceTotInput.valueAsNumber = tot;
+			elements.priceTotInput.setCustomValidity('');
 		}catch(e){
-			this.priceInput.value = '';
+			elements.priceInput.value = '';
 		}
 	}
 
-	calcPrice(){
+	function calcPrice(){
 		try{
-			let priceTot = roundDecimals(this.priceTotInput.valueAsNumber);
-			let qty = this.quantityInput.valueAsNumber;
-			let iva = this.ivaInput.valueAsNumber;
-			let imponibile = roundDecimals(priceTot / (1 + (iva/100)));
-			let imposta = roundDecimals(imponibile * iva / 100);
+			const priceTot = roundDecimals(elements.priceTotInput.valueAsNumber);
+			const qty = elements.quantityInput.valueAsNumber;
+			const iva = elements.ivaInput.valueAsNumber;
+			const imponibile = roundDecimals(priceTot / (1 + (iva/100)));
+			const imposta = roundDecimals(imponibile * iva / 100);
 			if (roundDecimals(imponibile + imposta) != priceTot){
-				this.priceTotInput.setCustomValidity('L\'importo inserito non può generare un prezzo corretto, prova ad aumentare o diminuice di un decimale.');
-				this.priceInput.value = '';
+				elements.priceTotInput.setCustomValidity('L\'importo inserito non può generare un prezzo corretto, prova ad aumentare o diminuice di un decimale.');
+				elements.priceInput.value = '';
 				return;
 			}else{
-				this.priceTotInput.setCustomValidity('');
+				elements.priceTotInput.setCustomValidity('');
 			}
-			let price = roundDecimals(imponibile / qty);
-			this.priceInput.valueAsNumber = price;
+			const price = roundDecimals(imponibile / qty);
+			elements.priceInput.valueAsNumber = price;
 		}catch(e){
-			this.priceInput.value = '';
+			elements.priceInput.value = '';
 		}
 	}
 
-	create(){
-		let form = this.querySelector('#invoiceItemForm');
+	modal.addDOMListener('onSubmit', () => {
+		const form = modal.querySelector('#invoiceItemForm');
 		if(!form.checkValidity()){
 			dialog.showErrorBox('Attenzione', 'Alcuni campi contengono un errore o non sono stati compilati.');
 			return;
 		}
-		let elements = form.elements;
 		function getStrValue(name){
 			try{
 				return form.elements[name].value.trim();
@@ -101,12 +95,12 @@ module.exports = class NewInvoiceItem extends Modal{
 
 		newInvoiceItem = app.getCollections('Invoices').constructor.calcItem(newInvoiceItem);
 
-		let result = app.getCollections('Invoices').validateItem(newInvoiceItem);
+		const result = app.getCollections('Invoices').validateItem(newInvoiceItem);
 		if(result.valid == true){
-			this.close(newInvoiceItem);
-			this.remove();
+			mocal.close(newInvoiceItem);
+			modal.remove();
 		}else{
 			alert(result.error.message);
 		}
-	}
+	});
 }

@@ -1,19 +1,8 @@
 'use script';
 
-const {Component} = require('../../core');
+module.exports = function Info(app, component) {
 
-module.exports = class Info extends Component {
-
-	constructor(){
-		super(__dirname+'\\view.pug');
-	}
-
-	render(args, callback){
-		var locals = {
-			node_version: window.process.versions.node,
-			chrome_version: window.process.versions.chrome,
-			electron_version: window.process.versions.electron
-		};
-		super.render({ locals:locals }, callback);
-	}
+	component.addRenderLocals('node_version', window.process.versions.node);
+	component.addRenderLocals('chrome_version', window.process.versions.chrome);
+	component.addRenderLocals('electron_version', window.process.versions.electron);
 };

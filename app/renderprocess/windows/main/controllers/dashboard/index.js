@@ -1,15 +1,10 @@
 'use strict';
 
-const {Controller} = require('easyone-electron');
+module.exports = function DashHome(app, controller){
 
-module.exports = class DashHome extends Controller{
+	controller.useDefaultPaths(__dirname);
+	controller.setView(' ');
 
-	get view(){ return ' '; }
-	get stylePath(){ return __dirname+'\\style.less'; }
-	get componentsPath(){ return __dirname+'\\components'; }
-
-	init(){
-		this.addChild('companies-list', '_parent', 'companiesList');
-		this.addChild('invoices-list', '_parent', 'invoicesList');
-	}
+	controller.addChild('companies-list', '_parent', 'companiesList');
+	controller.addChild('invoices-list', '_parent', 'invoicesList');
 }

@@ -1,60 +1,49 @@
 'use strict';
 
-const {Controller, app} = require('easyone-electron');
+module.exports = function Nominee(app, component) {
 
-module.exports = class Nominee extends Controller {
-
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	//get stylePath(){ return __dirname+'\\style.less'; }
-
-	init(){
-		this.addDOMListener('newCompany', this.newCompany.bind(this));
-		this.addDOMListener('searchCompany', this.searchCompany.bind(this));
-	}
-
-	_setSpanContent(selector, value){
+	let company = null;
+	
+	function setSpanContent(selector, value){
 		try{
-			this.HTMLElement.querySelector(selector).innerHTML = value;
+			component.querySelector(selector).innerHTML = value;
 		}catch(e){
 			console.log(e.stack);
 		}
 	}
 
-	setCompany(company){
-		if(!this.HTMLElement) return;
-		if(!company) return;
-		this.company = company;
-		this._setSpanContent('#nominee-name', company.name);
-		if(company.piva) this._setSpanContent('#nominee-piva', company.piva);
-		if(company.fiscalCode) this._setSpanContent('#nominee-fiscalcode', company.fiscalCode);
+	function setCompany(newCompany){
+		if(!newCompany) return;
+		company = newCompany;
+		setSpanContent('#nominee-name', company.name);
+		if(company.piva) setSpanContent('#nominee-piva', company.piva);
+		if(company.fiscalCode) setSpanContent('#nominee-fiscalcode', company.fiscalCode);
 
 		if(company.addresses && company.addresses.length>0){
-			let address = company.addresses[0];
-			this._setSpanContent('#nominee-address', address.street + ', ' + address.number + ' <br\>'+ address.postalCode + ', ' + address.city );
+			const address = company.addresses[0];
+			setSpanContent('#nominee-address', address.street + ', ' + address.number + ' <br\>'+ address.postalCode + ', ' + address.city );
 		}
 
 		if(company.phones && company.phones.length>0){
-			this._setSpanContent('#nominee-phone', company.phones[0].number);
+			setSpanContent('#nominee-phone', company.phones[0].number);
 		}
 	}
 
-	newCompany(){
-		let component = this;
+	component.addDOMListener('newCompany', () => {
 		app.modalManager.startNew('new/company').then(function(modal){
 			modal.on('modalClosed', function(){
-				let company = modal.result;
-				if(company) component.setCompany(company);
+				const company = modal.result;
+				if(company) setCompany(company);
 			});
 		});
-	}
+	});
 
-	searchCompany(){
-		let component = this;
+	component.addDOMListener('searchCompany', () => {
 		app.modalManager.startNew('search/company').then(function(modal){
 			modal.on('modalClosed', function(){
-				let company = modal.result;
-				if(company) component.setCompany(company);
+				const company = modal.result;
+				if(company) setCompany(company);
 			});
 		});
-	}
+	});
 };

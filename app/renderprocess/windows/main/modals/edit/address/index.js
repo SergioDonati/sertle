@@ -1,46 +1,40 @@
 'use strict';
 
-const {Modal, app} = require('easyone-electron');
+module.exports = function EditAddress(app, modal, company, addressIndex){
 
-module.exports = class EditAddress extends Modal{
-
-	get viewPath(){ return __dirname+'\\view.pug'; }
-
-	init(company, addressIndex){
-		this.company = company;
-		if(company.addresses.length>0 && addressIndex>=0 && addressIndex<company.addresses.length){
-			this.addressIndex = addressIndex;
-			this.addRenderLocals('address', company.addresses[addressIndex]);
-		}
-		this.addDOMListener('onSubmit', this.editCheck.bind(this));
-		this.on('rendered', function(){
-			try{
-				let input = this.querySelector('#addressForm input');
-				input.focus();
-				input.select();
-			}catch(e){}
-		});
+	if(company.addresses.length>0 && addressIndex >= 0 && addressIndex < company.addresses.length){
+		modal.addRenderLocals('address', company.addresses[addressIndex]);
+	}else{
+		addressIndex = null;
 	}
 
-	editCheck(){
+	modal.on('rendered', function(){
 		try{
-			let form = this.querySelector('#addressForm');
-			let newAddress = {
+			const input = modal.querySelector('#addressForm input');
+			input.focus();
+			input.select();
+		}catch(e){}
+	});
+
+	modal.addDOMListener('onSubmit', () => {
+		try{
+			const form = modal.querySelector('#addressForm');
+			const newAddress = {
 				street: form.elements['street'].value,
 				number: form.elements['number'].value,
 				postalCode: form.elements['postalCode'].value,
 				city: form.elements['city'].value,
 				nation: form.elements['nation'].value
 			};
-			if(this.addressIndex){
-				this.company.addresses[this.addressIndex] = newAddress;
+			if(addressIndex){
+				company.addresses[addressIndex] = newAddress;
 			}else{
-				this.company.addresses.push(newAddress);
+				company.addresses.push(newAddress);
 			}
-			app.getCollections("Companies").update(this.company);
-			this.close(true);
+			app.getCollections("Companies").update(company);
+			modal.close(true);
 		}catch(e){
 			alert(e.message);
 		}
-	}
+	});
 }

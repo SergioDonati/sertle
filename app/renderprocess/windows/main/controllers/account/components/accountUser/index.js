@@ -1,17 +1,9 @@
 'use script';
 
-const {Component, app} = require('easyone-electron');
+module.exports = function AccountUser(app, component) {
 
-module.exports = class AccountUser extends Component {
-
-	get viewPath(){ return __dirname+'\\view.pug'; }
-	get componentsPath(){ return __dirname; }
-
-	init(){
-		let user = app.getProperty('user');
-		if(!user) return;
-		this.user = user;
-		this.addRenderLocals('user', this.user);
-	}
+	const user = app.getProperty('user');
+	if(!user) return;
+	component.addRenderLocals('user', user);
 
 };

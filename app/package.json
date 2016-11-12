@@ -13,6 +13,6 @@
     "easyone-electron": "git+https://git@github.com/SergioDonati/easyone-electron.git",
     "less": "^2.7.1",
     "lokijs": "^1.4.1",
-    "pug": "^2.0.0-beta4"
+    "pug": "^2.0.0-beta6"
   }
 }

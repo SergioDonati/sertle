@@ -1,93 +1,75 @@
 'use strict';
 
-const {Modal,  app} = require('easyone-electron');
+const companiesPerPage = 6;
 
-module.exports = class NewCompany extends Modal{
+module.exports = function NewCompany(app, modal){
+	const companiesMap = new WeakMap();
+	let lastSearchResult = null;
+	modal.setComponentsPath(__dirname);
 
-	get viewPath(){ return __dirname+'\\view.pug'; }
-    get stylePath(){ return __dirname+'\\style.less'; }
-    get componentsPath(){ return __dirname; }
+	modal.addDOMListener('onSubmit', search);
 
-    get companiesPerPage(){ return 6; }
+    modal.on('rendered', function(){
+		modal.querySelector('#searchInput').focus();
+	});
 
-	init(){
-        this.companiesMap = new WeakMap();
-		this.addDOMListener('onSubmit', this.search.bind(this));
-		this.addDOMListener('nextPage', this.nextPage.bind(this));
-		this.addDOMListener('prevPage', this.previousPage.bind(this));
-        this.on('rendered', function(){
-			this.querySelector('#searchInput').focus();
+	modal.onChildReady('companies-list', function(){
+		search();
+		modal.getChildComponent('companies-list').once('companySelected', function(company){
+			modal.close(company);
 		});
+	});
 
-		let self = this;
-		this.onChildReady('companies-list', function(){
-			self.search();
-			self.getChildComponent('companies-list').once('companySelected', function(company){
-				self._modal_result = company;
-				self.close();
-			});
-		});
-	}
-
-    select(){
-        if(this._selectedCompany){
-            this._modal_result = this._selectedCompany;
-            this.close();
-        }else{
-            alert('Seleziona un cliente per procedere.');
-        }
-    }
-
-    previousPage(){
-		if(this.lastSearchResult.offset <= 0) return;
-		var result = app.getCollections('Companies').searchByName(this.getSearchKey(), {
-			offset: this.lastSearchResult.offset - this.lastSearchResult.limit,
-			limit: this.lastSearchResult.limit,
+	modal.addDOMListener('prevPage', () => {
+		if(lastSearchResult.offset <= 0) return;
+		var result = app.getCollections('Companies').searchByName(getSearchKey(), {
+			offset: lastSearchResult.offset - lastSearchResult.limit,
+			limit: lastSearchResult.limit,
 			count: true
 		});
-		this.setSearchResult(result);
-    }
+		setSearchResult(result);
+    });
 
-    nextPage(){
-		if(this.lastSearchResult.offset+this.lastSearchResult.limit >= this.lastSearchResult.count) return;
-		let result = app.getCollections('Companies').searchByName(this.getSearchKey(), {
-			offset: this.lastSearchResult.offset + this.lastSearchResult.limit,
-			limit: this.lastSearchResult.limit,
+	modal.addDOMListener('nextPage', () => {
+		if(lastSearchResult.offset+lastSearchResult.limit >= lastSearchResult.count) return;
+		let result = app.getCollections('Companies').searchByName(getSearchKey(), {
+			offset: lastSearchResult.offset + lastSearchResult.limit,
+			limit: lastSearchResult.limit,
 			count: true
 		});
-		this.setSearchResult(result);
-    }
+		setSearchResult(result);
+    });
 
-	setSearchResult(searchResult){
-		this.lastSearchResult = searchResult;
-		this.getChildComponent('companies-list').setCompanies(searchResult.companies);
+	function setSearchResult(searchResult){
+		lastSearchResult = searchResult;
+		modal.getChildComponent('companies-list').setCompanies(searchResult.companies);
 
 		let rangeText = (searchResult.offset+1) + ' - ' + (searchResult.offset+searchResult.companies.length);
 		if(searchResult.count == 0) rangeText = '';
 
-		let rangeSpan = this.querySelector('#range')
+		const rangeSpan = modal.querySelector('#range')
 		if(rangeSpan) rangeSpan.innerHTML = rangeText;
-		let totalSpan = this.querySelector('#total')
+		const totalSpan = modal.querySelector('#total')
 		if(totalSpan) totalSpan.innerHTML = searchResult.count;
 
 		try{
-			if(searchResult.offset+searchResult.limit < searchResult.count) this.querySelector('#next-btn').style.display = 'inherit';
-			else this.querySelector('#next-btn').style.display = 'none';
+			if(searchResult.offset+searchResult.limit < searchResult.count) modal.querySelector('#next-btn').style.display = 'inherit';
+			else modal.querySelector('#next-btn').style.display = 'none';
 		}catch(e){}
 
 		try{
-			if(searchResult.offset>0) this.querySelector('#prev-btn').style.display = 'inherit';
-			else this.querySelector('#prev-btn').style.display = 'none';
+			if(searchResult.offset>0) modal.querySelector('#prev-btn').style.display = 'inherit';
+			else modal.querySelector('#prev-btn').style.display = 'none';
 		}catch(e){}
 	}
 
-	getSearchKey(){
-		let searchInput = this.querySelector('#searchInput');
+	function getSearchKey(){
+		const searchInput = modal.querySelector('#searchInput');
 		return searchInput.value.trim();
 	}
 
-	search(){
-        let result = app.getCollections('Companies').searchByName(this.getSearchKey(), { limit: this.companiesPerPage, count: true });
-		this.setSearchResult(result);
+	function search(){
+        const result = app.getCollections('Companies').searchByName(getSearchKey(), { limit: companiesPerPage, count: true });
+		setSearchResult(result);
     }
 }

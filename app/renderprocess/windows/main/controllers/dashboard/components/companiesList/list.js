@@ -1,22 +1,15 @@
 'use script';
 
-const {Component, app} = require('easyone-electron');
+module.exports = function CompaniesItemList(app, component) {
+	component.setRelativeViewPath('../list.pug');
 
-module.exports = class CompaniesItemList extends Component {
-
-	get viewPath(){ return __dirname+'\\list.pug'; }
-
-	setCompanies(companies){
-		this.renderArgs.locals.companies = companies;
-		if(this.rendered) this.refresh(null, true);
+	component.setCompanies = (companies) => {
+		component.addRenderLocals('companies', companies)
+		if(component.rendered) component.refresh(null, true);
 	}
 
-	init(){
-		this.addDOMListener('openCompany', this.openCompany.bind(this));
-	}
-
-	openCompany(event, element){
+	component.addDOMListener('openCompany', (event, element) => {
 		let companyID = element.getAttribute('data-company-id');
 		app.controllerManager.startNew('company/detail', companyID);
-	}
+	});
 };
