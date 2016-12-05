@@ -97,7 +97,7 @@ module.exports = function NewInvoiceItem(app, modal){
 
 		const result = app.getCollections('Invoices').validateItem(newInvoiceItem);
 		if(result.valid == true){
-			mocal.close(newInvoiceItem);
+			modal.close(newInvoiceItem);
 			modal.remove();
 		}else{
 			alert(result.error.message);

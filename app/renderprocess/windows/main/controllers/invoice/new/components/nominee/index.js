@@ -3,7 +3,7 @@
 module.exports = function Nominee(app, component) {
 
 	let company = null;
-	
+
 	function setSpanContent(selector, value){
 		try{
 			component.querySelector(selector).innerHTML = value;
@@ -28,6 +28,10 @@ module.exports = function Nominee(app, component) {
 			setSpanContent('#nominee-phone', company.phones[0].number);
 		}
 	}
+
+	component.getCompany = function(){
+		return company;
+	};
 
 	component.addDOMListener('newCompany', () => {
 		app.modalManager.startNew('new/company').then(function(modal){

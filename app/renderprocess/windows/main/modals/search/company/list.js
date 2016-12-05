@@ -7,15 +7,16 @@ module.exports = function CompaniesItemList(app, component) {
 	component.addDOMListener('onSelect', (event, element) => {
 		const companyId = element.getAttribute('data-company-id');
 		let selectedCompany;
-		for(let i=0;i<this.companies.length;i++){
-			if(this.companies[i].$loki == companyId) selectedCompany = this.companies[i];
+		if(!companies) return;
+		for(let i=0;i<companies.length;i++){
+			if(companies[i].$loki == companyId) selectedCompany = companies[i];
 		}
         if(selectedCompany){
-			this._eventEmitter.emit('companySelected', selectedCompany);
+			component._eventEmitter.emit('companySelected', selectedCompany);
         }else{
             alert('Seleziona un cliente per procedere.');
         }
-    }
+    });
 
 	function unselectAllRows(){
         const rows = component.querySelectorAll('table tr');
@@ -34,7 +35,7 @@ module.exports = function CompaniesItemList(app, component) {
 		}
 	});
 
-	component.setCompanies(newCompanies){
+	component.setCompanies = function(newCompanies){
 		component.addRenderLocals('companies', companies);
 		companies = newCompanies;
 		if(component.rendered) component.refresh(null, true);

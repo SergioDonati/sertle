@@ -84,14 +84,14 @@ class CompaniesCollection extends Collection{
 
 	searchByName(name, options){
 		options = options || {};
-		let limit = options.limit || 20;
-		let page = options.page || 0;
-		let simpleSort = options.simpleSort || 'name';
-		let offset = options.offset || (limit * page);
-		let countOption = options.count || false;
-		let query = { '$and': [{ownerRef: this.user.$loki }] };
-        if (name) query.$and.push({ 'name': { '$regex': [name, 'i'] } });
-		let companies = this._collection.chain().find(query).simplesort(simpleSort)
+		const limit = options.limit || 20;
+		const page = options.page || 0;
+		const simpleSort = options.simpleSort || 'name';
+		const offset = options.offset || (limit * page);
+		const countOption = options.count || false;
+		const query = { '$and': [{ownerRef: this.user.$loki }] };
+        if (name && name.length>0) query.$and.push({ 'name': { '$regex': [name, 'i'] } });
+		const companies = this._collection.chain().find(query).simplesort(simpleSort)
 			.offset(offset)
           	.limit(limit).data();
 		let count;

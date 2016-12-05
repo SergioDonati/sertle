@@ -19,7 +19,7 @@ module.exports = function NewInvoice(app, controller){
 	}
 
 	function clearActiveNavLink(){
-		const nav = this.querySelector('#invoiceNav');
+		const nav = controller.querySelector('#invoiceNav');
 		const items = nav.querySelectorAll('li');
 		for(let i=0;i<items.length;i++){
 			let item = items[i];
@@ -46,7 +46,7 @@ module.exports = function NewInvoice(app, controller){
 		_newInvoice.footerText = user.invoiceSetting.footerText;
 
 		_newInvoice.items = itemsComponent.getItems();
-		_newInvoice = app.getCollections('Invoices').newInvoice(_newInvoice, nomineeComponent.company);
+		_newInvoice = app.getCollections('Invoices').newInvoice(_newInvoice, nomineeComponent.getCompany());
 		_newInvoice.impArray = app.getCollections('Invoices').calcImpArray(_newInvoice);
 		return _newInvoice;
 	}
