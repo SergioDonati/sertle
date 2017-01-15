@@ -1,6 +1,6 @@
 {
   "name": "sertle",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "description": "A minimal Electron application",
   "main": "mainprocess/index.js",
@@ -11,8 +11,8 @@
   "license": "GPL-3.0",
   "dependencies": {
     "easyone-electron": "git+https://git@github.com/SergioDonati/easyone-electron.git",
-    "less": "^2.7.1",
-    "lokijs": "^1.4.1",
+    "less": "^2.7.2",
+    "lokijs": "^1.4.2",
     "pug": "^2.0.0-beta6"
   }
 }

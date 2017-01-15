@@ -1,6 +1,6 @@
 {
   "name": "sertle",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "description": "Lightweight application to help to manage customers and make invoices.",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "devtron": "^1.4.0",
-    "electron": "^1.4.13",
+    "electron": "^1.4.14",
     "electron-builder": "^10.17.3"
   }
 }
