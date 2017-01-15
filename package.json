@@ -1,7 +1,7 @@
 {
   "name": "sertle",
   "version": "0.0.6",
-  "private": true,
+  "private": false,
   "description": "Lightweight application to help to manage customers and make invoices.",
   "scripts": {
     "postinstall": "install-app-deps",
@@ -20,7 +20,9 @@
     "productName": "Sertle",
     "license": "GPL-3.0",
     "win": {
-      "msi": true
+	  "target": [ "squirrel", "zip", "nsis" ],
+      "msi": true,
+	  "publish": ["github"]
     }
   },
   "devDependencies": {

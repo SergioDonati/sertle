@@ -16,6 +16,9 @@ module.exports = class AppUpdater {
 		});
 		autoUpdater.addListener("update-downloaded", (event, releaseNotes, releaseName, releaseDate, updateURL) => {
 			console.log("A new update is ready to install", `Version ${releaseName} is downloaded and will be automatically installed on Quit`);
+			appManager.requestUpdate(function(){
+				autoUpdater.quitAndInstall();
+			});
 		});
 		autoUpdater.addListener("error", (error) => {
 			console.warn(error)
