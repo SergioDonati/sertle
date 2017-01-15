@@ -3,14 +3,14 @@
 const { app, autoUpdater, BrowserWindow } = require("electron");
 const os = require("os");
 
-const UPDATE_SERVER_HOST = "sertle.software"
+const UPDATE_SERVER_HOST = "nuts.sertle.snakenineproject.pw";
 
 module.exports = class AppUpdater {
 	constructor(appManager) {
 
 		if (os.platform() !== "darwin") return;
 
-		const version = app.getVersion()
+		const version = app.getVersion();
 		autoUpdater.addListener("update-available", (event) => {
 			console.log("A new update is available")
 		});
