@@ -1,8 +1,8 @@
 {
   "name": "sertle",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": false,
-  "description": "Lightweight application to help to manage customers and make invoices.",
+  "description": "Lightweight application to help to manage customers and invoices.",
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "npm install && electron ./app",
