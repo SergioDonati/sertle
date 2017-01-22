@@ -71,3 +71,23 @@ input:invalid {
 input:valid {
     /*border: 1px solid green;*/
 }
+
+.generate-margins(xs, 4px);
+.generate-margins(sm, 8px);
+.generate-margins(md, 16px);
+.generate-margins(lg, 32px);
+
+.generate-margins(@marginType, @margin) {
+	.m-l-@{marginType}{
+		margin-left: @margin;
+	}
+	.m-r-@{marginType}{
+		margin-right: @margin;
+	}
+	.m-t-@{marginType}{
+		margin-top: @margin;
+	}
+	.m-b-@{marginType}{
+		margin-bottom: @margin;
+	}
+}

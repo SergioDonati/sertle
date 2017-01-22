@@ -62,13 +62,14 @@ let userModel = new Model({
 		trim: true,
 		require: true
 	},
-	password: {
-		type: String,
-		require: true
-	},
+	password: String, // not require for now
 	creationTime:{
 		type: Date,
 		default: 'now'
+	},
+	default:{
+		type: Boolean,
+		default: true
 	},
 	company: companySchema,
 	invoiceSetting:{
@@ -86,7 +87,7 @@ class UsersCollection extends Collection{
 	get collectionOptions(){ return { unique:['username'], /*autoupdate: true*/ }; }
 
 	initialize(){
-		this.insert({
+		/*this.insert({
 			username: 'sergio',
 			password: 'prova',
 			company: {
@@ -101,12 +102,11 @@ class UsersCollection extends Collection{
 					nation: 'Italia'
 				}],
 				phones: [{
-					number: '3478868449',
-					description: null
+					number: '3478868449'
 				}]
 			},
 			invoiceSetting: {}
-		});
+		});*/
 	}
 
 	insert(user){
@@ -114,8 +114,14 @@ class UsersCollection extends Collection{
 		return super.insert(user);
 	}
 
+	/** FOR FUTURE USE**/
 	login(username, password, callback){
 		return this.collection.findOne({ '$and': [{username: username}, {password: password}] });
+	}
+
+	/** NO LOGIN IS NEED IN LOCAL SO LOAD THE DEFAULT USER**/
+	getDefault(){
+		return this.collection.findOne({ default: true });
 	}
 }
 

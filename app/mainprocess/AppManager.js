@@ -40,7 +40,7 @@ module.exports = class AppManager{
 		return {width: 1080, height: 600, center:true, icon: path.resolve(app.getAppPath(), 'resources','icon.ico'), frame:false, show:false};
 	}
 	get defaultAccessWindowOptions(){
-		return {width: 700, height: 400, center:true, icon: path.resolve(app.getAppPath(), 'resources','icon.ico') };
+		return {width: 800, height: 500, center:true, icon: path.resolve(app.getAppPath(), 'resources','icon.ico') };
 	}
 
 	getDataFolder(){
@@ -55,19 +55,19 @@ module.exports = class AppManager{
 	}
 
 	_createWindow(loadUrl, windowOptions, readyCallback){
-		let self = this;
+		const self = this;
 
 		// Create the browser window.
-		let newWindow = new BrowserWindow(windowOptions);
+		const newWindow = new BrowserWindow(windowOptions);
 		if(self.user) newWindow.user = self.user;
 		// and load the index.html of the app.
 		newWindow.loadURL(loadUrl);
 		newWindow.setMenu(null);
 
-		//if(this.isDev()){
+		if(this.isDev()){
 			// Open the DevTools.
 			newWindow.webContents.openDevTools();
-		//}
+		}
 
 		// Emitted when the window is closed.
 		newWindow.on('closed', function () {
@@ -120,7 +120,7 @@ module.exports = class AppManager{
 		ipcLoki(this);
 		ipcPrint(this);
 
-		let self = this;
+		const self = this;
 
 		// This method will be called when Electron has finished
 		// initialization and is ready to create browser windows.

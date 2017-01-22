@@ -79,7 +79,7 @@ class CompaniesCollection extends Collection{
 	}
 
 	count(){
-		return this._collection.count({});
+		return this._collection.count({ownerRef: this.user.$loki});
 	}
 
 	searchByName(name, options){

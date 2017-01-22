@@ -36,8 +36,8 @@ module.exports = function CompaniesItemList(app, component) {
 	});
 
 	component.setCompanies = function(newCompanies){
-		component.addRenderLocals('companies', companies);
 		companies = newCompanies;
+		component.addRenderLocals('companies', companies);
 		if(component.rendered) component.refresh(null, true);
 	}
 

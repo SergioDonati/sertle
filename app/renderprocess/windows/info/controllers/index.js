@@ -1,6 +1,6 @@
 'use strict';
 
-const {shell} = require('electron');
+const {shell, ipcRenderer} = require('electron');
 
 module.exports = function Info(app, controller) {
 
@@ -13,6 +13,8 @@ module.exports = function Info(app, controller) {
 		    	shell.openExternal(this.href);
 			});
 		}
+
+		ipcRenderer.send('check-updates');
 	});
 
 };
