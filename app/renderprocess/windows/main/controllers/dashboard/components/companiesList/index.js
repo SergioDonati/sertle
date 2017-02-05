@@ -36,7 +36,7 @@ module.exports = function CompaniesList(app, component){
 	}
 
 	component.addDOMListener('nextPage', () => {
-		if(component.lastSearchResult.offset+lastSearchResult.limit >= lastSearchResult.count) return;
+		if(lastSearchResult.offset+lastSearchResult.limit >= lastSearchResult.count) return;
 		const result = app.getCollections('Companies').searchByName(null, {
 			offset: lastSearchResult.offset + lastSearchResult.limit,
 			limit: lastSearchResult.limit,

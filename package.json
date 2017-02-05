@@ -1,13 +1,14 @@
 {
   "name": "sertle",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": false,
   "description": "Lightweight application to help to manage customers and invoices.",
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "npm install && electron ./app",
     "pack": "build --dir --x64",
-    "dist": "build --x64"
+    "dist": "build --x64",
+    "import": "node imports/fromCSVDeskDot.js"
   },
   "author": "donati.sergio@gmail.com",
   "license": "GPL-3.0",
@@ -21,14 +22,22 @@
     "productName": "Sertle",
     "license": "GPL-3.0",
     "win": {
-	  "target": [ "squirrel", "zip", "nsis" ],
+      "target": [
+        "squirrel",
+        "zip",
+        "nsis"
+      ],
       "msi": true,
-	  "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     }
   },
   "devDependencies": {
+    "csv-parser": "^1.11.0",
     "devtron": "^1.4.0",
     "electron": "^1.4.15",
-    "electron-builder": "^10.17.3"
+    "electron-builder": "^10.17.3",
+    "lokijs": "^1.4.2"
   }
 }

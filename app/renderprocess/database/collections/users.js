@@ -20,6 +20,7 @@ let companySchema = {
 		lowercase:true,
 		trim: true
 	},
+	email: String,
 	addresses: [{
 		city: {
 			type:String,
@@ -67,6 +68,7 @@ let userModel = new Model({
 		type: Date,
 		default: 'now'
 	},
+	email: String,
 	default:{
 		type: Boolean,
 		default: true

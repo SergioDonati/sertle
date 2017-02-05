@@ -1,6 +1,6 @@
 {
   "name": "sertle",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": false,
   "description": "A minimal Electron application",
   "main": "mainprocess/index.js",

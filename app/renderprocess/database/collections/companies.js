@@ -32,27 +32,27 @@ let companyModel = new Model({
 		city: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		street: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		number: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		postalCode: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		nation: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		}
 	}],
 	phones: [{
