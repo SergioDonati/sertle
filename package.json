@@ -8,7 +8,9 @@
     "start": "npm install && electron ./app",
     "pack": "build --dir --x64",
     "dist": "build --x64",
-    "import": "node imports/fromCSVDeskDot.js"
+    "import": "node imports/fromCSVDeskDot.js",
+    "devApp": "cross-env NODE_ENV=development webpack --progress --colors --watch",
+    "buildApp": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "author": "donati.sergio@gmail.com",
   "license": "GPL-3.0",
@@ -34,10 +36,25 @@
     }
   },
   "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "cross-env": "^3.1.4",
+    "css-loader": "^0.26.1",
     "csv-parser": "^1.11.0",
     "devtron": "^1.4.0",
     "electron": "^1.4.15",
-    "electron-builder": "^10.17.3",
-    "lokijs": "^1.4.2"
+    "electron-builder": "^12.3.1",
+    "electron-builder-squirrel-windows": "^12.3.0",
+    "file-loader": "^0.10.0",
+    "lokijs": "^1.4.2",
+    "pug": "^2.0.0-beta11",
+    "vue": "^2.1.10",
+    "vue-loader": "^10.3.0",
+    "vue-router": "^2.2.0",
+    "vue-template-compiler": "^2.1.10",
+    "vuex": "^2.1.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
   }
 }
