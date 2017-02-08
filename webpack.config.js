@@ -49,7 +49,12 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new webpack.ExternalsPlugin('commonjs', [
+        'electron', 'fs'
+    ])
+]
 }
 
 if (process.env.NODE_ENV === 'production') {

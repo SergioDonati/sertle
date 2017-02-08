@@ -1,0 +1,38 @@
+.fbox{
+	display:flex;
+	align-items:center;
+	flex-direction: row;
+	justify-content: flex-start;
+
+	&.fbox-center{
+		align-items:center;
+		justify-content: center;
+	}
+
+	&.fbox-vertical{
+		flex-direction: column;
+		> [class^="col-"],
+		> [class*=" col-"] {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+
+	> .fbox-item{
+		flex:1;
+	}
+
+	&.fbox-margin{
+		> .fbox-item{
+			margin-right: 5px;
+			margin-left: 5px;
+			&:first-child{
+				margin-left: 0;
+			}
+			&:last-child{
+				margin-right: 0;
+			}
+		}
+	}
+}
