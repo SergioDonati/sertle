@@ -1,0 +1,45 @@
+
+form#login-form(bind-event, bind-event-submit='onSubmit')
+	h2 Benvenuto su Sertle,
+		small.m-l-md Primo accesso
+	p.lead Inserisci i dati della tua società.
+		br
+		| Potrai anche modificare questi dati in seguito.
+	.form-group
+		label Ragione Sociale
+		input(name='name', type='text', placeholder='Da Rossi S.R.L.', class="form-control", autofocus)
+	.form-group
+		label Partita IVA
+		input(name='piva', type='text', placeholder='12345678901', class="form-control")
+	.form-group
+		label Codice Fiscale
+		input(name='fiscalCode', type='text', placeholder='12345678901', class="form-control")
+	.panel
+		.panel-heading
+			h3.panel-title Indirizzo
+		.panel-body
+			.form-group
+				label Strada
+				input(name='street', type='text', placeholder='via Garibaldi', class="form-control")
+			.form-group
+				label Numero Civico
+				input(name='civicNumber', type='text', placeholder='23', class="form-control")
+			.form-group
+				label Postal Code
+				input(name='postalCode', type='text', placeholder='53100', class="form-control")
+			.form-group
+				label Città
+				input(name='city', type='text', placeholder='Siena', class="form-control")
+			.form-group
+				label Strada
+				select(name='nation' class="form-control")
+					option(value='Italia', selected) Italia
+	.panel
+		.panel-heading
+			h3 Telefono
+		.panel-body
+			.form-group
+				label Numero Telefonico
+				input(name='phone', type='text', placeholder='3331234567', class="form-control")
+
+	button.m-b-sm(type='submit', class="btn btn-primary") Crea

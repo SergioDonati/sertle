@@ -24,34 +24,34 @@ let companySchema = {
 		city: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		street: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		number: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		postalCode: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		},
 		nation: {
 			type:String,
 			trim: true,
-			require: true
+			//require: true
 		}
 	}],
 	phones: [{
 		number:{
 			type: String,
 			trim: true,
-			require: true
+			//require: true
 		}
 	}]
 };
@@ -106,7 +106,7 @@ let invoiceModel = new Model({
 	},
 	nomineeRef: {
 		type: Number,
-		require: true
+		//require: true
 	},
 	creationTime:{
 		type: Date,

@@ -22,7 +22,12 @@
 	        ipcRenderer.send('login', user);
 	    };
 	    onReady(function(){
-	        app.start('login');
+			const user = app.getCollections('Users').getDefault();
+			if(!user){
+				app.start('newUser');
+			}else{
+				app.login(user);
+			}
 	    });
 	});
 })();

@@ -1,11 +1,14 @@
-h2.modal-title Elimina Fattura #{invoice.progressiveNumber}
-h4.lean.text-left Sei sicuro di voler eliminare questa fattura?
-.alert.alert-warning.text-left(role="alert")
-	strong Attenzone!
-	| Ricoda che se questa non è l'ultima fattura dovrai provvedere manualmente a creare un altra fattura con il numero fattura uguale a quello della fattura eliminata.
-button.btn.btn-default.pull-left(bind-event, bind-event-click="cancel") Annulla
-.btn-group.pull-right(role="group")
-	button.btn.btn-warning(bind-event, bind-event-click="logicalDelete")
-		| Elimina Logicamente
-	button.btn.btn-danger(bind-event, bind-event-click="hardDelete")
-		| Elimina Definitivamente
+.modal-heading
+	h2.modal-title Elimina Fattura #{invoice.progressiveNumber}
+.modal-body.text-left
+	h4.lean.text-left Sei sicuro di voler eliminare questa fattura?
+	.alert.alert-warning.text-left(role="alert")
+		strong Attenzone!
+		| Ricoda che se questa non è l'ultima fattura dovrai provvedere manualmente a creare un altra fattura con il numero fattura uguale a quello della fattura eliminata.
+.modal-footer
+	button.btn.btn-default.pull-left(bind-event, bind-event-click="cancel") Annulla
+	.btn-group.pull-right(role="group")
+		button.btn.btn-warning(bind-event, bind-event-click="logicalDelete")
+			| Elimina Logicamente
+		button.btn.btn-danger(bind-event, bind-event-click="hardDelete")
+			| Elimina Definitivamente

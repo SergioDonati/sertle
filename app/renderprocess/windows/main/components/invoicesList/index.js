@@ -35,7 +35,7 @@ module.exports = function InvoicesList(app, component, companyID) {
 
 	component.addDOMListener('nextPage', () => {
 		if(lastSearchResult.offset+lastSearchResult.limit >= lastSearchResult.count) return;
-		let result = app.getCollections('Invoices').getAll(null, {
+		let result = app.getCollections('Invoices').getAll({
 			offset: lastSearchResult.offset + lastSearchResult.limit,
 			limit: lastSearchResult.limit,
 			count: true, companyID: companyID
@@ -45,7 +45,7 @@ module.exports = function InvoicesList(app, component, companyID) {
 
 	component.addDOMListener('prevPage', () => {
 		if(lastSearchResult.offset <= 0) return;
-		var result = app.getCollections('Invoices').getAll(null, {
+		var result = app.getCollections('Invoices').getAll({
 			offset: lastSearchResult.offset - lastSearchResult.limit,
 			limit: lastSearchResult.limit,
 			count: true, companyID: companyID
