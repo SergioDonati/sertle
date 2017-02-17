@@ -27,7 +27,7 @@ mixin printPayMethod(payMethod)
 			.flex-layout
 				.box-border(style="margin-right:5px;text-align:center;")
 					p Numero Fattura
-					span: strong #{invoice.progressiveNumber}/16
+					span: strong #{invoice.progressiveNumber}/#{new Date(invoice.date).getFullYear() - (Math.round(new Date(invoice.date).getFullYear()/100)*100)}
 				.box-border(style="margin-left:5px;text-align:center;")
 					p Data Fattura
 					span: strong #{new Date(invoice.date).toLocaleDateString()}
