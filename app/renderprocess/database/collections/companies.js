@@ -108,6 +108,41 @@ class CompaniesCollection extends Collection{
         this._user = user;
     }
     get user(){ return this._user; }
+
+	list(options = {}){
+		console.log(options);
+		const limit = options.itemsPerPage || 20;
+		const page = options.page?options.page - 1 : 0;
+		const simpleSort = options.sortBy || 'name';
+		const offset = options.offset || (limit * page);
+		const query = { '$and': [{ownerRef: this.user.$loki }] };
+        if (options.filter && options.filterColumn){
+			const filter = {};
+			filter[options.filterColumn] = options.filter;
+			query.$and.push(filter);
+		}
+
+		console.log(query);
+		const companies = this._collection.chain().find(query).simplesort(simpleSort)
+			/*.where(function(obj){
+				console.log('"'+obj.name+'"');
+				console.log('test: '+new RegExp('bata','ig').test(obj.name));
+				return new RegExp('bata','ig').test(obj.name);
+			})*/
+			.offset(offset)
+			.limit(limit)
+			.data();
+		let count = this._collection.count(query);
+		return {
+			items: companies,
+			pagination:{
+				isLast: offset+limit >= count,
+				currentPage: page+1,
+				totalItems: count,
+				itemsPerPage: limit
+			}
+		}
+	}
 }
 
 module.exports = new CompaniesCollection(DB, companyModel);

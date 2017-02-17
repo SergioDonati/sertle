@@ -35,3 +35,29 @@ input:invalid {
 input:valid {
     /*border: 1px solid green;*/
 }
+
+#app{
+	display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    height: 100%;
+	#app-container{
+		width:100%;
+		overflow: hidden;
+		flex: 1;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: row;
+		> .container-fluid{
+			flex: 1;
+		}
+		.page-wrapper{
+			padding-bottom: 40px;
+			width: 100%;
+			> h1, > h2, > h3, > h4, >h5, >h6{
+				margin-top: 0;
+			}
+		}
+	}
+}

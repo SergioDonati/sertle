@@ -28,3 +28,7 @@ function caller(fun){
 module.exports.getCompaniesCount = caller(function(res, rej){
 	res(Companies.count());
 });
+
+module.exports.getCompanies = caller(function(res, rej, options){
+	res(Companies.list(options));
+});

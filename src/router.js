@@ -1,6 +1,7 @@
 module.exports = {
     routes: [
-		{ path: '/', component: require('./pages/Dashboard.vue') },
-        { path: '/test', component: require('./pages/Test.vue') }
+		{ path: '/home', name: 'dashboard', component: require('./pages/Dashboard.vue'), alias:'/' },
+        { path: '/test', component: require('./pages/Test.vue') },
+		{ path: '/companies', component: require('./pages/Companies.vue') }
     ]
 };
