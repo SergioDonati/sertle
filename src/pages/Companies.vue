@@ -11,19 +11,21 @@
 			template(scope='props')
 				.fbox
 					.company.animated.slideInRight(v-for='company in props.items')
-						a.text-uppercase.text-left: strong {{ company.name }}
-						.text-left
-							strong.text-muted PIVA:
-							span.m-l-xs.text-uppercase {{ company.piva }}
-						.text-left
-							strong.text-muted C.Fis:
-							span.m-l-xs.text-uppercase {{ company.fiscalCode }}
-						.btn-group
-							button.btn.btn-primary
-								span.fa.fa-list
-								span.m-l-xs Fatture
-							button.btn.btn-success
-								span.fa.fa-plus
+						.fbox.fbox-vertical.fbox-j-sb(style='height:100%')
+							div
+								router-link.text-uppercase.text-left(:to='"/company/"+company.$loki'): strong {{ company.name }}
+								.text-left
+									strong.text-muted PIVA:
+									span.m-l-xs.text-uppercase {{ company.piva }}
+								.text-left
+									strong.text-muted C.Fis:
+									span.m-l-xs.text-uppercase {{ company.fiscalCode }}
+							.btn-group
+								button.btn.btn-primary
+									span.fa.fa-list
+									span.m-l-xs Fatture
+								button.btn.btn-success
+									span.fa.fa-plus
 </template>
 
 <style scoped lang='less'>

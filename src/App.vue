@@ -4,7 +4,7 @@
 		#app-container
 			sidebar
 			.container-fluid
-				transition(name="custom-classes-transition" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutUp")
+				transition(name="custom-classes-transition" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutUp" mode="out-in")
 					router-view
 		#modals
 </template>

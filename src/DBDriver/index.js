@@ -32,3 +32,13 @@ module.exports.getCompaniesCount = caller(function(res, rej){
 module.exports.getCompanies = caller(function(res, rej, options){
 	res(Companies.list(options));
 });
+
+module.exports.getCompany = caller(function(res, rej, id){
+	res(Companies.get(id));
+});
+
+module.exports.updateCompanyField = caller(function(res, rej, id, data){
+	const company = Companies.get(id);
+	company[data.fieldName] = data.newValue;
+	res(Companies.update(company));
+});

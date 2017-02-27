@@ -14,6 +14,7 @@ window.mainStore = new Vuex.Store(require('./stores/baseStore.js'));
 
 Vue.component('genericList', require('./components/GenericList.vue'));
 Vue.component('spinner', require('./components/Spinner.vue'));
+Vue.component('editableField', require('./components/EditableField.vue'));
 
 window.mainApp = new Vue({
 	router: router,
