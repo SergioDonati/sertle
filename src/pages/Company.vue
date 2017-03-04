@@ -12,6 +12,11 @@
 		.fbox
 			editable-field.editable-field(:value='company.piva', label='Partita IVA', fieldName='piva', v-on:update='updateField')
 			editable-field.editable-field(:value='company.fiscalCode', label='Codice Fiscale', fieldName='fiscalCode', v-on:update='updateField')
+		.clearfix
+		.fbox.m-l-sm.m-r-sm.company-books
+			company-addresses.fbox-item(:company='company')
+			company-phones.fbox-item(:company='company')
+
 	.page-wrapper(v-else)
 		spinner
 </template>
@@ -24,9 +29,16 @@
 	.editable-field-name{
 		max-width: 500px;
 	}
+	.company-books{
+		margin-left: 10px;
+		margin-right: 10px;
+	}
 </style>
 
 <script>
+import CompanyAddresses from '../components/CompanyAddresses.vue';
+import CompanyPhones from '../components/CompanyPhones.vue';
+
 export default {
 	name: 'Company',
 	data () {
@@ -37,11 +49,18 @@ export default {
 			company: null
 		}
 	},
+	components:{
+		CompanyAddresses: CompanyAddresses,
+		CompanyPhones: CompanyPhones
+	},
 	mounted: function(){
 		try{
 			this.company_id = this.$route.params.company_id;
 		}catch(e){}
 		this.loadData();
+		eventHub.$on('company-addresses-updated', ()=>{
+			this.loadData();
+		});
 	},
 	methods:{
 		loadData(){

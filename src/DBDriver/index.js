@@ -42,3 +42,33 @@ module.exports.updateCompanyField = caller(function(res, rej, id, data){
 	company[data.fieldName] = data.newValue;
 	res(Companies.update(company));
 });
+
+module.exports.updateCompanyAddress = caller(function(res, rej, company_id, address_index, address){
+	const company = Companies.get(company_id);
+	if(typeof company.addresses[address_index] == 'undefined'){
+		return rej(new Error('Address not found.'));
+	}
+	company.addresses[address_index] = address;
+	res(Companies.update(company));
+});
+
+module.exports.addCompanyAddress = caller(function(res, rej, company_id, address){
+	const company = Companies.get(company_id);
+	company.addresses.push(address);
+	res(Companies.update(company));
+});
+
+module.exports.updateCompanyPhone = caller(function(res, rej, company_id, phone_index, phone){
+	const company = Companies.get(company_id);
+	if(typeof company.phones[phone_index] == 'undefined'){
+		return rej(new Error('Phone not found.'));
+	}
+	company.phones[phone_index] = phone;
+	res(Companies.update(company));
+});
+
+module.exports.addCompanyPhone = caller(function(res, rej, company_id, phone){
+	const company = Companies.get(company_id);
+	company.phones.push(phone);
+	res(Companies.update(company));
+});

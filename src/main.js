@@ -16,6 +16,12 @@ Vue.component('genericList', require('./components/GenericList.vue'));
 Vue.component('spinner', require('./components/Spinner.vue'));
 Vue.component('editableField', require('./components/EditableField.vue'));
 
+Vue.component('strapmodal', require('./components/modals/BootstrapModal.vue'));
+Vue.component('confirmModal', require('./components/modals/ConfirmModal.vue'));
+Vue.component('loadingModal', require('./components/modals/LoadingModal.vue'));
+
+window.eventHub = new Vue({});
+
 window.mainApp = new Vue({
 	router: router,
 	el: '#body',
@@ -27,10 +33,15 @@ window.modalsManager = new Vue({
 	data:{
 		modals: []
 	},
-	template: '<div id="modals"><component v-for="name in modals" :ref="name" :is="name" ></component></div>',
+	template: '<div><component v-for="name in modals" :ref="name" :is="name" ></component></div>',
 	methods:{
 		getModal(name){
-			return this.$refs[name];
+			const a = this.$refs[name];
+			if(a instanceof Array && a.length>0){
+				return a[0]
+			}else{
+				return a;
+			}
 		},
 		addModal(name){
 			if(this.modals.indexOf(name) != -1) return this.getModal(name);
@@ -39,3 +50,12 @@ window.modalsManager = new Vue({
 		}
 	}
 });
+
+
+
+Vue.component('companyAddressEditModal', require('./components/modals/companyAddressEditModal.vue'));
+Vue.component('companyPhoneEditModal', require('./components/modals/companyPhoneEditModal.vue'));
+modalsManager.addModal('confirm-modal');
+modalsManager.addModal('loading-modal');
+modalsManager.addModal('company-address-edit-modal');
+modalsManager.addModal('company-phone-edit-modal');
