@@ -72,3 +72,7 @@ module.exports.addCompanyPhone = caller(function(res, rej, company_id, phone){
 	company.phones.push(phone);
 	res(Companies.update(company));
 });
+
+module.exports.getInvoices = caller(function(res, rej, options){
+	res(Invoices.list(options));
+});
