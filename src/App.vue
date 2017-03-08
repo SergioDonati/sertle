@@ -2,7 +2,7 @@
 	#app
 		navigation-header
 		#app-container
-			sidebar
+			sidebar(v-if='show_sidebar')
 			.container-fluid
 				transition(name="custom-classes-transition" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutUp" mode="out-in")
 					router-view
@@ -22,8 +22,17 @@
 		},
 		data () {
 			return {
-				msg: 'Welcome to Your Vue.js App'
+				msg: 'Welcome to Your Vue.js App',
+				show_sidebar: true
 			}
+		},
+		mounted: function(){
+			eventHub.$on('hideSidebar', () =>{
+				this.show_sidebar = false;
+			});
+			eventHub.$on('showSidebar', () =>{
+				this.show_sidebar = true;
+			});
 		}
 	}
 </script>

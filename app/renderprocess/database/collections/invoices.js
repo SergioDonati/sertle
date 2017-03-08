@@ -350,11 +350,6 @@ class InvoicesCollection extends Collection{
 		}
 
 		const invoices = this._collection.chain().find(query).compoundsort(compoundsort)
-			/*.where(function(obj){
-				console.log('"'+obj.name+'"');
-				console.log('test: '+new RegExp('bata','ig').test(obj.name));
-				return new RegExp('bata','ig').test(obj.name);
-			})*/
 			.offset(offset)
 			.limit(limit)
 			.data();

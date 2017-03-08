@@ -2,7 +2,7 @@
 	header#main-header
 		#brand
 			img(src="./../../app/resources/icon.ico")
-			span.brand-name Sertle
+			span.brand-name.m-l-sm Sertle
 		nav
 			router-link(to='/home', active-class='active') Dashboard
 			router-link(to='/account', active-class='active') Account

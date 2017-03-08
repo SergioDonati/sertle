@@ -76,3 +76,7 @@ module.exports.addCompanyPhone = caller(function(res, rej, company_id, phone){
 module.exports.getInvoices = caller(function(res, rej, options){
 	res(Invoices.list(options));
 });
+
+module.exports.getInvoice = caller(function(res, rej, id){
+	res(Invoices.get(id));
+});

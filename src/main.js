@@ -28,6 +28,11 @@ window.mainApp = new Vue({
 	render: h => h(App)
 });
 
+mainApp.$router.beforeEach((to, from, next)=>{
+	eventHub.$emit('showSidebar');
+	next();
+});
+
 window.modalsManager = new Vue({
 	el: '#modals',
 	data:{
