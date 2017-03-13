@@ -6,7 +6,7 @@
 		nav
 			router-link(to='/home', active-class='active') Dashboard
 			router-link(to='/account', active-class='active') Account
-			a(href='#', v-on:click='openInfoWindow') Info
+			a( v-on:click='openInfoWindow') Info
 		#window-btns
 			a#window-min-btn(v-on:click='min'): span.fa.fa-minus
 			a#window-max-btn(v-on:click='max'): span.fa.fa-expand

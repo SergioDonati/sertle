@@ -3,9 +3,46 @@
 		.clearfix
 			.pull-left: h2.no-m-t.text-uppercase Fattura {{ getInvoiceNumber(invoice) }}
 			.pull-right
-				small.text-muted {{ new Date(invoice.date).toLocaleDateString() }}
+				small.text-muted {{ invoice_date }}
 		.fbox
-			div
+			div(style='margin-right:10px;')
+				.blue-block
+					.row
+						.col-xs-12.col-lg-6
+							p
+								strong Numero:
+								span.m-l-xs {{ getInvoiceNumber(invoice) }}
+						.col-xs-12.col-lg-6
+							p
+								strong Data:
+								span.m-l-xs {{ invoice_date }}
+					.row
+						.col-xs-12.col-lg-6
+							p
+								strong Metodo di pagamento:
+								span.m-l-xs {{ payMethodString }}
+					.row(v-if='invoice.payMethod == 1')
+						.col-xs-12.col-lg-6
+							p
+								strong Banca:
+								span.m-l-xs {{ invoice.bankName }}
+						.col-xs-12.col-lg-6
+							p
+								strong IBAN:
+								span.m-l-xs {{ invoice.iban }}
+				.blue-block
+					h5: router-link(:to='"/company/"+invoice.nomineeRef') {{ invoice.nominee.name }}
+					.row
+						.col-xs-12.col-lg-6
+							p
+								strong Codice Fiscale:
+								span.m-l-xs {{ invoice.nominee.fiscalCode }}
+						.col-xs-12.col-lg-6
+							p
+								strong Partita IVA:
+								span.m-l-xs {{ invoice.nominee.piva }}
+					p {{ invoice.nominee.addresses[0].street }}, {{ invoice.nominee.addresses[0].number }}
+					p {{ invoice.nominee.addresses[0].postalCode }} {{ invoice.nominee.addresses[0].city }} {{ invoice.nominee.addresses[0].nation }}
 			.fbox-item
 				table.table-invoice-items.table.table-bordered.table-striped
 					thead: tr
@@ -33,6 +70,13 @@
 	.table-invoice-items{
 		background: #fff;
 	}
+	.blue-block{
+		margin-bottom: 10px;
+		padding:15px;
+		background: #214e75;
+		color: white;
+		box-shadow: 0px 0px 5px 1px #ccc;
+	}
 </style>
 
 <script>
@@ -47,14 +91,26 @@ export default {
 		}
 	},
 	mixins: [require('../mixins/invoice')],
-	components:{
-	},
 	mounted: function(){
 		try{
 			this.invoice_id = this.$route.params.invoice_id;
 		}catch(e){}
 		this.loadData();
-		eventHub.$emit('hideSidebar');
+		setTimeout(()=>{
+			eventHub.$emit('hideSidebar');
+		}, 100);
+	},
+	computed:{
+		invoice_date: function(){
+			return new Date(this.invoice.date).toLocaleDateString();
+		},
+		payMethodString: function(){
+			if(this.invoice.payMethod == 0){
+				return 'Rimessa Diretta';
+			}else if(this.invoice.payMethod == 1){
+				return 'Bonifico';
+			}
+		}
 	},
 	methods:{
 		loadData(){
