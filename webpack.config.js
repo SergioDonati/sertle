@@ -2,11 +2,14 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, './app/renderprocess/windows/main/'),
-    filename: 'bundle.js'
-  },
+	entry: {
+		main: './src/main.js',
+		invoiceA4: './src/invoiceA4.js'
+	},
+	output: {
+		path: path.resolve(__dirname, './app/renderprocess/bundles/'),
+		filename: '[name].bundle.js'
+	},
   module: {
     rules: [
       {
