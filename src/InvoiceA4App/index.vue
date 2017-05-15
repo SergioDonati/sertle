@@ -1,0 +1,106 @@
+<template lang="pug">
+#main.strech(v-if='invoice')
+	.flex-layout
+		div
+			h1#issuer-name {{invoice.issuer.name}}
+			br
+			p#issuer-address.address.no-bottom-margin
+				| {{invoice.issuer.addresses[0].street}} {{invoice.issuer.addresses[0].number}}
+				br
+				| {{invoice.issuer.addresses[0].postalCode}} {{invoice.issuer.addresses[0].city}}
+			table#issuer-data-table
+				tr
+					td Tel\Fax
+					td {{invoice.issuer.phones[0].number}}
+				tr
+					td Partita IVA
+					td {{invoice.issuer.piva}}
+				tr
+					td Codice Fiscale
+					td {{invoice.issuer.fiscalCode}}
+		.text-center
+			h1#invoice-title Fattura
+			.flex-layout
+				.box-border(style="margin-right:5px;text-align:center;")
+					p Numero Fattura
+					span: strong {{invoice.progressiveNumber}}/{{new Date(invoice.date).getFullYear() - (Math.round(new Date(invoice.date).getFullYear()/100)*100)}}
+				.box-border(style="margin-left:5px;text-align:center;")
+					p Data Fattura
+					span: strong {{new Date(invoice.date).toLocaleDateString()}}
+			.text-left.box-border.margin-top
+				span Intestazione
+				h1#nominee-name {{invoice.nominee.name}}
+				span#nominee-address.address
+					| {{invoice.nominee.addresses[0].street}}, {{invoice.nominee.addresses[0].number}}
+					br
+					| {{invoice.nominee.addresses[0].postalCode}} {{invoice.nominee.addresses[0].city}} {{invoice.nominee.addresses[0].nation}}
+					br
+					span(v-if='invoice.nominee.phones && invoice.nominee.phones.length') Tel: {{invoice.nominee.phones[0].number}}
+	.box-border.box-margin-top: table.strech.table-3
+		tr
+			th Codice Fiscale
+			th Partita IVA
+			th Esente IVA
+		tr
+			td {{invoice.nominee.fiscalCode}}
+			td {{invoice.nominee.piva}}
+			td Non Esente
+	.box-border.box-margin-top: table.strech.table-4
+		tr
+			th Tipo di Pagamento
+			th Valuta
+			th Banca
+			th IBAN
+		tr
+			td {{payMethod}}
+			td EURO
+			td {{invoice.bankName}}
+			td {{invoice.iban}}
+	div
+		p(v-if='invoice.headerText') {{invoice.headerText}}
+	#items-box.box-border.box-margin-top: table#items-table.strech(v-if='invoice')
+		tr
+			th Descrizione
+			th Unità
+			th Quantità
+			th Prezzo
+			th IVA%
+			th Sc%
+			th Importo
+		tr(v-for='item in invoice.items')
+			td {{item.description}}
+			td {{item.unit}}
+			td {{item.quantity}}
+			td {{item.price.toLocaleString(undefined, {minimumFractionDigits: 2})}}
+			td {{item.iva}}
+			td {{item.discount || 0}}
+			td
+				span(v-if='item.imponibile') {{item.imponibile.toLocaleString(undefined, {minimumFractionDigits: 2})}}
+	.flex-layout.margin-top(v-if='invoice')
+		.box-border: table.strech
+			tr
+				th Imponibile scontato
+				th IVA %
+				th Imposta
+			tr(v-for='imp in invoice.impArray')
+				td {{imp.imponibile.toLocaleString(undefined, {style:"currency", currency:"EUR"})}}
+				td {{imp.iva}}
+				td {{imp.imposta.toLocaleString(undefined, {style:"currency", currency:"EUR"})}}
+		div
+		.box-border: table#tot-table.strech(v-if='invoice')
+			tr
+				td Totale Imponibile
+				td {{invoice.totImponibile.toLocaleString(undefined, {style:"currency", currency:"EUR"})}}
+			tr
+				td Imposta Totale
+				td {{invoice.totImposta.toLocaleString(undefined, {style:"currency", currency:"EUR"})}}
+			tr
+				th Importo Totale
+				td: strong {{invoice.tot.toLocaleString(undefined, {style:"currency", currency:"EUR"})}}
+	div
+		p(v-if='invoice.footerText') {{invoice.footerText}}
+	#page Pagina 1 di 1
+</template>
+
+<style lang='less' src='./index.less' scoped></style>
+<script src='./index.js'></script>

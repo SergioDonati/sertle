@@ -1,6 +1,6 @@
 <template lang="pug">
 	.widget.flex-container
-		router-link(to='companies'): h5 Società
+		router-link(to='invoices'): h5 Fatture
 		p {{ count }}
 </template>
 
@@ -8,7 +8,7 @@
 	import driver from '../DBDriver';
 
 	export default {
-		name: 'CompaniesWidget',
+		name: 'InvoicesWidget',
 		data () {
 			return {
 				count: 0

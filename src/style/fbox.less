@@ -1,8 +1,9 @@
 .fbox{
 	display:flex;
-	align-items:center;
+	align-items: stretch;
 	flex-direction: row;
 	justify-content: flex-start;
+	flex-wrap: wrap;
 
 	&.fbox-center{
 		align-items:center;
@@ -17,6 +18,18 @@
 			flex-direction: row;
 			align-items: center;
 		}
+	}
+	&.fbox-j-sb{
+		justify-content: space-between;
+	}
+	&.fbox-j-sa{
+		justify-content: space-around;
+	}
+	&.fbox-a-s{
+		align-items: flex-start;
+	}
+	&.fbox-no-wrap{
+		flex-wrap: nowrap;
 	}
 
 	> .fbox-item{

@@ -1,16 +1,20 @@
 <template lang="pug">
-	.jumbotron
-		h2 Dashboard
-		router-link(to='/test') Test
-		companies-widget
+	.row
+		.col-md-6
+			companies-widget
+		.col-md-6
+			invoices-widget
 </template>
 
 <script>
 import CompaniesWidget from '../widget/Companies.vue';
+import InvoicesWidget from '../widget/Invoices.vue';
+
 export default {
-	name: 'Test',
+	name: 'Dashboard',
 	components:{
-		CompaniesWidget: CompaniesWidget
+		CompaniesWidget: CompaniesWidget,
+		InvoicesWidget: InvoicesWidget
 	},
 	data () {
 		return {

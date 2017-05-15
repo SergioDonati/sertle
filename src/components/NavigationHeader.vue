@@ -2,15 +2,15 @@
 	header#main-header
 		#brand
 			img(src="./../../app/resources/icon.ico")
-			span.brand-name Sertle
+			span.brand-name.m-l-sm Sertle
 		nav
-			router-link(to='/', active-class='active') Dashboard
+			router-link(to='/home', active-class='active') Dashboard
 			router-link(to='/account', active-class='active') Account
-			a(href='#', v-on:click='openInfoWindow') Info
-		.window-btns
+			a( v-on:click='openInfoWindow') Info
+		#window-btns
 			a#window-min-btn(v-on:click='min'): span.fa.fa-minus
-			a#window-max-btn(v-on:click='max') span.fa.fa-expand
-			a#window-close-btn(v-on:click='close') span.fa.fa-close
+			a#window-max-btn(v-on:click='max'): span.fa.fa-expand
+			a#window-close-btn(v-on:click='close'): span.fa.fa-close
 </template>
 
 <script>

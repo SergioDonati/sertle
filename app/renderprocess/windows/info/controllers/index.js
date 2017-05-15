@@ -1,8 +1,11 @@
 'use strict';
 
-const {shell, ipcRenderer} = require('electron');
+const {shell, ipcRenderer, remote} = require('electron');
+const appVersion = remote.app.getVersion();
 
 module.exports = function Info(app, controller) {
+
+	controller.addRenderLocals('appVersion', appVersion);
 
 	controller.on('rendered', parent => {
 		const links = parent.querySelectorAll('a.open-external');

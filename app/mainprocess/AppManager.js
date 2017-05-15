@@ -64,11 +64,11 @@ module.exports = class AppManager{
 		newWindow.loadURL(loadUrl);
 		newWindow.setMenu(null);
 
-		if(this.isDev()){
+		//if(this.isDev()){
 			// Open the DevTools.
 			BrowserWindow.addDevToolsExtension('./devToolsExtensions/vue-devtool');
 			newWindow.webContents.openDevTools();
-		}
+		//}
 
 		// Emitted when the window is closed.
 		newWindow.on('closed', function () {
