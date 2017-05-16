@@ -80,3 +80,7 @@ module.exports.getInvoices = caller(function(res, rej, options){
 module.exports.getInvoice = caller(function(res, rej, id){
 	res(Invoices.get(id));
 });
+
+module.exports.getInvoicesCount = caller(function(res, rej){
+	res(Invoices.count());
+});

@@ -52,7 +52,7 @@
 			th Banca
 			th IBAN
 		tr
-			td {{payMethod}}
+			td {{payMethodString}}
 			td EURO
 			td {{invoice.bankName}}
 			td {{invoice.iban}}

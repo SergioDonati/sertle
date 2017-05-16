@@ -19,7 +19,7 @@ module.exports = function(appManager){
 		const invoice = args.invoice;
 		if(!invoice) return reply(new Error('Invoice not found'));
 
-		const win = new BrowserWindow({ show:false });
+		const win = new BrowserWindow({ show:true });
 		win.invoice = invoice;
 		win.loadURL(path.resolve(app.getAppPath(), 'renderprocess/windows/invoiceA4/index.html'));
 		win.printInvoice = function(){
@@ -35,7 +35,7 @@ module.exports = function(appManager){
       				if (error) return reply(error);
       				//console.log('Write PDF successfully.');
 					reply();
-					win.close();
+					//win.close();
     			});
   			});
 		}

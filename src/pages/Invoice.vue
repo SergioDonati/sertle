@@ -64,7 +64,7 @@
 				table.table-invoice-items.table.table-bordered.table-striped
 					thead: tr
 						th Descrizione
-						th Importo U. &euro;
+						th(style='min-width:100px;') Importo U. &euro;
 						th Quantità
 						th IVA %
 						th Totale &euro;
@@ -87,6 +87,9 @@
 <style scoped lang='less'>
 	.table-invoice-items{
 		background: #fff;
+		th{
+			min-width: 80px;
+		}
 	}
 	.blue-block{
 		margin-bottom: 10px;

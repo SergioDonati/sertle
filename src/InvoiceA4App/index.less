@@ -1,6 +1,15 @@
-body{
+html, body{
 	font-family: serif;
 	height:100%;
+	width: 100%;
+}
+@page {
+  size: A4;
+}
+@page:right{
+  @bottom-right {
+    content: counter(page);
+  }
 }
 .strech{
     width: 100%;
@@ -8,6 +17,7 @@ body{
 #main{
     display: flex;
     flex-flow: column;
+	flex-wrap: wrap;
     height: 100%;
     #items-box{
         flex: 1;

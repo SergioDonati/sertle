@@ -15,7 +15,7 @@
 			}
 		},
 		mounted:function(){
-			driver.getCompaniesCount().then(response => {
+			driver.getInvoicesCount().then(response => {
 				this.count = response.data;
 			});
 		}

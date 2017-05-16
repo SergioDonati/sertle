@@ -4,8 +4,6 @@ const {ipcRenderer, remote} = require('electron');
 
 export default {
 	name: 'invoiceA4App',
-	components: {
-	},
 	data () {
 		return {
 			msg: 'Welcome to Your Vue.js App',
@@ -21,6 +19,15 @@ export default {
 	methods:{
 		print: function(){
 			remote.getCurrentWindow().printInvoice();
+		}
+	},
+	computed:{
+		payMethodString: function(){
+			if(this.invoice.payMethod == 0){
+				return 'Rimessa Diretta';
+			}else if(this.invoice.payMethod == 1){
+				return 'Bonifico';
+			}
 		}
 	}
 }

@@ -298,6 +298,10 @@ class InvoicesCollection extends Collection{
 		}
 	}
 
+	count(){
+		return this._collection.count({ownerRef: this.user.$loki});
+	}
+
 	getById(id){
 		return this.get(Number(id));
 	}
