@@ -56,11 +56,15 @@ window.modalsManager = new Vue({
 	}
 });
 
+import {ipcRenderer, remote} from 'electron';
+mainStore.commit('setUser', remote.getCurrentWindow().user);
 
+Vue.component('companyAddressEditModal', require('./components/modals/CompanyAddressEditModal.vue'));
+Vue.component('companyPhoneEditModal', require('./components/modals/CompanyPhoneEditModal.vue'));
+Vue.component('invoiceItemModal', require('./components/modals/InvoiceItemModal.vue'));
 
-Vue.component('companyAddressEditModal', require('./components/modals/companyAddressEditModal.vue'));
-Vue.component('companyPhoneEditModal', require('./components/modals/companyPhoneEditModal.vue'));
 modalsManager.addModal('confirm-modal');
 modalsManager.addModal('loading-modal');
 modalsManager.addModal('company-address-edit-modal');
 modalsManager.addModal('company-phone-edit-modal');
+modalsManager.addModal('invoice-item-modal');

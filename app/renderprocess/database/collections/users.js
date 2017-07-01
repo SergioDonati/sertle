@@ -79,7 +79,11 @@ let userModel = new Model({
 		headerText: String,
 		footerText: String,
 		defaultIBAN: String,
-		defaultBankName: String
+		defaultBankName: String,
+		defaultIVA: {
+			type: Number,
+			default: 22
+		}
 	}
 });
 

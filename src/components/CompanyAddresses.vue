@@ -2,7 +2,7 @@
 	.company-addresses.fbox.fbox-vertical
 		h4: b Indirizzi
 		.fbox.fbox-vertical.m-r-md
-			company-address.fbox-item(v-for='address, index in company.addresses', :company='company', :address='address', :index='index')
+			company-address.fbox-item(v-for='address, index in company.addresses', :key='address.id', :company='company', :address='address', :index='index')
 </template>
 
 <style scoped>

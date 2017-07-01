@@ -2,7 +2,7 @@
 	div
 		h4: b Numeri telefonici
 		.fbox.fbox-vertical
-			company-phone.company-phone(v-for='phone, index in company.phones', :company='company', :phone='phone', :index='index')
+			company-phone.company-phone(v-for='(phone, index) in company.phones', :key="phone.id", :company='company', :phone='phone', :index='index')
 </template>
 
 <style scoped>

@@ -2,7 +2,7 @@
 	strapmodal(:open="open", :parent_loading='loading', :large='true', v-on:close="cancel", v-on:ok="ok", :modal_title="title", :ok_icon='"fa-check"', :ok_message="ok_message", close_message='Annulla')
 		p(v-if='company') Indirizzo della Società
 			strong.m-l-xs.text-uppercase {{ company.name }}
-		.container: .row
+		.container-fluid: .row
 			.col-md-6.col-lg-4.form-group(v-if='address')
 				label Strada
 				.input-group
@@ -32,7 +32,8 @@
 		company: null,
 		address:null,
 		index:null,
-		error: null
+		error: null,
+		isNew: false
 	};
 	const emptyAddress = {
 		city: null,
@@ -52,9 +53,6 @@
 			});
 		},
 		computed:{
-			isNew: function(){
-				return !this.address;
-			},
 			title: function(){
 				if(this.isNew) return 'Aggiungi Indirizzo';
 				return 'Modifica Indirizzo';
@@ -77,6 +75,7 @@
 				this.company = company;
 				if(!address){
 					this.address = Object.assign({}, emptyAddress);
+					this.isNew = true;
 				}else{
 					this.address = address;
 					this.index = index;

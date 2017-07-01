@@ -1,5 +1,7 @@
 'use strict';
 
+const payMethodMap = require('../../commons/payMethodMap');
+
 module.exports.methods = {
 	getInvoiceNumber(invoice){
 		try{
@@ -9,5 +11,12 @@ module.exports.methods = {
 			console.error(e);
 		}
 		return invoice.progressiveNumber;
+	},
+	payMethodString: function(invoice){
+		if(!invoice.payMethod) return '';
+		return payMethodMap[invoice.payMethod].label;
+	},
+	payMethodOptions: function(){
+		return payMethodMap;
 	}
 }

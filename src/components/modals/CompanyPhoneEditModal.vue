@@ -19,7 +19,8 @@
 		company: null,
 		phone:null,
 		index:null,
-		error: null
+		error: null,
+		isNew: false
 	};
 	const emptyPhone = {
 		number: null,
@@ -36,9 +37,6 @@
 			});
 		},
 		computed:{
-			isNew: function(){
-				return !this.phone;
-			},
 			title: function(){
 				if(this.isNew) return 'Aggiungi Numero Telefonico';
 				return 'Modifica Numero Telefonico';
@@ -61,6 +59,7 @@
 				this.company = company;
 				if(!phone){
 					this.phone = Object.assign({}, emptyPhone);
+					this.isNew = true;
 				}else{
 					this.phone = phone;
 					this.index = index;
