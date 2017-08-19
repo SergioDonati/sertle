@@ -44,17 +44,7 @@
 		edited: false,
 		isNew: false
 	};
-	const emptyItem = {
-		discount: 0,
-		description: null,
-		imponibile: 0,
-		imposta: 0,
-		iva: mainStore.getters.defaultIVA || 22,
-		price: 0,
-		quantity: 1,
-		totPrice: 0,
-		unit: 'nr'
-	};
+
 	const unitMap = require('../../commons/itemUnitMap');
 	export default {
 		props:{ initialOpen:{ type: Boolean, default: false} },
@@ -81,6 +71,20 @@
 			}
 		},
 		methods:{
+			getEmptyItem: function(){
+				const emptyItem = {
+					discount: 0,
+					description: null,
+					imponibile: 0,
+					imposta: 0,
+					iva: window.mainStore.getters.defaultIVA || 22,
+					price: 0,
+					quantity: 1,
+					totPrice: 0,
+					unit: 'nr'
+				};
+				return emptyItem;
+			},
 			reset: function(){
 				Object.assign(this.$data, initialData);
 			},
@@ -91,7 +95,7 @@
 				}
 				this.reset();
 				if(!item){
-					this.item = Object.assign({}, emptyItem);
+					this.item = Object.assign({}, this.getEmptyItem());
 					this.isNew = true;
 				}else{
 					this.item = Object.assign({}, item);

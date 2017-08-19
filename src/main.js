@@ -12,13 +12,19 @@ const router = new VueRouter({ routes });
 
 window.mainStore = new Vuex.Store(require('./stores/baseStore.js'));
 
-Vue.component('genericList', require('./components/GenericList.vue'));
-Vue.component('spinner', require('./components/Spinner.vue'));
-Vue.component('editableField', require('./components/EditableField.vue'));
+import GenericList from './components/GenericList.vue'
+import Spinner from './components/Spinner.vue'
+import EditableField from './components/EditableField.vue'
+import Strapmodal from './components/modals/BootstrapModal.vue'
+import ConfirmModal from './components/modals/ConfirmModal.vue'
+import LoadingModal from './components/modals/LoadingModal.vue'
+Vue.component('genericList', GenericList);
+Vue.component('spinner',  Spinner);
+Vue.component('editableField', EditableField);
 
-Vue.component('strapmodal', require('./components/modals/BootstrapModal.vue'));
-Vue.component('confirmModal', require('./components/modals/ConfirmModal.vue'));
-Vue.component('loadingModal', require('./components/modals/LoadingModal.vue'));
+Vue.component('strapmodal', Strapmodal);
+Vue.component('confirmModal', ConfirmModal);
+Vue.component('loadingModal', LoadingModal);
 
 window.eventHub = new Vue({});
 
@@ -38,7 +44,7 @@ window.modalsManager = new Vue({
 	data:{
 		modals: []
 	},
-	template: '<div><component v-for="name in modals" :ref="name" :is="name" ></component></div>',
+	template: '<div><component v-for="name in modals" :key="name" :ref="name" :is="name" ></component></div>',
 	methods:{
 		getModal(name){
 			const a = this.$refs[name];
@@ -59,9 +65,12 @@ window.modalsManager = new Vue({
 import {ipcRenderer, remote} from 'electron';
 mainStore.commit('setUser', remote.getCurrentWindow().user);
 
-Vue.component('companyAddressEditModal', require('./components/modals/CompanyAddressEditModal.vue'));
-Vue.component('companyPhoneEditModal', require('./components/modals/CompanyPhoneEditModal.vue'));
-Vue.component('invoiceItemModal', require('./components/modals/InvoiceItemModal.vue'));
+import CompanyAddressEditModal from './components/modals/CompanyAddressEditModal.vue';
+import CompanyPhoneEditModal from './components/modals/CompanyPhoneEditModal.vue'
+import InvoiceItemModal from './components/modals/InvoiceItemModal.vue'
+Vue.component('companyAddressEditModal', CompanyAddressEditModal);
+Vue.component('companyPhoneEditModal', CompanyPhoneEditModal);
+Vue.component('invoiceItemModal', InvoiceItemModal);
 
 modalsManager.addModal('confirm-modal');
 modalsManager.addModal('loading-modal');
