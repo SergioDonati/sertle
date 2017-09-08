@@ -20,7 +20,7 @@
 					span.m-l-xs Annulla modifica
 				small.text-muted {{ invoice_date }}
 		invoice-overview.fbox(v-if='show_tab == "overview"', :invoice='invoice')
-		invoice-editing.fbox(v-if='show_tab == "edit"', :invoice_id='invoice_id')
+		invoice-editing.fbox(v-if='show_tab == "edit"', :invoice_id='invoice_id', v-on:invoice-changed="show_tab='overview';loadData();")
 
 		iframe(v-if='iframeUrl && show_tab == "pdf"', :src="iframeUrl" style="width: 100%;height: 476px;")
 		spinner(v-if='show_tab == "pdf" && !iframeUrl')
@@ -82,7 +82,7 @@ export default {
 			this.loading = true;
 			this.error = null;
 			mainStore.state.dbDriver.getInvoice(this.invoice_id).then(response => {
-				if(!response || !response.data) throw new Error('Invalid data.');
+				if(!response || !response.data || typeof(response.data) != "object" || response.data instanceof Array) throw new Error('Invalid data.');
 				this.invoice = response.data;
 			}).catch(e =>{
 				if(e && e.message){

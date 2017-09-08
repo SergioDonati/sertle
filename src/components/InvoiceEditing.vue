@@ -41,37 +41,43 @@
 							span.m-l-xs {{ invoice.nominee.piva }}
 				p {{ invoice.nominee.addresses[0].street }}, {{ invoice.nominee.addresses[0].number }}
 				p {{ invoice.nominee.addresses[0].postalCode }} {{ invoice.nominee.addresses[0].city }} {{ invoice.nominee.addresses[0].nation }}
-		.fbox-item
+		.fbox-item.fbox
 			table.table-invoice-items.table.table-bordered.table-striped
 				thead: tr
 					th Descrizione
 					th(style='min-width:100px;') Importo U. &euro;
 					th Quantità
+					th Unità
 					th IVA %
 					th Totale &euro;
 					th
 				tbody
-					tr(v-for='item in invoice.items')
+					tr(v-for='item, i in invoice.items')
 						td {{ item.description }}
 						td {{ item.price }}
 						td {{ item.quantity }}
+						td {{ getUnitLabel(item.unit) }}
 						td {{ item.iva }}
 						td {{ item.totPrice }}
 						td
 							.btn-group
-								button.btn.btn-primary.btn-sm(v-on:click='addItem')
+								button.btn.btn-primary.btn-sm(v-on:click='addItem(item)')
 									span.fa.fa-pencil
-								button.btn.btn-danger.btn-sm(v-on:click='addItem')
+								button.btn.btn-danger.btn-sm(v-on:click='removeItem(item,i)')
 									span.fa.fa-close
 					tr
 						td.text-right(colspan='6')
-							button.btn.btn-primary.btn-sm(v-on:click='addItem')
+							button.btn.btn-primary.btn-sm(v-on:click='addItem()')
 								span.fa.fa-plus
 								span.m-l-xs Aggiungi elemento
 					tr
-						td(colspan='4')
+						td(colspan='5')
 						td {{ invoice.tot }}
 						td
+			.btn-group.text-right(v-if="needToSave")
+				button.btn.btn-primary(v-on:click="save")
+					span.fa.fa-save
+					span.m-l-xs Salva Modifiche
 </template>
 
 <style scoped>
@@ -84,10 +90,15 @@
 	input, select{
 		color: #333;
 	}
+	.fbox-item.fbox{
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
 </style>
 
 <script>
-
+import unitMap from '../commons/itemUnitMap';
 export default {
 	props:['invoice_id'],
 	data:function(){
@@ -95,7 +106,8 @@ export default {
 			invoice: null,
 			error: null,
 			loading: false,
-			needToSave: false
+			needToSave: false,
+			unitMap: unitMap
 		};
 	},
 	mixins: [require('../mixins/invoice')],
@@ -115,6 +127,7 @@ export default {
 			mainStore.state.dbDriver.getInvoice(this.invoice_id).then(response => {
 				if(!response || !response.data) throw new Error('Invalid data.');
 				this.invoice = response.data;
+				this.invoice.progressiveNumber = this.invoice.progressiveNumber+1;
 			}).catch(e =>{
 				if(e && e.message){
 					this.error = e.message;
@@ -124,14 +137,46 @@ export default {
 			});
 		},
 		inputDate(event){
-			console.log(event);
-			invoice.date = event.srcElement.value;
+			this.invoice.date = event.srcElement.value;
 		},
-		addItem(){
-			modalsManager.getModal('invoice-item-modal').show().$once('ok', (item)=>{
-				this.invoice.items.push(item);
+		addItem(eItem){
+			modalsManager.getModal('invoice-item-modal').show(eItem).$once('ok', (item)=>{
+				if (eItem) Object.assign(eItem, item);
+				else this.invoice.items.push(item);
+				mainStore.state.dbDriver.recalcInvoice(this.invoice)
 				this.needToSave = true;
 			});
+		},
+		removeItem(eitem, i){
+			this.invoice.items.splice(i, 1);
+			mainStore.state.dbDriver.recalcInvoice(this.invoice);
+			this.needToSave = true;
+		},
+		getUnitLabel(unit){
+			return unitMap[unit] ? unitMap[unit].label : '--';
+		},
+		save(){
+			this.loading = true;
+			this.error = null;
+			mainStore.state.dbDriver.updateInvoice(this.invoice).then(response =>{
+				if(!response || !response.data) throw new Error('Invalid data.');
+				this.$emit("invoice-changed");
+			}).catch(e =>{
+				if(e && e.message){
+					this.error = e.message;
+				}
+			}).then(()=>{
+				this.loading = false;
+			});
+		}
+	},
+	watch:{
+		invoice:{
+			handler: function(newValue, oldValue){
+				if (!oldValue) return;
+				this.needToSave = true;
+			},
+			deep:true
 		}
 	}
 }

@@ -16,7 +16,7 @@
 					label Quantità
 					.input-group
 						input.form-control(type='number', v-model='item.quantity', placeholder='10', min="0", required)
-						.input-group-addon(if='item.unit && unitMap[item.unit]') {{unitMap[item.unit].label}}
+						.input-group-addon(v-if='item.unit && unitMap[item.unit]') {{unitMap[item.unit].label}}
 				.form-group(style='width:250px;')
 					label Prezzo totale
 					.input-group
@@ -27,7 +27,7 @@
 					label Unità
 					.input-group
 						select.form-control(type='number', v-model='item.unit', required)
-							option(v-for='unit in unitMap', :value='unit.value') {{unit.label}}
+							option(v-for='unit in unitMap', :value='unit.value' v-if="unit") {{unit.label}}
 				.form-group(style='width:150px;')
 					label IVA
 					.input-group
@@ -100,6 +100,8 @@
 				}else{
 					this.item = Object.assign({}, item);
 				}
+				window.console.log("item");
+				window.console.log(item);
 				this.open = true;
 				return this;
 			},
@@ -114,6 +116,7 @@
 					hasErrors = true;
 				}
 				if(hasErrors) return;
+				this.open = false;
 				this.$off('cancel');
 				this.$emit('ok', this.item, this.edited);
 			},

@@ -90,7 +90,7 @@ let userModel = new Model({
 class UsersCollection extends Collection{
 
 	get collectionName(){ return 'users'; }
-	get collectionOptions(){ return { unique:['username'], /*autoupdate: true*/ }; }
+	get collectionOptions(){ return { unique:['username'], clone: true /*autoupdate: true*/ }; }
 
 	initialize(){
 		/*this.insert({

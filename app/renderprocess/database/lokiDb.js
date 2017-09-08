@@ -6,5 +6,6 @@ const myAdapter = require('./lokiAdapter');
 module.exports = new loki('sandbox.db', {
 	autosave: true,
     autosaveInterval: 10000,
-    adapter: new myAdapter()
+    adapter: new myAdapter(),
+	cloneObjects: true
 });

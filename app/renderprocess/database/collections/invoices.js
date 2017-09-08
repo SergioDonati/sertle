@@ -177,7 +177,7 @@ function roundDecimals(num){
 class InvoicesCollection extends Collection{
 
 	get collectionName(){ return 'invoices'; }
-	get collectionOptions(){ return { /*autoupdate: true*/ }; }
+	get collectionOptions(){ return { /*autoupdate: true*/ clone: true, adaptiveBinaryIndices:true }; }
 
 	newInvoice(invoice, company){
 		invoice.nominee = company;
@@ -188,28 +188,28 @@ class InvoicesCollection extends Collection{
 			invoice.headerText = this.user.invoiceSetting.headerText;
 			invoice.footerText = this.user.invoiceSetting.footerText;
 		}catch(e){}
-		invoice = InvoicesCollection.calc(invoice);
-		let result = this.validate(invoice);
+		invoice = this.calc(invoice);
+		const result = this.validate(invoice);
 		if(result.valid != true){
 			throw result.error;
 		}
 		return this._model.newDocument(invoice);
 	}
 
-	static calcItem(item){
+	calcItem(item){
 		item.imponibile = roundDecimals(item.price * item.quantity);
 		item.imposta = roundDecimals(item.imponibile * item.iva / 100);
 		item.totPrice = roundDecimals(item.imponibile + item.imposta);
 		return item;
 	}
 
-	static calc(invoice){
+	calc(invoice){
 		let impMap = new Map();
 		let totImponibile = 0;
 		let totImposta = 0;
 		if(invoice.items && invoice.items.length > 0){
-			invoice.items = invoice.items.map(function(item){
-				item = InvoicesCollection.calcItem(item);
+			invoice.items = invoice.items.map(item => {
+				item = this.calcItem(item);
 				totImposta += item.imposta;
 				totImponibile += item.imponibile;
 
@@ -357,7 +357,7 @@ class InvoicesCollection extends Collection{
 			.offset(offset)
 			.limit(limit)
 			.data();
-		let count = this._collection.count(query);
+		const count = this._collection.count(query);
 		return {
 			items: invoices,
 			pagination:{

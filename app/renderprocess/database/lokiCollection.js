@@ -46,10 +46,12 @@ module.exports = class LokiCollection{
 	}
 
 	get(id){
-		return this._collection.get(id);
+		const result = this._collection.chain().find({"$loki" : Number(id) }).data({forceClones:true});
+		if(result.length>0) return result[0];
+		return null;
 	}
 
 	find(query){
-		return this._collection.find(query);
+		return this._collection.chain().find(query).data({forceClones:true});
 	}
 }

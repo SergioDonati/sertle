@@ -46,6 +46,7 @@
 					th Descrizione
 					th(style='min-width:100px;') Importo U. &euro;
 					th Quantità
+					th Unità
 					th IVA %
 					th Totale &euro;
 				tbody
@@ -53,10 +54,11 @@
 						td {{ item.description }}
 						td {{ item.price }}
 						td {{ item.quantity }}
+						td {{ getUnitLabel(item.unit) }}
 						td {{ item.iva }}
 						td {{ item.totPrice }}
 					tr
-						td(colspan='4')
+						td(colspan='5')
 						td {{ invoice.tot }}
 </template>
 
@@ -70,7 +72,7 @@
 </style>
 
 <script>
-
+import unitMap from '../commons/itemUnitMap';
 export default {
 	props:['invoice'],
 	mixins: [require('../mixins/invoice')],
@@ -78,6 +80,11 @@ export default {
 	computed:{
 		invoice_date: function(){
 			return new Date(this.invoice.date).toLocaleDateString();
+		}
+	},
+	methods:{
+		getUnitLabel(unit){
+			return unitMap[unit] ? unitMap[unit].label : '--';
 		}
 	}
 }

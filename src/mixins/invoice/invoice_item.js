@@ -5,7 +5,6 @@ function roundDecimals(num){
 
 module.exports.methods = {
 	updateTot(item){
-		window.console.log('try to update tot');
 		try{
 			const price = item.price;
 			const qty = item.quantity;
@@ -19,7 +18,6 @@ module.exports.methods = {
 		}
 	},
 	updatePrice(item){
-		window.console.log('try to update price');
 		try{
 			const priceTot = roundDecimals(item.totPrice);
 			const qty = item.quantity;

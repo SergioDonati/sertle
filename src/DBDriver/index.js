@@ -84,3 +84,21 @@ module.exports.getInvoice = caller(function(res, rej, id){
 module.exports.getInvoicesCount = caller(function(res, rej){
 	res(Invoices.count());
 });
+
+module.exports.recalcInvoice = caller(function(res, rej, invoice){
+	res(Invoices.calc(invoice));
+});
+
+module.exports.recalcInvoiceItem = caller(function(res, rej, invoiceItem){
+	res(Invoices.calcItem(invoiceItem));
+});
+
+module.exports.updateInvoice = caller(function(res, rej, invoice){
+	module.exports.recalcInvoice(invoice).then((response)=>{
+		res(Invoices.update(response.data));
+	});
+});
+
+module.exports.createInvoice = caller(function(res, rej, invoiceData, companyData){
+	res(Invoices.newInvoice(invoiceData, companyData));
+});

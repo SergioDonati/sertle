@@ -76,7 +76,10 @@ mixin printPayMethod(payMethod)
 		each item in invoice.items
 			tr
 				td #{item.description}
-				td #{item.unit}
+				if item.unit == 'hours'
+					td Ore
+				else
+					td #{item.unit}
 				td #{item.quantity}
 				td #{item.price.toLocaleString(undefined, {minimumFractionDigits: 2})}
 				td #{item.iva}

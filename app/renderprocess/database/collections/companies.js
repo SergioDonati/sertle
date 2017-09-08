@@ -67,7 +67,7 @@ let companyModel = new Model({
 
 class CompaniesCollection extends Collection{
 	get collectionName(){ return 'companies'; }
-	get collectionOptions(){ return { /*autoupdate: true*/ }; }
+	get collectionOptions(){ return { /*autoupdate: true*/clone: true }; }
 
 	insert(company){
 		company.ownerRef = this.user.$loki;
