@@ -1,5 +1,8 @@
 <template lang='pug'>
-	div(v-if='invoice')
+	div(v-if="error")
+		.alert.alert-danger
+			p {{error}}
+	div(v-else-if='invoice && !error')
 		div(style='margin-right:10px;flex:0.4;')
 			.blockue
 				.row
@@ -26,7 +29,7 @@
 						p
 							strong IBAN:
 							span.m-l-xs {{ invoice.iban }}
-			.blockue
+			.blockue(v-if="invoice.nominee")
 				h5
 					span {{ invoice.nominee.name }}
 					router-link(:to='"/company/"+invoice.nomineeRef').m-l-sm: i.fa.fa-external-link
@@ -41,6 +44,11 @@
 							span.m-l-xs {{ invoice.nominee.piva }}
 				p {{ invoice.nominee.addresses[0].street }}, {{ invoice.nominee.addresses[0].number }}
 				p {{ invoice.nominee.addresses[0].postalCode }} {{ invoice.nominee.addresses[0].city }} {{ invoice.nominee.addresses[0].nation }}
+			.blockue(v-if="!invoice.nominee")
+				h5 Seleziona il cliente
+				button.btn.btn-primary
+					span.fa.fa-search
+					span.m-l-xs Cerca
 		.fbox-item.fbox
 			table.table-invoice-items.table.table-bordered.table-striped
 				thead: tr
@@ -74,7 +82,7 @@
 						td(colspan='5')
 						td {{ invoice.tot }}
 						td
-			.btn-group.text-right(v-if="needToSave")
+			.btn-group.text-right(v-if="needToSave && !new_invoice")
 				button.btn.btn-primary(v-on:click="save")
 					span.fa.fa-save
 					span.m-l-xs Salva Modifiche
@@ -100,7 +108,7 @@
 <script>
 import unitMap from '../commons/itemUnitMap';
 export default {
-	props:['invoice_id'],
+	props:['invoice_id', 'new_invoice'],
 	data:function(){
 		return {
 			invoice: null,
@@ -124,17 +132,31 @@ export default {
 		loadData(){
 			this.loading = true;
 			this.error = null;
-			mainStore.state.dbDriver.getInvoice(this.invoice_id).then(response => {
-				if(!response || !response.data) throw new Error('Invalid data.');
-				this.invoice = response.data;
-				this.invoice.progressiveNumber = this.invoice.progressiveNumber+1;
-			}).catch(e =>{
-				if(e && e.message){
-					this.error = e.message;
-				}
-			}).then(()=>{
-				this.loading = false;
-			});
+			if(this.new_invoice == true){
+				mainStore.state.dbDriver.getEmptyInvoice().then(response => {
+					if(!response || !response.data) throw new Error('Invalid data.');
+					this.invoice = response.data;
+					this.needToSave = true;
+					this.$emit("invoice-changed", this.invoice);
+				}).catch(e =>{
+					if(e && e.message){
+						this.error = e.message;
+					}
+				}).then(()=>{
+					this.loading = false;
+				});
+			}else{
+				mainStore.state.dbDriver.getInvoice(this.invoice_id).then(response => {
+					if(!response || !response.data) throw new Error('Invalid data.');
+					this.invoice = response.data;
+				}).catch(e =>{
+					if(e && e.message){
+						this.error = e.message;
+					}
+				}).then(()=>{
+					this.loading = false;
+				});
+			}
 		},
 		inputDate(event){
 			this.invoice.date = event.srcElement.value;

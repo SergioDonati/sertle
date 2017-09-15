@@ -102,3 +102,7 @@ module.exports.updateInvoice = caller(function(res, rej, invoice){
 module.exports.createInvoice = caller(function(res, rej, invoiceData, companyData){
 	res(Invoices.newInvoice(invoiceData, companyData));
 });
+
+module.exports.getEmptyInvoice = caller(function(res, rej){
+	res(Invoices.getEmptyInvoice());
+});

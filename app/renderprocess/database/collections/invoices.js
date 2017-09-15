@@ -315,13 +315,23 @@ class InvoicesCollection extends Collection{
 		this.remove(invoice);
 	}
 
+	getLastInvoice(){
+		const currentYear = new Date().getFullYear();
+		const currentYearTime = new Date(currentYear).getTime();
+		const invoices = this.collection.chain().find({
+			'$and': [
+				{ownerRef: this.user.$loki },
+				{ date: { '$gt': currentYearTime }},
+				{ deletedDate: undefined }
+			]
+		}).simplesort('date').limit(1).data();
+		if(invoices.length == 0) return null;
+		return invoices[invoices.length-1];
+	}
+
 	getNextProgressiveNumber(){
-		let currentYear = new Date().getFullYear();
-		let currentYearTime = new Date(currentYear).getTime();
-		let invoices = this.collection.chain().find({ '$and': [{ownerRef: this.user.$loki }, { date: { '$gt': currentYearTime }}, { deletedDate: null }]}).simplesort('date').data();
-		let nextProgressiveNumber = 1;
-		if(invoices.length == 0) return 1;
-		let lastInvoice = invoices[invoices.length-1];
+		const lastInvoice = this.getLastInvoice();
+		if(!lastInvoice) return 1;
 		return lastInvoice.progressiveNumber + 1;
 	}
 
@@ -367,6 +377,28 @@ class InvoicesCollection extends Collection{
 				itemsPerPage: limit
 			}
 		}
+	}
+
+	getEmptyInvoice(){
+		const invoice = {};
+		invoice.progressiveNumber = this.getNextProgressiveNumber();
+		invoice.date = Date.now();
+		invoice.currency = 'EUR';
+		invoice.ownerRef = this.user.$loki;
+		try{
+			invoice.headerText = this.user.invoiceSetting.headerText;
+			invoice.footerText = this.user.invoiceSetting.footerText;
+		}catch(e){}
+		invoice.items = [];
+
+		const lastInvoice = this.getLastInvoice();
+		if(lastInvoice){
+			invoice.payMethod = lastInvoice.payMethod;
+			invoice.bankName = lastInvoice.bankName;
+			invoice.iban = lastInvoice.iban;
+			invoice.currency = lastInvoice.currency;
+		}
+		return invoice;
 	}
 }
 
