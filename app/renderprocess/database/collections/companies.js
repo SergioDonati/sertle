@@ -104,13 +104,10 @@ class CompaniesCollection extends Collection{
 		}
 	}
 
-    setUser(user){
-        this._user = user;
-    }
-    get user(){ return this._user; }
+	setUser(user){ this._user = user; }
+	get user(){ return this._user; }
 
 	list(options = {}){
-		console.log(options);
 		const limit = options.itemsPerPage || 20;
 		const page = options.page?options.page - 1 : 0;
 		const simpleSort = options.sortBy || 'name';
@@ -122,17 +119,11 @@ class CompaniesCollection extends Collection{
 			query.$and.push(filter);
 		}
 
-		console.log(query);
 		const companies = this._collection.chain().find(query).simplesort(simpleSort)
-			/*.where(function(obj){
-				console.log('"'+obj.name+'"');
-				console.log('test: '+new RegExp('bata','ig').test(obj.name));
-				return new RegExp('bata','ig').test(obj.name);
-			})*/
 			.offset(offset)
 			.limit(limit)
 			.data();
-		let count = this._collection.count(query);
+		const count = this._collection.count(query);
 		return {
 			items: companies,
 			pagination:{
@@ -142,6 +133,15 @@ class CompaniesCollection extends Collection{
 				itemsPerPage: limit
 			}
 		}
+	}
+
+	newCompany(company){
+		company.ownerRef = this.user.$loki;
+		const result = this.validate(invoice);
+		if(result.valid != true){
+			throw result.error;
+		}
+		return this._model.newDocument(company);
 	}
 }
 

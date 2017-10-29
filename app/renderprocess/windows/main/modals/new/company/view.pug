@@ -5,7 +5,6 @@ include /variables
 	h3.modal-title Nuovo Cliente
 .modal-body
 	form#companyForm.text-left(bind-event, bind-event-submit='onSubmit')
-
 		h5 Generali
 		+form-group({label:'Ragione Sociale', name:'name', placeholder:'Nome', width: '320px', autofocus:true})
 		.container-flex-margin

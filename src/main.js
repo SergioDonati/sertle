@@ -12,15 +12,21 @@ const router = new VueRouter({ routes });
 
 window.mainStore = new Vuex.Store(require('./stores/baseStore.js'));
 
-import GenericList from './components/GenericList.vue'
-import Spinner from './components/Spinner.vue'
-import EditableField from './components/EditableField.vue'
+import GenericList from './components/core/GenericList.vue'
+import Spinner from './components/core/Spinner.vue'
+import EditableField from './components/core/EditableField.vue'
+import FieldGroup from './components/core/FieldGroup.vue'
+import NumberFieldGroup from './components/core/NumberFieldGroup.vue'
+import SelectFieldGroup from './components/core/SelectFieldGroup.vue'
 import Strapmodal from './components/modals/BootstrapModal.vue'
 import ConfirmModal from './components/modals/ConfirmModal.vue'
 import LoadingModal from './components/modals/LoadingModal.vue'
 Vue.component('genericList', GenericList);
 Vue.component('spinner',  Spinner);
 Vue.component('editableField', EditableField);
+Vue.component('fieldGroup', FieldGroup);
+Vue.component('numberFieldGroup', NumberFieldGroup);
+Vue.component('selectFieldGroup', SelectFieldGroup);
 
 Vue.component('strapmodal', Strapmodal);
 Vue.component('confirmModal', ConfirmModal);
@@ -68,12 +74,18 @@ mainStore.commit('setUser', remote.getCurrentWindow().user);
 import CompanyAddressEditModal from './components/modals/CompanyAddressEditModal.vue';
 import CompanyPhoneEditModal from './components/modals/CompanyPhoneEditModal.vue'
 import InvoiceItemModal from './components/modals/InvoiceItemModal.vue'
+import CompanySelectionModal from './components/modals/CompanySelectionModal.vue'
+import NewCompanyModal from './components/modals/NewCompanyModal.vue'
 Vue.component('companyAddressEditModal', CompanyAddressEditModal);
 Vue.component('companyPhoneEditModal', CompanyPhoneEditModal);
 Vue.component('invoiceItemModal', InvoiceItemModal);
+Vue.component('companySelectionModal', CompanySelectionModal);
+Vue.component('newCompanyModal', NewCompanyModal);
 
 modalsManager.addModal('confirm-modal');
 modalsManager.addModal('loading-modal');
 modalsManager.addModal('company-address-edit-modal');
 modalsManager.addModal('company-phone-edit-modal');
 modalsManager.addModal('invoice-item-modal');
+modalsManager.addModal('company-selection-modal');
+modalsManager.addModal('new-company-modal');

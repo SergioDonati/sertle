@@ -29,7 +29,11 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+		query: {
+			presets:[ 'es2015', 'stage-2' ],
+			plugins: ["transform-object-rest-spread"]
+		}
       },
       {
         test: /\.(png|jpg|gif|svg|ico)$/,
@@ -42,7 +46,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.js'
+      'vue$': 'vue/dist/vue.js',
+	  '@': path.join(__dirname, 'src')
     }
   },
   devServer: {

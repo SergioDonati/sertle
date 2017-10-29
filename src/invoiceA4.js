@@ -6,8 +6,8 @@ Vue.use(Vuex);
 
 import App from './InvoiceA4App/index.vue';
 
-Vue.component('genericList', require('./components/GenericList.vue'));
-Vue.component('spinner', require('./components/Spinner.vue'));
+Vue.component('genericList', require('./components/core/GenericList.vue'));
+Vue.component('spinner', require('./components/core/Spinner.vue'));
 
 window.eventHub = new Vue({});
 

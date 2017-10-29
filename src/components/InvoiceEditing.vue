@@ -7,9 +7,7 @@
 			.blockue
 				.row
 					.col-xs-12
-						.form-group
-							label Numero:
-							input.form-control.m-l-xs(style='width:50px;', type='number', v-model='invoice.progressiveNumber')
+						number-field-group(label='Numero' type="number" v-model='invoice.progressiveNumber' placeholder='1')
 					.col-xs-12
 						.form-group
 							label Data:
@@ -22,31 +20,28 @@
 							option(v-for='opt in payMethodOptions()', :key='opt.value', :value='opt.value') {{opt.label}}
 				.row(v-if='invoice.payMethod == 1')
 					.col-xs-12.col-lg-6
-						p
-							strong Banca:
-							span.m-l-xs {{ invoice.bankName }}
+						field-group(label='Banca', v-model='invoice.bank', placeholder='NomeBanca')
 					.col-xs-12.col-lg-6
-						p
-							strong IBAN:
-							span.m-l-xs {{ invoice.iban }}
-			.blockue(v-if="invoice.nominee")
+						field-group(label='IBAN', v-model='invoice.iban', placeholder='IT000011112222')
+			.blockue.nominee(v-if="nominee")
+				a.btn.close-company(title="cambia", v-on:click="selectCompany"): span.fa.fa-close
 				h5
-					span {{ invoice.nominee.name }}
+					span {{ nominee.name }}
 					router-link(:to='"/company/"+invoice.nomineeRef').m-l-sm: i.fa.fa-external-link
 				.row
 					.col-xs-12.col-lg-6
 						p
 							strong Codice Fiscale:
-							span.m-l-xs {{ invoice.nominee.fiscalCode }}
+							span.m-l-xs {{ nominee.fiscalCode }}
 					.col-xs-12.col-lg-6
 						p
 							strong Partita IVA:
-							span.m-l-xs {{ invoice.nominee.piva }}
-				p {{ invoice.nominee.addresses[0].street }}, {{ invoice.nominee.addresses[0].number }}
-				p {{ invoice.nominee.addresses[0].postalCode }} {{ invoice.nominee.addresses[0].city }} {{ invoice.nominee.addresses[0].nation }}
-			.blockue(v-if="!invoice.nominee")
+							span.m-l-xs {{ nominee.piva }}
+				p {{ nominee.addresses[0].street }}, {{ nominee.addresses[0].number }}
+				p {{ nominee.addresses[0].postalCode }} {{ nominee.addresses[0].city }} {{ nominee.addresses[0].nation }}
+			.blockue(v-if="!nominee")
 				h5 Seleziona il cliente
-				button.btn.btn-primary
+				button.btn.btn-primary(v-on:click="selectCompany")
 					span.fa.fa-search
 					span.m-l-xs Cerca
 		.fbox-item.fbox
@@ -103,6 +98,14 @@
 		align-items: flex-end;
 		justify-content: space-between;
 	}
+	.close-company{
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	.blockue.nominee{
+		position: relative;
+	}
 </style>
 
 <script>
@@ -115,7 +118,8 @@ export default {
 			error: null,
 			loading: false,
 			needToSave: false,
-			unitMap: unitMap
+			unitMap: unitMap,
+			company: null
 		};
 	},
 	mixins: [require('../mixins/invoice')],
@@ -123,6 +127,9 @@ export default {
 	computed:{
 		invoice_date: function(){
 			return new Date(this.invoice.date).toLocaleDateString();
+		},
+		nominee: function(){
+			return this.company;
 		}
 	},
 	mounted:function(){
@@ -149,6 +156,7 @@ export default {
 				mainStore.state.dbDriver.getInvoice(this.invoice_id).then(response => {
 					if(!response || !response.data) throw new Error('Invalid data.');
 					this.invoice = response.data;
+					this.company = this.invoice.nominee;
 				}).catch(e =>{
 					if(e && e.message){
 						this.error = e.message;
@@ -189,6 +197,13 @@ export default {
 				}
 			}).then(()=>{
 				this.loading = false;
+			});
+		},
+		selectCompany(){
+			modalsManager.getModal('company-selection-modal').show().$once('selected', (company)=>{
+				this.invoice.nominee = Object.assign({}, company);
+				this.company = this.invoice.nominee;
+				this.$emit("invoice-changed", this.invoice);
 			});
 		}
 	},

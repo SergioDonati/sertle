@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import CompaniesWidget from '../widget/Companies.vue';
-import InvoicesWidget from '../widget/Invoices.vue';
+import CompaniesWidget from '../components/widget/Companies.vue';
+import InvoicesWidget from '../components/widget/Invoices.vue';
 
 export default {
 	name: 'Dashboard',

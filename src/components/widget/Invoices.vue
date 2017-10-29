@@ -7,7 +7,7 @@
 </template>
 
 <script>
-	import driver from '../DBDriver';
+	import driver from '@/DBDriver';
 
 	export default {
 		name: 'InvoicesWidget',
@@ -20,11 +20,6 @@
 			driver.getInvoicesCount().then(response => {
 				this.count = response.data;
 			});
-		},
-		methods:{
-			newInvoice(){
-
-			}
 		}
 	}
 </script>

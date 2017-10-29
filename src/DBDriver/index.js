@@ -103,6 +103,10 @@ module.exports.createInvoice = caller(function(res, rej, invoiceData, companyDat
 	res(Invoices.newInvoice(invoiceData, companyData));
 });
 
+module.exports.createCompany = caller(function(res, rej, companyData){
+	res(Companies.newCompany(companyData));
+});
+
 module.exports.getEmptyInvoice = caller(function(res, rej){
 	res(Invoices.getEmptyInvoice());
 });

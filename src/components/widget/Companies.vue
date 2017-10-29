@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import driver from '../DBDriver';
+	import driver from '@/DBDriver';
 
 	export default {
 		name: 'CompaniesWidget',

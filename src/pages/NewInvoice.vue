@@ -6,8 +6,11 @@
 					h2.no-m-t.text-uppercase Fattura {{ invoice_number }}
 						small.text-muted {{ invoice_date }}
 					.btn-group.m-l-md
+						button.btn.btn-default.btn-sm(v-on:click='cancel')
+							span.fa.fa-close
+							span.m-l-xs Annulla
 						button.btn.btn-primary.btn-sm(v-if="invoice" v-on:click='save')
-							span.fa.fa-eye
+							span.fa.fa-save
 							span.m-l-xs Salva
 		invoice-editing.fbox(:new_invoice="true", v-on:invoice-changed="changed")
 	.page-wrapper(v-else)
@@ -15,7 +18,9 @@
 </template>
 
 <script>
-import InvoiceEditing from '../components/InvoiceEditing.vue';
+
+import driver from '@/DBDriver';
+import InvoiceEditing from '@/components/InvoiceEditing.vue';
 
 const {ipcRenderer} = require('electron');
 
@@ -57,7 +62,14 @@ export default {
 		changed(invoice){
 			this.invoice = invoice;
 		},
-		save(){}
+		save(){
+			driver.createInvoice(this.invoice, this.company).then(response => {
+				this.$router.replace('/invoice/'+response.$loki);
+			});
+		},
+		cancel(){
+			this.$router.go(-1);
+		}
 	},
 	watch:{
 		'$route': function (to, from) {
